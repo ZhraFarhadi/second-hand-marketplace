@@ -45,3 +45,4 @@ database/sqlite/*.db-shm
 .DS_Store
 Thumbs.db
 
+backend/src/main/resources/application-dev.properties
