@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.secondhand.frontend.controller.HelloController"
+           prefHeight="200.0" prefWidth="300.0">
+
+    <Label fx:id="welcomeText" text="Hello" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+
+</StackPane>
