@@ -29,7 +29,6 @@ public class Favorite extends BaseEntity {
     @JoinColumn(name = "advertisement_id", nullable = false)
     private Advertisement advertisement;
 
-    @OneToMany(mappedBy = "advertisement")
-    private List<Favorite> favorites = new ArrayList<>();
+
 
 }

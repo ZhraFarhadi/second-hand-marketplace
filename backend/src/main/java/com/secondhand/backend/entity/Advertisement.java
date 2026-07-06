@@ -55,24 +55,21 @@ public class Advertisement extends BaseEntity {
     )
     private List<AdvertisementAttribute> attributes = new ArrayList<>();
 
-    @OneToOne(
-            mappedBy = "advertisement",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private AdvertisementReview review;
 
     @OneToMany(
             mappedBy = "advertisement",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<AdvertisementReview> reviews = new ArrayList<>();
+    private List<AdminReview> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "advertisement")
     private List<Conversation> conversations = new ArrayList<>();
 
     @OneToMany(mappedBy = "advertisement")
     private List<SellerRating> sellerRatings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "advertisement")
+    private List<Favorite> favorites = new ArrayList<>();
 
 }

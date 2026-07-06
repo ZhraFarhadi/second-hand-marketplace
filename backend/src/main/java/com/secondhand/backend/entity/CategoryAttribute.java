@@ -27,7 +27,7 @@ public class CategoryAttribute extends BaseEntity {
     private AttributeDataType dataType;
 
     @Column(name = "required", nullable = false)
-    private Boolean required = false;
+    private boolean required = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

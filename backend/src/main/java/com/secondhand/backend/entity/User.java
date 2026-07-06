@@ -3,9 +3,6 @@ package com.secondhand.backend.entity;
 import com.secondhand.backend.enums.AccountStatus;
 import com.secondhand.backend.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,7 +49,7 @@ public class User extends BaseEntity {
     private List<Favorite> favorites = new ArrayList<>();
 
     @OneToMany(mappedBy = "admin")
-    private List<AdvertisementReview> reviews = new ArrayList<>();
+    private List<AdminReview> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "buyer")
     private List<Conversation> buyerConversations = new ArrayList<>();

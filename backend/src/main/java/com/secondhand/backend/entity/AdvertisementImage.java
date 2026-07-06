@@ -25,7 +25,7 @@ public class AdvertisementImage extends BaseEntity {
     private Integer displayOrder;
 
     @Column(name = "is_primary", nullable = false)
-    private Boolean isPrimary = false;
+    private boolean isPrimary = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advertisement_id", nullable = false)
