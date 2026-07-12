@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+
+
+<HBox
+        fx:id="headerRoot"
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.components.HeaderController"
+
+        alignment="CENTER_LEFT"
+        spacing="20"
+
+        prefHeight="70"
+
+        styleClass="header">
+
+    <padding>
+        <Insets top="15"
+                right="20"
+                bottom="15"
+                left="20"/>
+    </padding>
+
+    <Label
+            text="Marketplace"
+            styleClass="logo"/>
+
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <TextField promptText="Search advertisements..."/>
+
+    <Button text="Location"/>
+
+    <Button text="+ New Advertisement"/>
+
+    <Button text="Profile"/>
+
+    <Button fx:id="logoutButton"
+            text="Logout"
+            onAction="#logout"/>
+
+</HBox>

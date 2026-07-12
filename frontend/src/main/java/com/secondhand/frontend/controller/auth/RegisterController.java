@@ -1,14 +1,13 @@
 package com.secondhand.frontend.controller.auth;
 
+import com.secondhand.frontend.controller.components.FloatingPasswordFieldController;
+import com.secondhand.frontend.controller.components.FloatingTextFieldController;
 import com.secondhand.frontend.navigation.NavigationManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+
 import java.util.regex.Pattern;
-
-
-
 
 public class RegisterController {
 
@@ -18,26 +17,23 @@ public class RegisterController {
     private static final Pattern PHONE_PATTERN =
             Pattern.compile("^09\\d{9}$");
 
+    @FXML
+    private FloatingTextFieldController fullNameComponentController;
 
     @FXML
-    private TextField fullNameField;
+    private FloatingTextFieldController usernameComponentController;
 
     @FXML
-    private TextField usernameField;
+    private FloatingTextFieldController emailComponentController;
 
     @FXML
-    private TextField emailField;
+    private FloatingTextFieldController phoneComponentController;
 
     @FXML
-    private TextField phoneField;
+    private FloatingPasswordFieldController passwordComponentController;
 
     @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private PasswordField confirmPasswordField;
-
-
+    private FloatingPasswordFieldController confirmPasswordComponentController;
 
     @FXML
     private Label fullNameErrorLabel;
@@ -57,7 +53,17 @@ public class RegisterController {
     @FXML
     private Label confirmPasswordErrorLabel;
 
+    @FXML
+    public void initialize() {
 
+        fullNameComponentController.setLabel("Full Name");
+        usernameComponentController.setLabel("Username");
+        emailComponentController.setLabel("Email");
+        phoneComponentController.setLabel("Phone Number");
+        passwordComponentController.setLabel("Password");
+        confirmPasswordComponentController.setLabel("Confirm Password");
+
+    }
 
     private void clearErrors() {
 
@@ -81,15 +87,20 @@ public class RegisterController {
 
     }
 
-
-
     private boolean validateInputs() {
 
         clearErrors();
 
         boolean valid = true;
 
-        if (fullNameField.getText().isBlank()) {
+        String fullName = fullNameComponentController.getText().trim();
+        String username = usernameComponentController.getText().trim();
+        String email = emailComponentController.getText().trim();
+        String phone = phoneComponentController.getText().trim();
+        String password = passwordComponentController.getText();
+        String confirmPassword = confirmPasswordComponentController.getText();
+
+        if (fullName.isBlank()) {
 
             fullNameErrorLabel.setText("Full name is required.");
             fullNameErrorLabel.setVisible(true);
@@ -99,7 +110,7 @@ public class RegisterController {
 
         }
 
-        if (usernameField.getText().isBlank()) {
+        if (username.isBlank()) {
 
             usernameErrorLabel.setText("Username is required.");
             usernameErrorLabel.setVisible(true);
@@ -109,7 +120,7 @@ public class RegisterController {
 
         }
 
-        if (emailField.getText().isBlank()) {
+        if (email.isBlank()) {
 
             emailErrorLabel.setText("Email is required.");
             emailErrorLabel.setVisible(true);
@@ -117,8 +128,7 @@ public class RegisterController {
 
             valid = false;
 
-        }
-        else if (!EMAIL_PATTERN.matcher(emailField.getText()).matches()) {
+        } else if (!EMAIL_PATTERN.matcher(email).matches()) {
 
             emailErrorLabel.setText("Invalid email.");
             emailErrorLabel.setVisible(true);
@@ -128,7 +138,7 @@ public class RegisterController {
 
         }
 
-        if (phoneField.getText().isBlank()) {
+        if (phone.isBlank()) {
 
             phoneErrorLabel.setText("Phone number is required.");
             phoneErrorLabel.setVisible(true);
@@ -136,8 +146,7 @@ public class RegisterController {
 
             valid = false;
 
-        }
-        else if (!PHONE_PATTERN.matcher(phoneField.getText()).matches()) {
+        } else if (!PHONE_PATTERN.matcher(phone).matches()) {
 
             phoneErrorLabel.setText("Invalid phone number.");
             phoneErrorLabel.setVisible(true);
@@ -147,7 +156,7 @@ public class RegisterController {
 
         }
 
-        if (passwordField.getText().isBlank()) {
+        if (password.isBlank()) {
 
             passwordErrorLabel.setText("Password is required.");
             passwordErrorLabel.setVisible(true);
@@ -157,7 +166,7 @@ public class RegisterController {
 
         }
 
-        if (confirmPasswordField.getText().isBlank()) {
+        if (confirmPassword.isBlank()) {
 
             confirmPasswordErrorLabel.setText("Confirm password is required.");
             confirmPasswordErrorLabel.setVisible(true);
@@ -165,8 +174,7 @@ public class RegisterController {
 
             valid = false;
 
-        }
-        else if (!passwordField.getText().equals(confirmPasswordField.getText())) {
+        } else if (!password.equals(confirmPassword)) {
 
             confirmPasswordErrorLabel.setText("Passwords do not match.");
             confirmPasswordErrorLabel.setVisible(true);
@@ -180,8 +188,6 @@ public class RegisterController {
 
     }
 
-
-
     @FXML
     private void onRegisterClicked() {
 
@@ -191,9 +197,17 @@ public class RegisterController {
 
         System.out.println("Registration Successful");
 
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+        alert.setTitle("Registration");
+        alert.setHeaderText(null);
+        alert.setContentText("Account created successfully.");
+
+        alert.showAndWait();
+
+        NavigationManager.showLogin();
+
     }
-
-
 
     @FXML
     private void onBackToLoginClicked() {

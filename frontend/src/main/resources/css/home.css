@@ -1,0 +1,75 @@
+
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+
+    -fx-background-color:white;
+
+}
+
+.sidebar-scroll{
+
+    -fx-background:white;
+
+    -fx-border-color:#dddddd;
+
+    -fx-border-width:0 1 0 0;
+
+}
+
+.sidebar-scroll > .viewport{
+
+    -fx-background-color:white;
+
+}
+
+.section-title{
+
+    -fx-font-size:16px;
+
+    -fx-font-weight:bold;
+
+}
+
+/* ================= CATEGORY ================= */
+
+.category-button{
+
+    -fx-background-color:transparent;
+
+    -fx-alignment:CENTER_LEFT;
+
+    -fx-padding:10 12;
+
+    -fx-font-size:14px;
+
+    -fx-background-radius:8;
+
+    -fx-cursor:hand;
+
+}
+
+.category-button:hover{
+
+    -fx-background-color:#dce8f5;
+
+}
+
+
+
+/* ================= CENTER ================= */
+
+.content-scroll{
+
+    -fx-background:white;
+
+    -fx-border-width:0;
+
+}
+
+.content-scroll > .viewport{
+
+    -fx-background-color:#f7f8fa;
+
+}

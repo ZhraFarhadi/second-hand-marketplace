@@ -19,6 +19,7 @@ public class FrontendApplication extends Application {
 
         NavigationManager.showLogin();
 
+
         stage.show();
 
     }
