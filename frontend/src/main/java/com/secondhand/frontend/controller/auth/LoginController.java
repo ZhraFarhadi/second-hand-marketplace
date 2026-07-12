@@ -1,5 +1,6 @@
 package com.secondhand.frontend.controller.auth;
 
+import com.secondhand.frontend.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -8,14 +9,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import com.secondhand.frontend.navigation.NavigationManager;
 import javafx.scene.control.Hyperlink;
+import com.secondhand.frontend.controller.components.FloatingTextFieldController;
+import com.secondhand.frontend.controller.components.FloatingPasswordFieldController;
 
 public class LoginController {
 
     @FXML
-    private TextField usernameField;
+    private FloatingTextFieldController usernameComponentController;
 
     @FXML
-    private PasswordField passwordField;
+    private FloatingPasswordFieldController passwordComponentController;
 
     @FXML
     private Button loginButton;
@@ -32,6 +35,9 @@ public class LoginController {
     @FXML
     public void initialize() {
 
+        usernameComponentController.setLabel("Username");
+        passwordComponentController.setLabel("Password");
+
         System.out.println("LoginController Initialized");
 
     }
@@ -41,9 +47,8 @@ public class LoginController {
 
         hideErrors();
 
-        String username = usernameField.getText().trim();
-
-        String password = passwordField.getText();
+        String username = usernameComponentController.getText().trim();
+        String password = passwordComponentController.getText();
 
         boolean hasError = false;
 
@@ -73,6 +78,9 @@ public class LoginController {
 
         System.out.println("Password: " + password);
 
+        SessionManager.login();
+
+        NavigationManager.showHome();
     }
 
 

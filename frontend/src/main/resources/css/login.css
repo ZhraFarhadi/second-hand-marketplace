@@ -127,3 +127,56 @@
     -fx-font-size: 12px;
 
 }
+
+.floating-container{
+
+    -fx-pref-width:280;
+    -fx-pref-height:52;
+
+}
+
+.floating-text-field{
+
+    -fx-pref-width:280;
+    -fx-pref-height:52;
+
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+
+    -fx-border-color:#dcdde1;
+
+    -fx-background-color:white;
+
+    -fx-padding:18 12 6 12;
+
+    -fx-font-size:14px;
+
+}
+
+.floating-label{
+
+    -fx-text-fill:#888;
+
+    -fx-font-size:14px;
+
+    -fx-translate-x:-95;
+
+    -fx-translate-y:0;
+
+    -fx-background-color:white;
+
+    -fx-padding:0 4 0 4;
+
+    -fx-mouse-transparent:true;
+
+}
+
+.floating-label-top{
+
+    -fx-translate-y:-20;
+
+    -fx-font-size:11px;
+
+    -fx-text-fill:#2d89ef;
+
+}

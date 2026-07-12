@@ -12,6 +12,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
+            xmlns:components="com.secondhand.frontend.controller.components"
             fx:controller="com.secondhand.frontend.controller.auth.LoginController">
 
     <center>
@@ -30,10 +31,9 @@
                   maxWidth="320"
                   styleClass="form-container">
 
-                <TextField
-                        fx:id="usernameField"
-                        promptText="Username"
-                        styleClass="text-field-custom"/>
+                <fx:include
+                        fx:id="usernameComponent"
+                        source="../components/floating-text-field.fxml"/>
 
                 <Label
                         fx:id="usernameErrorLabel"
@@ -44,10 +44,9 @@
 
 
 
-                <PasswordField
-                        fx:id="passwordField"
-                        promptText="Password"
-                        styleClass="text-field-custom"/>
+                <fx:include
+                        fx:id="passwordComponent"
+                        source="../components/floating-password-field.fxml"/>
                 <Label
                         fx:id="passwordErrorLabel"
                         text="Password cannot be empty."
