@@ -18,7 +18,8 @@ public class NavigationManager {
         return primaryStage;
     }
 
-    private static void loadScene(String fxmlPath, String cssPath) {
+
+    private static void loadScene(String fxmlPath, String... cssPaths) {
 
         try {
 
@@ -26,24 +27,52 @@ public class NavigationManager {
                     NavigationManager.class.getResource(fxmlPath)
             );
 
+            // ذخیره وضعیت فعلی Stage
+            boolean maximized = primaryStage.isMaximized();
 
-
+            double width = primaryStage.getWidth();
+            double height = primaryStage.getHeight();
 
             Scene scene = new Scene(loader.load(), 900, 650);
 
-           if (cssPath != null && !cssPath.isBlank()) {
+            for (String cssPath : cssPaths) {
 
-                scene.getStylesheets().add(
-                        NavigationManager.class
-                                .getResource(cssPath)
-                                .toExternalForm()
-                );
+                if (cssPath != null && !cssPath.isBlank()) {
 
+                    var url = NavigationManager.class.getResource(cssPath);
+
+                    System.out.println("CSS = " + cssPath);
+                    System.out.println("URL = " + url);
+
+                    if (url != null) {
+
+                        scene.getStylesheets().add(url.toExternalForm());
+
+                    } else {
+
+                        System.out.println("CSS NOT FOUND!");
+
+                    }
+                }
             }
 
             primaryStage.setScene(scene);
 
-        } catch (IOException e) {
+            // برگرداندن اندازه قبلی پنجره
+            if (maximized) {
+
+                primaryStage.setMaximized(true);
+
+            } else {
+
+                primaryStage.setWidth(width);
+                primaryStage.setHeight(height);
+
+            }
+
+        }
+
+        catch (IOException e) {
 
             e.printStackTrace();
 
@@ -69,4 +98,25 @@ public class NavigationManager {
 
     }
 
+    public static void showHome() {
+
+        loadScene(
+                "/view/home/home.fxml",
+                "/css/header.css",
+                "/css/home.css",
+                "/css/advertisement-card.css"
+        );
+
+    }
+
+    public static void showAdvertisementDetails() {
+
+        loadScene(
+                "/view/advertisement/advertisement-details.fxml",
+                "/css/header.css",
+                "/css/advertisementdetail.css"
+        );
+
+
+    }
 }

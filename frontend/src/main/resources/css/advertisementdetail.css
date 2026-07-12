@@ -1,0 +1,334 @@
+.root{
+    -fx-background-color:#f7f8fa;
+}
+
+/* ================= SCROLL ================= */
+
+.content-scroll{
+
+    -fx-background-color:#f7f8fa;
+    -fx-border-width:0;
+
+}
+
+.content-scroll > .viewport{
+
+    -fx-background-color:#f7f8fa;
+
+}
+
+/* ================= MAIN IMAGE ================= */
+
+.main-image-container{
+
+    -fx-pref-width:560;
+    -fx-pref-height:560;
+
+    -fx-background-color:white;
+
+    -fx-background-radius:20;
+    -fx-border-radius:20;
+
+    -fx-border-color:#e6e6e6;
+    -fx-border-width:1;
+
+    -fx-padding:15;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,0.10),
+            18,
+            0,
+            0,
+            4
+    );
+
+}
+
+.no-image-label{
+
+    -fx-font-size:18px;
+    -fx-text-fill:#999999;
+
+}
+
+/* ================= GALLERY ================= */
+
+.thumbnail{
+
+    -fx-pref-width:92;
+    -fx-pref-height:92;
+
+    -fx-background-color:white;
+
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+
+    -fx-border-color:#d8d8d8;
+    -fx-border-width:1;
+
+    -fx-cursor:hand;
+
+}
+
+.thumbnail:hover{
+
+    -fx-border-color:#1976d2;
+
+}
+
+/* ================= SELLER CARD ================= */
+
+.seller-card{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:20;
+    -fx-border-radius:20;
+
+    -fx-border-color:#e6e6e6;
+    -fx-border-width:1;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,0.08),
+            16,
+            0,
+            0,
+            3
+    );
+
+}
+
+.seller-title{
+
+    -fx-font-size:18px;
+    -fx-font-weight:bold;
+
+}
+
+.seller-name{
+
+    -fx-font-size:22px;
+    -fx-font-weight:900;
+
+    -fx-text-fill:#202020;
+
+}
+
+.seller-rate{
+
+    -fx-font-size:15px;
+
+    -fx-text-fill:#666666;
+
+}
+
+.thumbnail-selected{
+
+    -fx-border-color:#1976d2;
+
+    -fx-border-width:3;
+
+    -fx-border-radius:12;
+
+    -fx-background-radius:12;
+
+}
+
+
+.gallery-scroll {
+
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+}
+
+.gallery-scroll > .viewport {
+
+    -fx-background-color: transparent;
+
+}
+
+/* ================= TITLE ================= */
+
+.detail-title{
+
+    -fx-font-size:30px;
+
+    -fx-font-weight:900;
+
+    -fx-text-fill:#202020;
+
+}
+
+/* ================= PRICE ================= */
+
+.price-caption{
+
+    -fx-font-size:18px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#555555;
+
+}
+
+.detail-price{
+
+    -fx-font-size:20px;
+
+    -fx-font-weight:900;
+
+    -fx-text-fill:#c62828;
+
+}
+
+/* ================= INFO ================= */
+
+.detail-info{
+
+    -fx-font-size:15px;
+
+    -fx-text-fill:#777777;
+
+}
+
+/* ================= SECTION ================= */
+
+.section-title{
+
+    -fx-font-size:18px;
+
+    -fx-font-weight:900;
+
+    -fx-text-fill:#202020;
+
+}
+
+/* ================= DESCRIPTION ================= */
+
+.description-card{
+
+    -fx-background-color:white;
+
+    -fx-background-radius:18;
+    -fx-border-radius:18;
+
+    -fx-border-color:#e5e7eb;
+    -fx-border-width:1;
+
+    -fx-effect:dropshadow(
+            gaussian,
+            rgba(0,0,0,0.05),
+            12,
+            0,
+            0,
+            2
+    );
+
+}
+
+.description-text{
+
+    -fx-font-size:16px;
+
+    -fx-line-spacing:7;
+
+    -fx-text-fill:#404040;
+
+}
+
+/* ================= BUTTONS ================= */
+
+#favoriteButton{
+
+    -fx-background-color:white;
+
+    -fx-border-color:#c62828;
+    -fx-border-width:2;
+
+    -fx-border-radius:10;
+    -fx-background-radius:10;
+
+    -fx-text-fill:#c62828;
+
+    -fx-font-size:15px;
+    -fx-font-weight:bold;
+
+    -fx-padding:12 24;
+
+    -fx-cursor:hand;
+
+}
+
+#favoriteButton:hover{
+
+    -fx-background-color:#ffebee;
+
+}
+
+#chatButton{
+
+    -fx-background-color:#1976d2;
+
+    -fx-background-radius:10;
+
+    -fx-text-fill:white;
+
+    -fx-font-size:15px;
+    -fx-font-weight:bold;
+
+    -fx-padding:12 24;
+
+    -fx-cursor:hand;
+
+}
+
+#chatButton:hover{
+
+    -fx-background-color:#1565c0;
+
+}
+
+.button{
+
+    -fx-cursor:hand;
+
+}
+
+.back-button{
+
+    -fx-background-color: transparent;
+
+    -fx-text-fill: #2d89ef;
+
+    -fx-font-size: 26px;
+
+    -fx-font-weight: bold;
+
+    -fx-min-width: 42px;
+    -fx-min-height: 42px;
+
+    -fx-max-width: 42px;
+    -fx-max-height: 42px;
+
+    -fx-padding: 0;
+
+    -fx-background-radius: 50;
+
+    -fx-cursor: hand;
+
+}
+
+.back-button:hover{
+
+    -fx-background-color: #edf5ff;
+
+    -fx-text-fill: #1b6fd8;
+
+}

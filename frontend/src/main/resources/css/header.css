@@ -1,0 +1,53 @@
+.root{
+    -fx-background-color:#f7f8fa;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+
+    -fx-background-color:white;
+
+    -fx-border-color:#dddddd;
+
+    -fx-border-width:0 0 1 0;
+
+    -fx-pref-height:80;
+
+}
+
+.logo{
+
+    -fx-font-size:28px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#23436a;
+
+}
+
+.header .button{
+
+    -fx-background-radius:8;
+
+    -fx-cursor:hand;
+
+}
+
+.header .button:hover{
+
+    -fx-background-color:#dce8f5;
+
+}
+
+.header .text-field{
+
+    -fx-pref-width:430;
+
+    -fx-pref-height:40;
+
+    -fx-background-radius:10;
+
+    -fx-border-radius:10;
+
+}
