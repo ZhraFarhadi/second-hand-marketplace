@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.auth.RegisterController">
+
+    <center>
+
+        <VBox alignment="CENTER"
+              spacing="15"
+              styleClass="login-container">
+
+            <Label text="Marketplace"
+                   styleClass="title-label"/>
+
+            <Label text="Create Account"
+                   styleClass="subtitle-label"/>
+
+            <VBox spacing="8"
+                  maxWidth="350">
+
+                <TextField
+                        fx:id="fullNameField"
+                        promptText="Full Name"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="fullNameErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <TextField
+                        fx:id="usernameField"
+                        promptText="Username"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="usernameErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <TextField
+                        fx:id="emailField"
+                        promptText="Email"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="emailErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <TextField
+                        fx:id="phoneField"
+                        promptText="Phone Number"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="phoneErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <PasswordField
+                        fx:id="passwordField"
+                        promptText="Password"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="passwordErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <PasswordField
+                        fx:id="confirmPasswordField"
+                        promptText="Confirm Password"
+                        styleClass="text-field-custom"/>
+                <Label
+                        fx:id="confirmPasswordErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+
+                <Button text="Register"
+                        fx:id="registerButton"
+                        onAction="#onRegisterClicked"
+                        maxWidth="Infinity"
+                        styleClass="login-button"/>
+
+                <Hyperlink
+                        fx:id="backToLoginLink"
+                        text="Already have an account? Login"
+                        onAction="#onBackToLoginClicked"/>
+
+            </VBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>
