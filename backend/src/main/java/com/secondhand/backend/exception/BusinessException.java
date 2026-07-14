@@ -1,18 +1,28 @@
 package com.secondhand.backend.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-public abstract class BusinessException extends RuntimeException {
+@Getter
+public class BusinessException extends RuntimeException {
 
-    private final HttpStatus status;
+    private final ErrorCode errorCode;
 
-    protected BusinessException(HttpStatus status, String message) {
+    public BusinessException(ErrorCode errorCode) {
+        super(errorCode.getDefaultMessage());
+        this.errorCode = errorCode;
+    }
+
+    public BusinessException(
+            ErrorCode errorCode,
+            String message
+    ) {
         super(message);
-        this.status = status;
+        this.errorCode = errorCode;
     }
 
     public HttpStatus getStatus() {
-        return status;
+        return errorCode.getStatus();
     }
 
 }

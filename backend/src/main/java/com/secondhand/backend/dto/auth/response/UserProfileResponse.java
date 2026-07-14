@@ -11,9 +11,8 @@ public class UserProfileResponse {
 
     private Long id;
 
-    private String firstName;
+    private String fullName;
 
-    private String lastName;
 
     private String username;
 

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
+import io.jsonwebtoken.JwtException;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +35,15 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(
+            String token,
+            UserDetails userDetails
+    ) {
 
-        String username = extractUsername(token);
+        return isTokenValid(token)
+                && extractUsername(token)
+                .equals(userDetails.getUsername());
 
-        return username.equals(userDetails.getUsername())
-                && !isTokenExpired(token);
     }
 
     public boolean isTokenExpired(String token) {
@@ -74,6 +78,20 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
 
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public boolean isTokenValid(String token) {
+
+        try {
+
+            Claims claims = extractAllClaims(token);
+
+            return claims.getExpiration().after(new Date());
+
+        } catch (JwtException | IllegalArgumentException ex) {
+
+            return false;
+        }
     }
 
 }

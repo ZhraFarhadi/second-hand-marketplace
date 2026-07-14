@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdAttributeRepository
+public interface AdvertisementAttributeRepository
         extends JpaRepository<AdvertisementAttribute, Long> {
 
     List<AdvertisementAttribute> findByAdvertisement(

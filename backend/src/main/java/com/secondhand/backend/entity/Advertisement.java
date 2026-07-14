@@ -72,4 +72,24 @@ public class Advertisement extends BaseEntity {
     @OneToMany(mappedBy = "advertisement")
     private List<Favorite> favorites = new ArrayList<>();
 
+    public void addImage(AdvertisementImage image) {
+        images.add(image);
+        image.setAdvertisement(this);
+    }
+
+    public void removeImage(AdvertisementImage image) {
+        images.remove(image);
+        image.setAdvertisement(null);
+    }
+
+    public void addAttribute(AdvertisementAttribute attribute) {
+        attributes.add(attribute);
+        attribute.setAdvertisement(this);
+    }
+
+    public void removeAttribute(AdvertisementAttribute attribute) {
+        attributes.remove(attribute);
+        attribute.setAdvertisement(null);
+    }
+
 }

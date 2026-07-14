@@ -16,12 +16,8 @@ import lombok.Setter;
 public class UpdateProfileRequest {
 
     @NotBlank(message = "First name is required.")
-    @Size(max = 50, message = "First name must not exceed 50 characters.")
-    private String firstName;
-
-    @NotBlank(message = "Last name is required.")
-    @Size(max = 50, message = "Last name must not exceed 50 characters.")
-    private String lastName;
+    @Size(max = 100, message = "Full name must not exceed 100 characters.")
+    private String fullName;
 
     @NotBlank(message = "Email is required.")
     @Email(message = "Invalid email format.")

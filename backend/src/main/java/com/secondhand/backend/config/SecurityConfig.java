@@ -5,15 +5,15 @@ import com.secondhand.backend.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,26 +25,78 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         http
+
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/ping",
-                                "/api/auth/**"
+                        /*
+                         * Public Endpoints
+                         */
+
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/auth/login",
+                                "/api/auth/register"
                         ).permitAll()
 
-                        .requestMatchers("/api/admin/**")
-                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,
+                                "/ping"
+                        ).permitAll()
+
+                        /*
+                         * Public Advertisement APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/advertisements",
+                                "/api/advertisements/**"
+                        ).permitAll()
+
+                        /*
+                         * Public Category APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/categories/**"
+                        ).permitAll()
+
+                        /*
+                         * Public City APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/cities/**"
+                        ).permitAll()
+
+                        /*
+                         * Admin APIs
+                         */
+
+                        .requestMatchers(
+                                "/api/admin/**"
+                        ).hasRole("ADMIN")
+
+                        /*
+                         * Everything else requires authentication
+                         */
 
                         .anyRequest()
                         .authenticated()
+
                 )
 
                 .authenticationProvider(authenticationProvider())

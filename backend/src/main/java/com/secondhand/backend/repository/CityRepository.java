@@ -18,7 +18,4 @@ public interface CityRepository extends JpaRepository<City, Long> {
                                     Province province);
 
     List<City> findAllByProvince(Province province);
-
-
-
 }

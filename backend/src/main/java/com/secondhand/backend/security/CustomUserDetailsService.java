@@ -1,7 +1,6 @@
 package com.secondhand.backend.security;
 
 import com.secondhand.backend.entity.User;
-import com.secondhand.backend.exception.AuthenticationException;
 import com.secondhand.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

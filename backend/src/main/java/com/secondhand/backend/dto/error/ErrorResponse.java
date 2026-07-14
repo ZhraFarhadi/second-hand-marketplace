@@ -1,6 +1,5 @@
 package com.secondhand.backend.dto.error;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,17 +7,18 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@AllArgsConstructor
 public class ErrorResponse {
 
-    private final LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 
-    private final int status;
+    private int status;
 
-    private final String error;
+    private String error;
 
-    private final String message;
+    private String errorCode;
 
-    private final String path;
+    private String message;
+
+    private String path;
 
 }

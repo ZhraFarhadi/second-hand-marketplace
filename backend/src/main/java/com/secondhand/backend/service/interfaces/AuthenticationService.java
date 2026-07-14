@@ -1,4 +1,4 @@
-package com.secondhand.backend.service;
+package com.secondhand.backend.service.interfaces;
 
 import com.secondhand.backend.dto.auth.request.LoginRequest;
 import com.secondhand.backend.dto.auth.request.RegisterRequest;
