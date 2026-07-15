@@ -119,4 +119,16 @@ public class NavigationManager {
 
 
     }
+
+    public static void showCreateAdvertisement() {
+
+        loadScene(
+                "/view/advertisement/create-advertisement.fxml",
+                "/css/header.css",
+                "/css/create-advertisement.css"
+        );
+
+    }
+
+
 }

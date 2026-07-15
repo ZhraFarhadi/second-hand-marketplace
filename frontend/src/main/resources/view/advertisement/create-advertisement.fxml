@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.advertisement.CreateAdvertisementController">
+
+    <top>
+        <fx:include source="../components/header.fxml"/>
+    </top>
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER">
+
+            <VBox spacing="25"
+                  alignment="TOP_CENTER"
+                  styleClass="create-root">
+
+                <padding>
+                    <Insets top="35"
+                            right="40"
+                            bottom="40"
+                            left="40"/>
+                </padding>
+
+                <!-- ================= PAGE TITLE ================= -->
+
+                <Label text="Create Advertisement"
+                       styleClass="page-title"/>
+
+                <!-- ================= GENERAL INFORMATION ================= -->
+
+                <VBox spacing="18"
+                      maxWidth="900"
+                      styleClass="section-card">
+
+                    <Label text="General Information"
+                           styleClass="section-title"/>
+
+                    <!-- Title -->
+
+                    <HBox alignment="CENTER">
+                        <fx:include fx:id="titleComponent"
+                                    source="../components/floating-text-field.fxml"/>
+                    </HBox>
+
+                    <!-- Category -->
+
+                    <fx:include
+                            fx:id="categorySelector"
+                            source="components/categoryselector.fxml"/>
+
+                </VBox>
+
+                <!-- ================= SPECIFICATIONS ================= -->
+
+                <VBox spacing="15"
+                      maxWidth="900"
+                      styleClass="section-card">
+
+                    <Label text="Specifications"
+                           styleClass="section-title"/>
+
+                    <VBox fx:id="specificationsContainer"
+                          spacing="12"/>
+
+                </VBox>
+
+                <!-- ================= DESCRIPTION ================= -->
+
+                <VBox spacing="18"
+                      maxWidth="900"
+                      styleClass="section-card">
+
+                    <Label text="Description"
+                           styleClass="section-title"/>
+
+                    <fx:include fx:id="descriptionComponent"
+                                source="../components/floating-text-area.fxml"/>
+
+                    <HBox spacing="20">
+
+                        <VBox HBox.hgrow="ALWAYS"
+                              prefWidth="260">
+
+                            <fx:include
+                                    fx:id="priceComponent"
+                                    source="../components/floating-price-field.fxml"/>
+
+                        </VBox>
+
+                        <VBox HBox.hgrow="ALWAYS"
+                              prefWidth="260">
+
+                            <fx:include
+                                    fx:id="cityComponent"
+                                    source="../components/floating-text-field.fxml"/>
+
+                        </VBox>
+
+                    </HBox>
+
+                </VBox>
+
+                <!-- ================= IMAGES ================= -->
+
+                <VBox spacing="15"
+                      maxWidth="900"
+                      styleClass="section-card">
+
+                    <Label text="Images"
+                           styleClass="section-title"/>
+
+                    <Button fx:id="addImagesButton"
+                            text="+ Add Images"
+                            onAction="#chooseImages"/>
+
+                    <FlowPane fx:id="imageContainer"
+                              hgap="15"
+                              vgap="15"/>
+
+                </VBox>
+
+                <!-- ================= PUBLISH ================= -->
+                <Label fx:id="errorLabel"
+                       text=""
+                       style="-fx-text-fill:#e53935; -fx-font-size:14;"
+                       visible="false"/>
+
+
+                <Button text="Publish Advertisement"
+                        styleClass="publish-button"
+                        onAction="#publishAdvertisement"/>
+
+            </VBox>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

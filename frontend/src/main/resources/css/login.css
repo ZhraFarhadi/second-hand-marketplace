@@ -180,3 +180,27 @@
     -fx-text-fill:#2d89ef;
 
 }
+
+.currency-label{
+
+    -fx-font-size:15px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#555555;
+
+    -fx-padding:0 10 0 0;
+
+}
+
+.floating-label{
+
+    -fx-font-size:16px;
+
+}
+
+.floating-label-top{
+
+    -fx-font-size:13px;
+
+}

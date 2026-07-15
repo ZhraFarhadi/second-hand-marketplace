@@ -1,0 +1,210 @@
+.create-root{
+
+    -fx-background-color:#f5f6fa;
+
+    -fx-node-orientation:RIGHT_TO_LEFT;
+
+}
+
+/* ===========================
+        Page
+   =========================== */
+
+.page-title{
+
+    -fx-font-size:30px;
+
+    -fx-font-weight:bold;
+
+}
+
+/* ===========================
+        Cards
+   =========================== */
+
+.section-card{
+
+    -fx-padding:25;
+
+    -fx-background-color:white;
+
+    -fx-background-radius:12;
+
+    -fx-border-radius:12;
+
+    -fx-border-color:#dcdde1;
+
+    -fx-border-width:1;
+
+}
+
+.section-title{
+
+    -fx-font-size:20px;
+
+    -fx-font-weight:bold;
+
+}
+
+.publish-button{
+
+    -fx-pref-width:260;
+
+    -fx-pref-height:45;
+
+}
+
+/* ===========================
+      Floating TextField
+   =========================== */
+
+.floating-container{
+
+    -fx-pref-height:52;
+
+}
+
+.floating-text-field{
+
+    -fx-pref-height:52;
+
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+
+    -fx-border-color:#dcdde1;
+    -fx-background-color:white;
+
+    -fx-padding:18 12 6 12;
+
+    -fx-font-size:16px;
+
+    -fx-alignment:CENTER_RIGHT;
+
+}
+
+/* دقیقا مثل لاگین */
+
+.floating-label{
+
+    -fx-text-fill:#888;
+
+    -fx-font-size:16px;
+
+    -fx-translate-x:-95;
+
+    -fx-translate-y:0;
+
+    -fx-background-color:white;
+
+    -fx-padding:0 4 0 4;
+
+}
+
+.floating-label-top{
+
+    -fx-translate-y:-20;
+
+    -fx-font-size:12px;
+
+    -fx-text-fill:#2d89ef;
+
+}
+
+/* ===========================
+        TextArea
+   =========================== */
+
+.text-area{
+
+    -fx-font-size:16px;
+
+    -fx-node-orientation:RIGHT_TO_LEFT;
+
+}
+
+/* ===========================
+        Currency
+   =========================== */
+
+.currency-label{
+
+    -fx-font-size:15px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#555555;
+
+    -fx-padding:0 10 0 10;
+
+}
+
+/* ===========================
+        Floating TextArea
+   =========================== */
+
+.floating-textarea-container{
+
+    -fx-pref-width:550;
+
+    -fx-pref-height:170;
+
+}
+
+.floating-text-area{
+
+    -fx-pref-width:550;
+
+    -fx-pref-height:170;
+
+    -fx-background-radius:8;
+
+    -fx-border-radius:8;
+
+    -fx-border-color:#dcdde1;
+
+    -fx-background-color:white;
+
+    -fx-padding:22 12 10 12;
+
+    -fx-font-size:16px;
+
+    -fx-wrap-text:true;
+
+    -fx-alignment:TOP_RIGHT;
+
+}
+
+.floating-text-area .content{
+
+    -fx-background-color:white;
+
+}
+.floating-textarea-label-top{
+
+    -fx-translate-y:-80;
+
+    -fx-font-size:12px;
+
+    -fx-text-fill:#2d89ef;
+
+}
+
+.currency-label{
+
+    -fx-font-size:14px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#777;
+
+}
+
+.floating-label-down{
+
+    -fx-translate-y:-15;
+
+    -fx-font-size:12px;
+
+    -fx-text-fill:#2d89ef;
+
+}
