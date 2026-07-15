@@ -15,4 +15,11 @@ public class HeaderController {
 
     }
 
+
+    @FXML
+    private void showCreateAdvertisement() {
+
+        NavigationManager.showCreateAdvertisement();
+
+    }
 }

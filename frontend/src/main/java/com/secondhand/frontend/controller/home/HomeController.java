@@ -1,5 +1,7 @@
 package com.secondhand.frontend.controller.home;
 
+import com.secondhand.frontend.mock.CategoryData;
+import com.secondhand.frontend.navigation.NavigationManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -7,6 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import javafx.scene.Parent;
+import com.secondhand.frontend.model.Category;
 
 public class HomeController {
 
@@ -23,18 +26,41 @@ public class HomeController {
     @FXML
     private Button chatButton;
 
+
+
     @FXML
     public void initialize() {
 
-        addCategory("📱 Electronics");
-        addCategory("🚗 Vehicles");
-        addCategory("🏠 Home");
-        addCategory("👕 Fashion");
-        addCategory("⚽ Sports");
-        addCategory("💼 Jobs");
-        addCategory("🛠 Services");
+        categoryContainer.getChildren().clear();
+
+        try {
+
+            for (Category category : CategoryData.getCategories()) {
+
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/view/home/components/category-item.fxml")
+                );
+
+                VBox item = loader.load();
+
+                CategoryItemController controller = loader.getController();
+
+                controller.setCategory(category);
+
+                categoryContainer.getChildren().add(item);
+
+            }
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
         loadSampleAdvertisements();
+
     }
 
     private void addCategory(String title){

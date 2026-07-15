@@ -38,7 +38,8 @@
 
     <Button text="Location"/>
 
-    <Button text="+ New Advertisement"/>
+    <Button text="+ New Advertisement"
+            onAction="#showCreateAdvertisement"/>
 
     <Button text="Profile"/>
 
