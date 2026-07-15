@@ -61,4 +61,22 @@ public class FloatingTextFieldController {
 
     }
 
+    public void setError(boolean error) {
+
+        if (error) {
+
+            textField.setStyle("""
+                -fx-border-color:#e53935;
+                -fx-border-width:2;
+                -fx-border-radius:8;
+                """);
+
+        } else {
+
+            textField.setStyle("");
+
+        }
+
+    }
+
 }

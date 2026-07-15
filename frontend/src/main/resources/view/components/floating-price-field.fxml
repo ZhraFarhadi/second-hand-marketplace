@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.secondhand.frontend.controller.components.FloatingPriceFieldController"
+           styleClass="floating-container">
+
+    <!-- فیلد قیمت -->
+    <HBox alignment="CENTER_RIGHT"
+          spacing="8">
+
+        <TextField fx:id="textField"
+                   HBox.hgrow="ALWAYS"
+                   styleClass="floating-text-field"/>
+
+        <Label text="تومان"
+               styleClass="currency-label"/>
+
+    </HBox>
+
+    <!-- Floating Label -->
+    <Label fx:id="floatingLabel"
+           mouseTransparent="true"
+           StackPane.alignment="TOP_RIGHT"
+           styleClass="floating-label"/>
+
+</StackPane>
