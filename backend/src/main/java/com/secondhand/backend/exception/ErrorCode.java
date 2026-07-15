@@ -142,6 +142,34 @@ public enum ErrorCode {
             "Category attribute not found."
     ),
 
+    CATEGORY_ALREADY_EXISTS(
+            HttpStatus.CONFLICT,
+            "Category already exists."
+    ),
+
+    CATEGORY_HAS_CHILDREN(
+            HttpStatus.BAD_REQUEST,
+            "Category cannot be deleted because it has child categories."
+    ),
+
+    CATEGORY_HAS_ADVERTISEMENTS(
+            HttpStatus.BAD_REQUEST,
+            "Category cannot be deleted because it is used by advertisements."
+    ),
+
+    INVALID_CATEGORY_HIERARCHY(
+            HttpStatus.BAD_REQUEST,
+            "Invalid category hierarchy."
+    ),
+
+    CATEGORY_NAME_ALREADY_EXISTS(
+            HttpStatus.CONFLICT,
+            "Category name already exists."
+    ),
+
+
+
+
     /*
      * ==========================
      * City

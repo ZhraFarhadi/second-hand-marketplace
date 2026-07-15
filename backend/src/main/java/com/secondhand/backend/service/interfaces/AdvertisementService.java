@@ -27,8 +27,4 @@ public interface AdvertisementService {
 
     Page<MyAdvertisementSummaryResponse> getMyAdvertisements(Pageable pageable);
 
-
-
-
-
 }

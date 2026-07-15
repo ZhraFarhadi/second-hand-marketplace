@@ -1,6 +1,7 @@
 package com.secondhand.backend.repository;
 
 import com.secondhand.backend.entity.Advertisement;
+import com.secondhand.backend.entity.Category;
 import com.secondhand.backend.entity.User;
 import com.secondhand.backend.enums.AdvertisementStatus;
 import org.springframework.data.domain.Page;
@@ -28,4 +29,8 @@ public interface AdvertisementRepository
 
     Optional<Advertisement>
     findByIdAndDeletedAtIsNull(Long id);
+
+    boolean existsByCategoryAndDeletedAtIsNull(Category category);
+
+
 }

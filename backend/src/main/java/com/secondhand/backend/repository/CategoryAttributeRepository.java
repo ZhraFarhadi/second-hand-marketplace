@@ -14,4 +14,9 @@ public interface CategoryAttributeRepository
 
     List<CategoryAttribute> findByCategoryOrderByIdAsc(Category category);
 
+    boolean existsByCategoryAndName(
+            Category category,
+            String name
+    );
+
 }

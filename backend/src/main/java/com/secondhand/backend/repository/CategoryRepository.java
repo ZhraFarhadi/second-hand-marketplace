@@ -2,6 +2,7 @@ package com.secondhand.backend.repository;
 
 import com.secondhand.backend.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,12 +11,23 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByName(String name);
+    Optional<Category> findByNameIgnoreCase(String name);
 
-    boolean existsByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 
-    List<Category> findAllByParentIsNull();
+    List<Category> findAllByOrderByNameAsc();
 
-    List<Category> findAllByParent(Category parent);
+    List<Category> findAllByParentIsNullOrderByNameAsc();
+
+    List<Category> findAllByParentOrderByNameAsc(Category parent);
+
+    boolean existsByParent(Category parent);
+
+    @Query("""
+       select distinct c.parent.id
+       from Category c
+       where c.parent is not null
+       """)
+    List<Long> findParentCategoryIds();
 
 }
