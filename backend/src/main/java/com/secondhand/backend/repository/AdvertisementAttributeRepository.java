@@ -19,3 +19,4 @@ public interface AdvertisementAttributeRepository
 
     boolean existsByCategoryAttribute(CategoryAttribute attribute);
 }
+

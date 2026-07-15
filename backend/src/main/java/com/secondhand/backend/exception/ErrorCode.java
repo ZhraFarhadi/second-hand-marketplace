@@ -167,6 +167,35 @@ public enum ErrorCode {
             "Category name already exists."
     ),
 
+    CATEGORY_ATTRIBUTE_ALREADY_EXISTS(
+            HttpStatus.CONFLICT,
+            "Category attribute already exists."
+    ),
+
+    CATEGORY_ATTRIBUTE_IN_USE(
+            HttpStatus.BAD_REQUEST,
+            "Category attribute is used by advertisements."
+    ),
+
+    INVALID_ATTRIBUTE_DATA_TYPE(
+            HttpStatus.BAD_REQUEST,
+            "Invalid attribute data type."
+    ),
+
+    CATEGORY_IS_NOT_LEAF(
+            HttpStatus.BAD_REQUEST,
+            "Attributes can only be added to leaf categories."
+    ),
+
+    CATEGORY_HAS_ATTRIBUTES(
+            HttpStatus.BAD_REQUEST,
+            "Category cannot have child categories because it already has attributes."
+    ),
+
+    INVALID_CATEGORY_ATTRIBUTE_NAME(
+            HttpStatus.BAD_REQUEST,
+            "Category attribute name is invalid."
+    ),
 
 
 

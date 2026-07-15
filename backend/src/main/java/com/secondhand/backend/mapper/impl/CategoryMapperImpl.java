@@ -2,15 +2,21 @@ package com.secondhand.backend.mapper.impl;
 
 import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.entity.Category;
-import com.secondhand.backend.entity.CategoryAttribute;
+import com.secondhand.backend.mapper.interfaces.CategoryAttributeMapper;
 import com.secondhand.backend.mapper.interfaces.CategoryMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CategoryMapperImpl implements CategoryMapper {
 
+    private final CategoryAttributeMapper categoryAttributeMapper;
+
     @Override
-    public CategorySummaryResponse toSummaryResponse(Category category) {
+    public CategorySummaryResponse toSummaryResponse(
+            Category category
+    ) {
 
         if (category == null) {
             return null;
@@ -20,6 +26,7 @@ public class CategoryMapperImpl implements CategoryMapper {
                 category.getId(),
                 category.getName()
         );
+
     }
 
     @Override
@@ -40,8 +47,8 @@ public class CategoryMapperImpl implements CategoryMapper {
                         : null,
                 hasChildren
         );
-    }
 
+    }
 
     @Override
     public CategoryDetailsResponse toDetailsResponse(
@@ -64,27 +71,8 @@ public class CategoryMapperImpl implements CategoryMapper {
                         .toList(),
                 category.getAttributes()
                         .stream()
-                        .map(this::toCategoryAttributeResponse)
+                        .map(categoryAttributeMapper::toResponse)
                         .toList()
-        );
-
-    }
-
-
-    @Override
-    public CategoryAttributeResponse toCategoryAttributeResponse(
-            CategoryAttribute attribute
-    ) {
-
-        if (attribute == null) {
-            return null;
-        }
-
-        return new CategoryAttributeResponse(
-                attribute.getId(),
-                attribute.getName(),
-                attribute.getDataType(),
-                attribute.isRequired()
         );
 
     }
@@ -106,7 +94,7 @@ public class CategoryMapperImpl implements CategoryMapper {
                         : null,
                 category.getAttributes()
                         .stream()
-                        .map(this::toCategoryAttributeResponse)
+                        .map(categoryAttributeMapper::toResponse)
                         .toList()
         );
 
@@ -127,4 +115,5 @@ public class CategoryMapperImpl implements CategoryMapper {
         );
 
     }
+
 }

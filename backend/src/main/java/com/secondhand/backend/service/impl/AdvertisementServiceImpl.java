@@ -355,7 +355,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
 
         List<CategoryAttribute> categoryAttributes =
-                categoryAttributeRepository.findByCategoryOrderByIdAsc(category);
+                categoryAttributeRepository.findByCategoryOrderByNameAsc(category);
 
         Map<Long, CategoryAttribute> categoryAttributeMap =
                 categoryAttributes.stream()

@@ -12,7 +12,7 @@ public interface CategoryMapper {
 
     CategoryWithAttributesResponse toCategoryWithAttributesResponse(Category category);
 
-    CategoryAttributeResponse toCategoryAttributeResponse(CategoryAttribute attribute);
+
 
     CategoryChildrenResponse toChildrenResponse(
             Category category,

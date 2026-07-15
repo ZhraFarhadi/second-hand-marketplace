@@ -11,6 +11,7 @@ import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
 import com.secondhand.backend.mapper.interfaces.CategoryMapper;
 import com.secondhand.backend.repository.AdvertisementRepository;
+import com.secondhand.backend.repository.CategoryAttributeRepository;
 import com.secondhand.backend.repository.CategoryRepository;
 import com.secondhand.backend.service.interfaces.CategoryService;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final AdvertisementRepository advertisementRepository;
+    private final CategoryAttributeRepository categoryAttributeRepository;
 
     private final CategoryMapper categoryMapper;
 
@@ -43,6 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category parent =
                 getParentCategoryOrNull(request.getParentId());
+
+        validateParentCanHaveChildren(parent);
 
         Category category =
                 buildCategory(
@@ -78,6 +82,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category parent =
                 getParentCategoryOrNull(request.getParentId());
+
+        validateParentCanHaveChildren(parent);
 
         validateHierarchy(
                 category,
@@ -415,6 +421,24 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         return builder.toString().trim();
+
+    }
+
+    private void validateParentCanHaveChildren(
+            Category parent
+    ) {
+
+        if (parent == null) {
+            return;
+        }
+
+        if (categoryAttributeRepository.existsByCategory(parent)) {
+
+            throw new BusinessException(
+                    ErrorCode.CATEGORY_HAS_ATTRIBUTES
+            );
+
+        }
 
     }
 
