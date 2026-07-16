@@ -42,8 +42,6 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                 cityMapper.toSummaryResponse(advertisement.getCity()),
                 advertisement.getImages()
                         .stream()
-                        .sorted(Comparator.comparing(
-                                AdvertisementImage::getDisplayOrder))
                         .map(this::mapImage)
                         .toList(),
                 advertisement.getAttributes()

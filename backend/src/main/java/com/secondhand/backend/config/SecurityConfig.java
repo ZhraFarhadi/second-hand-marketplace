@@ -74,6 +74,15 @@ public class SecurityConfig {
                         ).permitAll()
 
                         /*
+                         * Public Province APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/provinces/**"
+                        ).permitAll()
+
+                        /*
                          * Public City APIs
                          */
 
@@ -81,6 +90,7 @@ public class SecurityConfig {
                                 HttpMethod.GET,
                                 "/api/cities/**"
                         ).permitAll()
+
 
                         /*
                          * Admin APIs

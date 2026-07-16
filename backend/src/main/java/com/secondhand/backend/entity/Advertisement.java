@@ -46,6 +46,7 @@ public class Advertisement extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("displayOrder ASC")
     private List<AdvertisementImage> images = new ArrayList<>();
 
     @OneToMany(
@@ -53,6 +54,7 @@ public class Advertisement extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("categoryAttribute.name ASC")
     private List<AdvertisementAttribute> attributes = new ArrayList<>();
 
 

@@ -184,7 +184,7 @@ public enum ErrorCode {
 
     CATEGORY_IS_NOT_LEAF(
             HttpStatus.BAD_REQUEST,
-            "Attributes can only be added to leaf categories."
+            "Operation is only allowed on leaf categories."
     ),
 
     CATEGORY_HAS_ATTRIBUTES(
@@ -208,6 +208,11 @@ public enum ErrorCode {
     CITY_NOT_FOUND(
             HttpStatus.NOT_FOUND,
             "City not found."
+    ),
+
+    PROVINCE_NOT_FOUND(
+            HttpStatus.NOT_FOUND,
+            "Province not found."
     ),
 
     /*

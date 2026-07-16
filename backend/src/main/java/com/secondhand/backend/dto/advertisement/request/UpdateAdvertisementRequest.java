@@ -39,6 +39,7 @@ public class UpdateAdvertisementRequest {
     private Long cityId;
 
     @NotEmpty(message = "At least one image is required.")
+    @Size(max = 10)
     @Valid
     private List<AdvertisementImageRequest> images;
 

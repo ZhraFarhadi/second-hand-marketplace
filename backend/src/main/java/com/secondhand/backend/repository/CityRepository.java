@@ -13,9 +13,16 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findByNameAndProvince(String name,
                                          Province province);
+    List<City> findAllByProvinceOrderByNameAsc(
+            Province province
+    );
 
-    boolean existsByNameAndProvince(String name,
-                                    Province province);
+    boolean existsByNameAndProvinceIgnoreCase(
+            String name,
+            Province province
+    );
 
-    List<City> findAllByProvince(Province province);
+    List<City> findAllByOrderByNameAsc();
+
+
 }

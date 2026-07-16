@@ -267,11 +267,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private Category getCategory(Long categoryId) {
 
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(() ->
-                            new BusinessException(
-                                    ErrorCode.CATEGORY_NOT_FOUND
-                            ));
+        Category category =
+                categoryRepository.findById(categoryId)
+                        .orElseThrow(() ->
+                                new BusinessException(
+                                        ErrorCode.CATEGORY_NOT_FOUND
+                                ));
+
+        validateCategoryIsLeaf(category);
+
+        return category;
     }
 
     private City getCity(Long cityId) {
@@ -385,7 +390,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
             validateAttributeValue(
                     categoryAttribute,
-                    request.getValue()
+                    request.getValue().trim()
             );
         }
 
@@ -733,6 +738,20 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
             throw new BusinessException(
                     ErrorCode.ADVERTISEMENT_CANNOT_BE_DELETED
+            );
+
+        }
+
+    }
+
+    private void validateCategoryIsLeaf(
+            Category category
+    ) {
+
+        if (categoryRepository.existsByParent(category)) {
+
+            throw new BusinessException(
+                    ErrorCode.CATEGORY_IS_NOT_LEAF
             );
 
         }

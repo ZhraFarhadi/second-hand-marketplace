@@ -11,7 +11,7 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 
     Optional<Province> findByName(String name);
 
-    boolean existsByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 
     List<Province> findAllByOrderByNameAsc();
 
