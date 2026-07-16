@@ -40,6 +40,7 @@ public class Conversation extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("createdAt ASC")
     private List<Message> messages = new ArrayList<>();
 
     @Column(name = "last_message_at")

@@ -1,6 +1,7 @@
 
 package com.secondhand.backend.dto.conversation.response;
 
+import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
 import com.secondhand.backend.dto.message.response.MessageResponse;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,7 @@ public class ConversationDetailsResponse {
 
     private UserSummaryResponse seller;
 
-    private Long advertisementId;
-
-    private String advertisementTitle;
+    private AdvertisementSummaryResponse advertisement;
 
     private Page<MessageResponse> messages;
 

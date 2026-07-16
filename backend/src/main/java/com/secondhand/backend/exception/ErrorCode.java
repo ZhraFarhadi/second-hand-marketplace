@@ -231,6 +231,31 @@ public enum ErrorCode {
             "Message not found."
     ),
 
+    CANNOT_MESSAGE_YOURSELF(
+            HttpStatus.BAD_REQUEST,
+            "You cannot start a conversation with yourself."
+    ),
+
+    ADVERTISEMENT_NOT_AVAILABLE_FOR_CONVERSATION(
+            HttpStatus.BAD_REQUEST,
+            "Conversation can only be started for active advertisements."
+    ),
+
+    CONVERSATION_ACCESS_DENIED(
+            HttpStatus.FORBIDDEN,
+            "You do not have access to this conversation."
+    ),
+
+    CANNOT_START_CONVERSATION_WITH_SELF(
+            HttpStatus.BAD_REQUEST,
+            "You cannot start a conversation with yourself."
+    ),
+
+    INVALID_MESSAGE_CONTENT(
+            HttpStatus.BAD_REQUEST,
+            "Message content cannot be empty."
+    ),
+
     /*
      * ==========================
      * Favorite

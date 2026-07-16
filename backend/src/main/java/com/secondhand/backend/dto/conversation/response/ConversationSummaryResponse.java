@@ -22,7 +22,9 @@ public class ConversationSummaryResponse {
 
     private String lastMessage;
 
-    private boolean unread;
+    private boolean hasUnreadMessages;
+
+//    private long unreadCount;
 
     private LocalDateTime lastMessageTime;
 

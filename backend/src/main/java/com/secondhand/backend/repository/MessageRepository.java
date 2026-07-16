@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long> {
+public interface MessageRepository
+        extends JpaRepository<Message, Long> {
 
-    Page<Message> findByConversationOrderByCreatedAtDesc(
+    Page<Message> findByConversationOrderByCreatedAtAsc(
             Conversation conversation,
             Pageable pageable
     );
@@ -21,9 +22,17 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
             Conversation conversation
     );
 
-    long countByConversation(Conversation conversation);
+    boolean existsByConversationAndReceiverAndReadFalse(
+            Conversation conversation,
+            User receiver
+    );
 
-    long countByConversationAndReceiverAndIsReadFalse(
+    long countByConversationAndReceiverAndReadFalse(
+            Conversation conversation,
+            User receiver
+    );
+
+    List<Message> findByConversationAndReceiverAndReadFalse(
             Conversation conversation,
             User receiver
     );
