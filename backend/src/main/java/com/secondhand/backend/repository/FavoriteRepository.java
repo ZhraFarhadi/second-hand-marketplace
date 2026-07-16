@@ -23,11 +23,12 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
             Advertisement advertisement
     );
 
-    Page<Favorite> findByUserOrderByCreatedAtDesc(
+    Page<Favorite> findByUserAndAdvertisementDeletedAtIsNullOrderByCreatedAtDesc(
             User user,
             Pageable pageable
     );
 
     long countByUser(User user);
+
 
 }

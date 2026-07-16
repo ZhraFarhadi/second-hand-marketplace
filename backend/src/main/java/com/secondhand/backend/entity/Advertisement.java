@@ -94,4 +94,14 @@ public class Advertisement extends BaseEntity {
         attribute.setAdvertisement(null);
     }
 
+    public void addFavorite(Favorite favorite) {
+        favorites.add(favorite);
+        favorite.setAdvertisement(this);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
+        favorite.setAdvertisement(null);
+    }
+
 }

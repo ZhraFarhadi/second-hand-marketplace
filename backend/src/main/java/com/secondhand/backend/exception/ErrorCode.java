@@ -237,10 +237,7 @@ public enum ErrorCode {
      * ==========================
      */
 
-    FAVORITE_NOT_FOUND(
-            HttpStatus.NOT_FOUND,
-            "Favorite not found."
-    ),
+
 
     /*
      * ==========================

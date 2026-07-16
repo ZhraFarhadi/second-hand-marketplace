@@ -67,5 +67,15 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "reviewer")
     private List<SellerRating> givenRatings = new ArrayList<>();
 
+    public void addFavorite(Favorite favorite) {
+        favorites.add(favorite);
+        favorite.setUser(this);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
+        favorite.setUser(null);
+    }
+
 
 }
