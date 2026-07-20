@@ -3,6 +3,7 @@ package com.secondhand.frontend.navigation;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.secondhand.frontend.controller.advertisement.AdvertisementDetailsController;
 
 import java.io.IOException;
 
@@ -80,6 +81,73 @@ public class NavigationManager {
 
     }
 
+
+    private static void loadSceneWithController(
+            String fxmlPath,
+            Long advertisementId,
+            String... cssPaths
+    ) {
+
+        try {
+
+            FXMLLoader loader = new FXMLLoader(
+                    NavigationManager.class.getResource(fxmlPath)
+            );
+
+            boolean maximized = primaryStage.isMaximized();
+
+            double width = primaryStage.getWidth();
+            double height = primaryStage.getHeight();
+
+            Scene scene = new Scene(loader.load(), 900, 650);
+
+            AdvertisementDetailsController controller =
+                    loader.getController();
+
+            controller.loadAdvertisement(advertisementId);
+
+            for (String cssPath : cssPaths) {
+
+                if (cssPath != null && !cssPath.isBlank()) {
+
+                    var url = NavigationManager.class.getResource(cssPath);
+
+                    if (url != null) {
+
+                        scene.getStylesheets().add(
+                                url.toExternalForm()
+                        );
+
+                    }
+
+                }
+
+            }
+
+            primaryStage.setScene(scene);
+
+            if (maximized) {
+
+                primaryStage.setMaximized(true);
+
+            }
+            else {
+
+                primaryStage.setWidth(width);
+                primaryStage.setHeight(height);
+
+            }
+
+        }
+
+        catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
     public static void showLogin() {
 
         loadScene(
@@ -109,14 +177,18 @@ public class NavigationManager {
 
     }
 
-    public static void showAdvertisementDetails() {
+    public static void showAdvertisementDetails(Long advertisementId) {
 
-        loadScene(
+        loadSceneWithController(
+
                 "/view/advertisement/advertisement-details.fxml",
+
+                advertisementId,
+
                 "/css/header.css",
                 "/css/advertisementdetail.css"
-        );
 
+        );
 
     }
 
