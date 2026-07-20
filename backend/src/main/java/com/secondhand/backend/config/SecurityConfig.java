@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
@@ -42,15 +43,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         /*
-                         * Public Endpoints
+                         * Public Authentication APIs
                          */
 
-                        .requestMatchers(HttpMethod.POST,
+                        .requestMatchers(
+                                HttpMethod.POST,
                                 "/api/auth/login",
                                 "/api/auth/register"
                         ).permitAll()
 
-                        .requestMatchers(HttpMethod.GET,
+                        .requestMatchers(
+                                HttpMethod.GET,
                                 "/ping"
                         ).permitAll()
 
@@ -91,6 +94,23 @@ public class SecurityConfig {
                                 "/api/cities/**"
                         ).permitAll()
 
+                        /*
+                         * Public User APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/users/sellers/**"
+                        ).permitAll()
+
+                        /*
+                         * Public Rating APIs
+                         */
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/ratings/seller/**"
+                        ).permitAll()
 
                         /*
                          * Admin APIs

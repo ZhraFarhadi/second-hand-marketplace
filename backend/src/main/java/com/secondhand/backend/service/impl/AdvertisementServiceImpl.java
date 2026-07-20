@@ -1,4 +1,5 @@
 package com.secondhand.backend.service.impl;
+import com.secondhand.backend.enums.AccountStatus;
 import com.secondhand.backend.service.interfaces.CurrentUserService;
 import com.secondhand.backend.dto.advertisement.request.*;
 
@@ -38,6 +39,8 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementMapper advertisementMapper;
     private final CurrentUserService currentUserService;
+    private final UserRepository userRepository;
+    private final ConversationRepository conversationRepository;
 
     /**
      * create()
@@ -182,9 +185,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public AdvertisementDetailsResponse markAsSold(Long advertisementId) {
+    public AdvertisementDetailsResponse markAsSold(
+            Long advertisementId,
+            MarkAsSoldRequest request
+    ) {
 
-        User currentUser =currentUserService.getCurrentUser();
+        User currentUser = currentUserService.getCurrentUser();
 
         Advertisement advertisement =
                 getExistingAdvertisement(advertisementId);
@@ -195,6 +201,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         );
 
         validateAdvertisementActive(advertisement);
+
+        User buyer = getBuyer(request.getBuyerId());
+
+        validateBuyerForSoldAdvertisement(advertisement, buyer);
+
+        advertisement.setBuyer(buyer);
 
         advertisement.setStatus(AdvertisementStatus.SOLD);
 
@@ -286,6 +298,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                              new BusinessException(
                                     ErrorCode.CITY_NOT_FOUND
                             ));
+    }
+
+    private User getBuyer(Long buyerId) {
+
+        return userRepository.findById(buyerId)
+                .orElseThrow(() ->
+                        new BusinessException(
+                                ErrorCode.USER_NOT_FOUND
+                        )
+                );
+
     }
 
     private Advertisement buildAdvertisement(
@@ -752,6 +775,52 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
             throw new BusinessException(
                     ErrorCode.CATEGORY_IS_NOT_LEAF
+            );
+
+        }
+
+    }
+
+    private void validateBuyerForSoldAdvertisement(
+            Advertisement advertisement,
+            User buyer
+    ) {
+
+        if (advertisement.getBuyer() != null) {
+
+            throw new BusinessException(
+                    ErrorCode.ADVERTISEMENT_ALREADY_SOLD
+            );
+
+        }
+
+        if (advertisement.getSeller().getId().equals(buyer.getId())) {
+
+            throw new BusinessException(
+                    ErrorCode.BUYER_CANNOT_BE_SELLER
+            );
+
+        }
+
+        if (buyer.getAccountStatus() != AccountStatus.ACTIVE) {
+
+            throw new BusinessException(
+                    ErrorCode.BUYER_ACCOUNT_NOT_ACTIVE
+            );
+
+        }
+
+        boolean hasConversation =
+                conversationRepository.existsByBuyerAndSellerAndAdvertisement(
+                        buyer,
+                        advertisement.getSeller(),
+                        advertisement
+                );
+
+        if (!hasConversation) {
+
+            throw new BusinessException(
+                    ErrorCode.INVALID_BUYER
             );
 
         }

@@ -24,4 +24,6 @@ public class UserProfileResponse {
 
     private AccountStatus accountStatus;
 
+
+
 }

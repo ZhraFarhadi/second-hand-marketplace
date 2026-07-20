@@ -275,6 +275,43 @@ public enum ErrorCode {
             "Rating not found."
     ),
 
+    BUYER_CANNOT_BE_SELLER(
+            HttpStatus.BAD_REQUEST,
+            "Buyer cannot be the seller of the advertisement."
+    ),
+
+    BUYER_ACCOUNT_NOT_ACTIVE(
+            HttpStatus.BAD_REQUEST,
+            "Buyer account is not active."
+    ),
+
+    INVALID_BUYER(
+            HttpStatus.BAD_REQUEST,
+            "Buyer must have a conversation for this advertisement."
+    ),
+
+    SELLER_ACCOUNT_NOT_ACTIVE(
+            HttpStatus.BAD_REQUEST,
+            "Seller is not active."
+    ),
+
+    RATING_ALREADY_EXISTS(
+            HttpStatus.CONFLICT,
+            "You have already rated this seller for this advertisement."
+    ),
+
+    CANNOT_RATE_YOURSELF(
+            HttpStatus.BAD_REQUEST,
+            "You cannot rate yourself."
+    ),
+
+    ADVERTISEMENT_NOT_PURCHASED(
+            HttpStatus.BAD_REQUEST,
+            "Only the buyer of this advertisement can rate the seller."
+    ),
+
+
+
     /*
      * ==========================
      * Admin

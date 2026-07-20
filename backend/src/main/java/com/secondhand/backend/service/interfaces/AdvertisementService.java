@@ -1,6 +1,7 @@
 package com.secondhand.backend.service.interfaces;
 
 import com.secondhand.backend.dto.advertisement.request.CreateAdvertisementRequest;
+import com.secondhand.backend.dto.advertisement.request.MarkAsSoldRequest;
 import com.secondhand.backend.dto.advertisement.request.UpdateAdvertisementRequest;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementDetailsResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
@@ -19,7 +20,10 @@ public interface AdvertisementService {
 
     void delete(Long advertisementId);
 
-    AdvertisementDetailsResponse markAsSold(Long advertisementId);
+    AdvertisementDetailsResponse markAsSold(
+            Long advertisementId,
+            MarkAsSoldRequest request
+    );
 
     AdvertisementDetailsResponse getAdvertisementDetails(Long advertisementId);
 

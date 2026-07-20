@@ -5,6 +5,7 @@ package com.secondhand.backend.controller;
 import com.secondhand.backend.dto.auth.request.ChangePasswordRequest;
 import com.secondhand.backend.dto.auth.request.UpdateProfileRequest;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
+import com.secondhand.backend.dto.rating.response.SellerProfileResponse;
 import com.secondhand.backend.service.interfaces.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class UserController {
     @GetMapping("/me")
     public UserProfileResponse getProfile() {
 
-        return userService.getProfile();
+        return userService.getMyProfile();
     }
 
     @PutMapping("/me")
@@ -43,6 +44,17 @@ public class UserController {
     ) {
 
         userService.changePassword(request);
+    }
+
+    @GetMapping("/{sellerId}")
+    public SellerProfileResponse getSellerProfile(
+            @PathVariable Long sellerId
+    ) {
+
+        return userService.getSellerProfile(
+                sellerId
+        );
+
     }
 
 }

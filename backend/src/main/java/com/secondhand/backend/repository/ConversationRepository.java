@@ -47,4 +47,10 @@ public interface ConversationRepository
 
     );
 
+    boolean existsByBuyerAndSellerAndAdvertisement(
+            User buyer,
+            User seller,
+            Advertisement advertisement
+    );
+
 }

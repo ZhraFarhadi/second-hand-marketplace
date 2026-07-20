@@ -5,6 +5,7 @@ import com.secondhand.backend.dto.auth.request.RegisterRequest;
 import com.secondhand.backend.dto.auth.response.LoginResponse;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
 import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
+import com.secondhand.backend.dto.rating.response.SellerProfileResponse;
 import com.secondhand.backend.entity.User;
 
 public interface UserMapper {
@@ -26,4 +27,7 @@ public interface UserMapper {
             User user
     );
 
+    SellerProfileResponse toSellerProfileResponse(
+            User user
+    );
 }

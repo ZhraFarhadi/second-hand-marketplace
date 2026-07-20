@@ -3,7 +3,9 @@ package com.secondhand.backend.service.impl;
 import com.secondhand.backend.dto.auth.request.ChangePasswordRequest;
 import com.secondhand.backend.dto.auth.request.UpdateProfileRequest;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
+import com.secondhand.backend.dto.rating.response.SellerProfileResponse;
 import com.secondhand.backend.entity.User;
+import com.secondhand.backend.enums.AccountStatus;
 import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
 import com.secondhand.backend.mapper.interfaces.UserMapper;
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserProfileResponse getProfile() {
+    public UserProfileResponse getMyProfile() {
 
         User user = currentUserService.getCurrentUser();
 
@@ -78,6 +80,27 @@ public class UserServiceImpl implements UserService {
         );
 
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SellerProfileResponse getSellerProfile(
+            Long sellerId
+    ) {
+
+        User seller = userRepository.findById(sellerId)
+                .orElseThrow(() ->
+                        new BusinessException(
+                                ErrorCode.USER_NOT_FOUND
+                        )
+                );
+
+        validateSellerIsActive(seller);
+
+        return userMapper.toSellerProfileResponse(
+                seller
+        );
+
     }
 
     private void validateProfileChanges(
@@ -138,5 +161,21 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+
+    private void validateSellerIsActive(
+            User seller
+    ) {
+
+        if (seller.getAccountStatus() != AccountStatus.ACTIVE) {
+
+            throw new BusinessException(
+                    ErrorCode.SELLER_ACCOUNT_NOT_ACTIVE
+            );
+
+        }
+
+    }
+
+
 
 }

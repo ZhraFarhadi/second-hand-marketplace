@@ -3,6 +3,7 @@ import com.secondhand.backend.dto.auth.request.RegisterRequest;
 import com.secondhand.backend.dto.auth.response.LoginResponse;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
 import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
+import com.secondhand.backend.dto.rating.response.SellerProfileResponse;
 import com.secondhand.backend.entity.User;
 import com.secondhand.backend.mapper.interfaces.UserMapper;
 import org.springframework.stereotype.Component;
@@ -90,6 +91,26 @@ public class UserMapperImpl
                 user.getPhoneNumber(),
                 user.getRole(),
                 user.getAccountStatus()
+
+        );
+
+    }
+
+    @Override
+    public SellerProfileResponse toSellerProfileResponse(
+            User user
+    ) {
+
+        if (user == null) {
+            return null;
+        }
+
+        return new SellerProfileResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getUsername(),
+                user.getAverageRating(),
+                user.getRatingCount()
         );
 
     }

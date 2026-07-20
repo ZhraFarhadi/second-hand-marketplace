@@ -59,12 +59,13 @@ public class AdvertisementController {
 
     @PatchMapping("/{advertisementId}/sold")
     public AdvertisementDetailsResponse markAsSold(
-            @PathVariable("advertisementId")
-            Long advertisementId
+            @PathVariable Long advertisementId,
+            @Valid @RequestBody MarkAsSoldRequest request
     ) {
-
-        return advertisementService.markAsSold(advertisementId);
-
+        return advertisementService.markAsSold(
+                advertisementId,
+                request
+        );
     }
 
     @GetMapping("/{advertisementId}")

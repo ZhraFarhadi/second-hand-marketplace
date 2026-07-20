@@ -34,6 +34,10 @@ public class Advertisement extends BaseEntity {
     private User seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -103,5 +107,7 @@ public class Advertisement extends BaseEntity {
         favorites.remove(favorite);
         favorite.setAdvertisement(null);
     }
+
+
 
 }
