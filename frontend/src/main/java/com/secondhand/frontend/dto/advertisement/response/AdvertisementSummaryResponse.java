@@ -5,6 +5,7 @@ import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class AdvertisementSummaryResponse {
 
@@ -21,6 +22,8 @@ public class AdvertisementSummaryResponse {
     private UserSummaryResponse seller;
 
     private CitySummaryResponse city;
+
+    private LocalDateTime createdAt;
 
     public AdvertisementSummaryResponse() {
     }
@@ -100,5 +103,7 @@ public class AdvertisementSummaryResponse {
     public void setCity(CitySummaryResponse city) {
         this.city = city;
     }
+
+    public LocalDateTime getCreatedAt(){return createdAt;}
 
 }

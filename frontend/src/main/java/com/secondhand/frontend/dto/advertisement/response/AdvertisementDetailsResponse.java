@@ -5,6 +5,7 @@ import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class AdvertisementDetailsResponse {
@@ -29,9 +30,9 @@ public class AdvertisementDetailsResponse {
 
     private List<AdvertisementAttributeResponse> attributes;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public AdvertisementDetailsResponse() {
     }
@@ -116,19 +117,19 @@ public class AdvertisementDetailsResponse {
         this.attributes = attributes;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
