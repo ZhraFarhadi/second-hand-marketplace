@@ -1,5 +1,7 @@
 package com.secondhand.frontend.controller.auth;
 
+import com.secondhand.frontend.exception.ApiException;
+import com.secondhand.frontend.model.Role;
 import com.secondhand.frontend.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,6 +13,9 @@ import com.secondhand.frontend.navigation.NavigationManager;
 import javafx.scene.control.Hyperlink;
 import com.secondhand.frontend.controller.components.FloatingTextFieldController;
 import com.secondhand.frontend.controller.components.FloatingPasswordFieldController;
+import com.secondhand.frontend.dto.auth.request.LoginRequest;
+import com.secondhand.frontend.dto.auth.response.LoginResponse;
+import com.secondhand.frontend.service.AuthenticationService;
 
 public class LoginController {
 
@@ -31,6 +36,9 @@ public class LoginController {
 
     @FXML
     private Hyperlink registerLink;
+
+    private final AuthenticationService authenticationService =
+            AuthenticationService.getInstance();
 
     @FXML
     public void initialize() {
@@ -55,7 +63,6 @@ public class LoginController {
         if (username.isEmpty()) {
 
             showUsernameError("Username is required.");
-
             hasError = true;
 
         }
@@ -63,24 +70,51 @@ public class LoginController {
         if (password.isEmpty()) {
 
             showPasswordError("Password is required.");
-
             hasError = true;
 
         }
 
         if (hasError) {
-
             return;
+        }
+
+        try {
+
+            LoginRequest request = new LoginRequest();
+
+            request.setUsername(username);
+            request.setPassword(password);
+
+            LoginResponse response =
+                    authenticationService.login(request);
+
+            Role role = Role.valueOf(response.getRole());
+
+            SessionManager.login(
+                    response.getUserId(),
+                    response.getUsername(),
+                    role,
+                    response.getToken()
+            );
+
+            NavigationManager.showHome();
 
         }
 
-        System.out.println("Username: " + username);
+        catch (ApiException ex) {
 
-        System.out.println("Password: " + password);
+            handleLoginError(ex);
 
-        SessionManager.login();
+        }
 
-        NavigationManager.showHome();
+        catch (Exception ex) {
+
+            showGeneralError(
+                    "Unable to connect to server."
+            );
+
+        }
+
     }
 
 
@@ -119,6 +153,50 @@ public class LoginController {
     private void onRegisterClicked() {
 
         NavigationManager.showRegister();
+
+    }
+
+
+    private void handleLoginError(ApiException ex) {
+
+        switch (ex.getErrorCode()) {
+
+            case "INVALID_CREDENTIALS" ->
+
+                    showPasswordError(
+                            "Username or password is incorrect."
+                    );
+
+            case "USER_BLOCKED" ->
+
+                    showGeneralError(
+                            "Your account has been blocked."
+                    );
+
+            default ->
+
+                    showGeneralError(
+                            ex.getMessage()
+                    );
+
+        }
+
+
+
+
+    }
+
+    private void showGeneralError(String message) {
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+
+        alert.setTitle("Login");
+
+        alert.setHeaderText(null);
+
+        alert.setContentText(message);
+
+        alert.showAndWait();
 
     }
 

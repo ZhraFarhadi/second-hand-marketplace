@@ -1,7 +1,8 @@
 package com.secondhand.frontend.controller.home;
 
-import com.secondhand.frontend.mock.CategoryData;
+
 import com.secondhand.frontend.navigation.NavigationManager;
+import com.secondhand.frontend.repository.AdvertisementRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -10,6 +11,11 @@ import javafx.fxml.FXMLLoader;
 import java.io.IOException;
 import javafx.scene.Parent;
 import com.secondhand.frontend.model.Category;
+import com.secondhand.frontend.controller.advertisement.AdvertisementCardController;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryResponse;
+import com.secondhand.frontend.repository.CategoryRepository;
+import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
+
 
 public class HomeController {
 
@@ -26,6 +32,12 @@ public class HomeController {
     @FXML
     private Button chatButton;
 
+    private final AdvertisementRepository advertisementRepository =
+            AdvertisementRepository.getInstance();
+
+
+    private final CategoryRepository categoryRepository =
+            CategoryRepository.getInstance();
 
 
     @FXML
@@ -35,15 +47,22 @@ public class HomeController {
 
         try {
 
-            for (Category category : CategoryData.getCategories()) {
+            var categories =
+                    categoryRepository.getCategories();
 
-                FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/view/home/components/category-item.fxml")
-                );
+            for (CategoryDetailsResponse category : categories) {
+
+                FXMLLoader loader =
+                        new FXMLLoader(
+                                getClass().getResource(
+                                        "/view/home/components/category-item.fxml"
+                                )
+                        );
 
                 VBox item = loader.load();
 
-                CategoryItemController controller = loader.getController();
+                CategoryItemController controller =
+                        loader.getController();
 
                 controller.setCategory(category);
 
@@ -59,30 +78,22 @@ public class HomeController {
 
         }
 
-        loadSampleAdvertisements();
+
+
+        loadAdvertisements();
 
     }
 
-    private void addCategory(String title){
+    private void loadAdvertisements() {
 
-        Button button = new Button(title);
-
-        button.setMaxWidth(Double.MAX_VALUE);
-
-        button.getStyleClass().add("category-button");
-
-        categoryContainer.getChildren().add(button);
-
-    }
-
-
-
-
-    private void loadSampleAdvertisements() {
+        advertisementContainer.getChildren().clear();
 
         try {
 
-            for(int i = 0 ; i < 8 ; i++){
+            var advertisements =
+                    advertisementRepository.getAdvertisements(0,20);
+
+            for (AdvertisementSummaryResponse advertisement : advertisements) {
 
                 FXMLLoader loader =
                         new FXMLLoader(
@@ -93,13 +104,18 @@ public class HomeController {
 
                 Parent card = loader.load();
 
+                AdvertisementCardController controller =
+                        loader.getController();
+
+                controller.setAdvertisement(advertisement);
+
                 advertisementContainer.getChildren().add(card);
 
             }
 
         }
 
-        catch(IOException e){
+        catch (Exception e) {
 
             e.printStackTrace();
 

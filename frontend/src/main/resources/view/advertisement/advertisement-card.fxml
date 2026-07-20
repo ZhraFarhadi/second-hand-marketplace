@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 
+<?import javafx.scene.image.ImageView?>
 <VBox
         fx:id="root"
         xmlns="http://javafx.com/javafx/21"
@@ -31,19 +32,12 @@
                    height="220"
                    arcWidth="18"
                    arcHeight="18"
-                   fill="#efefef"
-                   styleClass="image-placeholder"/>
+                   fill="#efefef"/>
 
-        <VBox alignment="CENTER"
-              spacing="8">
-
-            <Label text="🖼"
-                   styleClass="image-icon"/>
-
-            <Label text="No Image"
-                   styleClass="image-text"/>
-
-        </VBox>
+        <ImageView fx:id="advertisementImageView"
+                   fitWidth="260"
+                   fitHeight="220"
+                   preserveRatio="false"/>
 
     </StackPane>
 
@@ -78,6 +72,7 @@
                    styleClass="ad-info"/>
 
         </HBox>
+
 
     </VBox>
 

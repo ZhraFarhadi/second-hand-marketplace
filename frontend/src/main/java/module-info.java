@@ -4,6 +4,7 @@ module com.secondhand.frontend {
     requires javafx.fxml;
     requires java.net.http;
     requires java.desktop;
+    requires com.google.gson;
 
     opens com.secondhand.frontend to javafx.fxml;
     opens com.secondhand.frontend.controller.auth to javafx.fxml;
@@ -11,7 +12,8 @@ module com.secondhand.frontend {
     opens com.secondhand.frontend.controller.advertisement to javafx.fxml;
     opens com.secondhand.frontend.controller.components to javafx.fxml;
     opens com.secondhand.frontend.controller.advertisement.components to javafx.fxml;
-
+    opens com.secondhand.frontend.dto.auth.request to com.google.gson;
+    opens com.secondhand.frontend.dto.auth.response to com.google.gson;
 
 
 

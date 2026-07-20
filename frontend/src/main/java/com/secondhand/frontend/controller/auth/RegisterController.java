@@ -3,19 +3,16 @@ package com.secondhand.frontend.controller.auth;
 import com.secondhand.frontend.controller.components.FloatingPasswordFieldController;
 import com.secondhand.frontend.controller.components.FloatingTextFieldController;
 import com.secondhand.frontend.navigation.NavigationManager;
+import com.secondhand.frontend.util.ValidationUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import com.secondhand.frontend.dto.auth.request.RegisterRequest;
+import com.secondhand.frontend.exception.ApiException;
+import com.secondhand.frontend.service.AuthenticationService;
 
-import java.util.regex.Pattern;
 
 public class RegisterController {
-
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-
-    private static final Pattern PHONE_PATTERN =
-            Pattern.compile("^09\\d{9}$");
 
     @FXML
     private FloatingTextFieldController fullNameComponentController;
@@ -53,6 +50,9 @@ public class RegisterController {
     @FXML
     private Label confirmPasswordErrorLabel;
 
+    private final AuthenticationService authenticationService =
+            AuthenticationService.getInstance();
+
     @FXML
     public void initialize() {
 
@@ -63,27 +63,33 @@ public class RegisterController {
         passwordComponentController.setLabel("Password");
         confirmPasswordComponentController.setLabel("Confirm Password");
 
+        clearErrors();
+
+    }
+
+    private void showError(Label label, String message) {
+
+        label.setText(message);
+        label.setVisible(true);
+        label.setManaged(true);
+
+    }
+
+    private void hideError(Label label) {
+
+        label.setVisible(false);
+        label.setManaged(false);
+
     }
 
     private void clearErrors() {
 
-        fullNameErrorLabel.setVisible(false);
-        fullNameErrorLabel.setManaged(false);
-
-        usernameErrorLabel.setVisible(false);
-        usernameErrorLabel.setManaged(false);
-
-        emailErrorLabel.setVisible(false);
-        emailErrorLabel.setManaged(false);
-
-        phoneErrorLabel.setVisible(false);
-        phoneErrorLabel.setManaged(false);
-
-        passwordErrorLabel.setVisible(false);
-        passwordErrorLabel.setManaged(false);
-
-        confirmPasswordErrorLabel.setVisible(false);
-        confirmPasswordErrorLabel.setManaged(false);
+        hideError(fullNameErrorLabel);
+        hideError(usernameErrorLabel);
+        hideError(emailErrorLabel);
+        hideError(phoneErrorLabel);
+        hideError(passwordErrorLabel);
+        hideError(confirmPasswordErrorLabel);
 
     }
 
@@ -100,85 +106,147 @@ public class RegisterController {
         String password = passwordComponentController.getText();
         String confirmPassword = confirmPasswordComponentController.getText();
 
+        // ---------- Full Name ----------
+
         if (fullName.isBlank()) {
 
-            fullNameErrorLabel.setText("Full name is required.");
-            fullNameErrorLabel.setVisible(true);
-            fullNameErrorLabel.setManaged(true);
+            showError(fullNameErrorLabel,
+                    "Full name is required.");
 
             valid = false;
 
         }
+
+        // ---------- Username ----------
 
         if (username.isBlank()) {
 
-            usernameErrorLabel.setText("Username is required.");
-            usernameErrorLabel.setVisible(true);
-            usernameErrorLabel.setManaged(true);
+            showError(usernameErrorLabel,
+                    "Username is required.");
 
             valid = false;
 
         }
+        else if (username.length() < 3 || username.length() > 30) {
+
+            showError(usernameErrorLabel,
+                    "Username must be between 3 and 30 characters.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.isValidUsername(username)) {
+
+            showError(usernameErrorLabel,
+                    "Username can only contain letters, numbers, dots and underscores.");
+
+            valid = false;
+
+        }
+
+        // ---------- Email ----------
 
         if (email.isBlank()) {
 
-            emailErrorLabel.setText("Email is required.");
-            emailErrorLabel.setVisible(true);
-            emailErrorLabel.setManaged(true);
-
-            valid = false;
-
-        } else if (!EMAIL_PATTERN.matcher(email).matches()) {
-
-            emailErrorLabel.setText("Invalid email.");
-            emailErrorLabel.setVisible(true);
-            emailErrorLabel.setManaged(true);
+            showError(emailErrorLabel,
+                    "Email is required.");
 
             valid = false;
 
         }
+        else if (!ValidationUtil.isValidEmail(email)) {
+
+            showError(emailErrorLabel,
+                    "Please enter a valid email address.");
+
+            valid = false;
+
+        }
+
+        // ---------- Phone ----------
 
         if (phone.isBlank()) {
 
-            phoneErrorLabel.setText("Phone number is required.");
-            phoneErrorLabel.setVisible(true);
-            phoneErrorLabel.setManaged(true);
-
-            valid = false;
-
-        } else if (!PHONE_PATTERN.matcher(phone).matches()) {
-
-            phoneErrorLabel.setText("Invalid phone number.");
-            phoneErrorLabel.setVisible(true);
-            phoneErrorLabel.setManaged(true);
+            showError(phoneErrorLabel,
+                    "Phone number is required.");
 
             valid = false;
 
         }
+        else if (!ValidationUtil.isValidPhone(phone)) {
+
+            showError(phoneErrorLabel,
+                    "Phone number must start with 09 and contain 11 digits.");
+
+            valid = false;
+
+        }
+
+        // ---------- Password ----------
 
         if (password.isBlank()) {
 
-            passwordErrorLabel.setText("Password is required.");
-            passwordErrorLabel.setVisible(true);
-            passwordErrorLabel.setManaged(true);
+            showError(passwordErrorLabel,
+                    "Password is required.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.hasValidPasswordLength(password)) {
+
+            showError(passwordErrorLabel,
+                    "Password must be between 8 and 64 characters.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.hasUppercase(password)) {
+
+            showError(passwordErrorLabel,
+                    "Password must contain at least one uppercase letter.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.hasLowercase(password)) {
+
+            showError(passwordErrorLabel,
+                    "Password must contain at least one lowercase letter.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.hasDigit(password)) {
+
+            showError(passwordErrorLabel,
+                    "Password must contain at least one number.");
+
+            valid = false;
+
+        }
+        else if (!ValidationUtil.hasSpecialCharacter(password)) {
+
+            showError(passwordErrorLabel,
+                    "Password must contain at least one special character (@#$%^&+=!).");
 
             valid = false;
 
         }
 
+        // ---------- Confirm Password ----------
+
         if (confirmPassword.isBlank()) {
 
-            confirmPasswordErrorLabel.setText("Confirm password is required.");
-            confirmPasswordErrorLabel.setVisible(true);
-            confirmPasswordErrorLabel.setManaged(true);
+            showError(confirmPasswordErrorLabel,
+                    "Please confirm your password.");
 
             valid = false;
 
-        } else if (!password.equals(confirmPassword)) {
+        }
+        else if (!password.equals(confirmPassword)) {
 
-            confirmPasswordErrorLabel.setText("Passwords do not match.");
-            confirmPasswordErrorLabel.setVisible(true);
-            confirmPasswordErrorLabel.setManaged(true);
+            showError(confirmPasswordErrorLabel,
+                    "Passwords do not match.");
 
             valid = false;
 
@@ -195,17 +263,120 @@ public class RegisterController {
             return;
         }
 
-        System.out.println("Registration Successful");
+        try {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            RegisterRequest request =
+                    new RegisterRequest();
 
-        alert.setTitle("Registration");
-        alert.setHeaderText(null);
-        alert.setContentText("Account created successfully.");
+            request.setFullName(
+                    fullNameComponentController.getText().trim()
+            );
 
-        alert.showAndWait();
+            request.setUsername(
+                    usernameComponentController.getText().trim()
+            );
 
-        NavigationManager.showLogin();
+            request.setEmail(
+                    emailComponentController.getText().trim()
+            );
+
+            request.setPhoneNumber(
+                    phoneComponentController.getText().trim()
+            );
+
+            request.setPassword(
+                    passwordComponentController.getText()
+            );
+
+            request.setConfirmPassword(
+                    confirmPasswordComponentController.getText()
+            );
+
+            authenticationService.register(request);
+
+            Alert alert =
+                    new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("Registration");
+
+            alert.setHeaderText(null);
+
+            alert.setContentText(
+                    "Your account has been created successfully."
+            );
+
+            alert.showAndWait();
+
+            NavigationManager.showLogin();
+
+        }
+
+        catch (ApiException ex) {
+
+            handleRegisterError(ex);
+
+        }
+
+        catch (Exception ex) {
+
+            Alert alert =
+                    new Alert(Alert.AlertType.ERROR);
+
+            alert.setHeaderText(null);
+
+            alert.setTitle("Connection Error");
+
+            alert.setContentText(
+                    "Unable to connect to server."
+            );
+
+            alert.showAndWait();
+
+        }
+
+    }
+
+    private void handleRegisterError(ApiException ex) {
+
+        switch (ex.getErrorCode()) {
+
+            case "USERNAME_ALREADY_EXISTS" ->
+
+                    showError(
+                            usernameErrorLabel,
+                            "This username is already taken."
+                    );
+
+            case "EMAIL_ALREADY_EXISTS" ->
+
+                    showError(
+                            emailErrorLabel,
+                            "This email is already registered."
+                    );
+
+            case "PHONE_NUMBER_ALREADY_EXISTS" ->
+
+                    showError(
+                            phoneErrorLabel,
+                            "This phone number is already registered."
+                    );
+
+            default -> {
+
+                Alert alert =
+                        new Alert(Alert.AlertType.ERROR);
+
+                alert.setTitle("Registration Failed");
+
+                alert.setHeaderText(null);
+
+                alert.setContentText(ex.getMessage());
+
+                alert.showAndWait();
+
+            }
+
+        }
 
     }
 
