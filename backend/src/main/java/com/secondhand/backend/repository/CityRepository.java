@@ -17,7 +17,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
             Province province
     );
 
-    boolean existsByNameAndProvinceIgnoreCase(
+    boolean existsByNameIgnoreCaseAndProvince(
             String name,
             Province province
     );

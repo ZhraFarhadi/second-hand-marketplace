@@ -54,7 +54,7 @@ public class Advertisement extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @OrderBy("categoryAttribute.name ASC")
+   // @OrderBy("categoryAttribute.name ASC")
     private List<AdvertisementAttribute> attributes = new ArrayList<>();
 
 
