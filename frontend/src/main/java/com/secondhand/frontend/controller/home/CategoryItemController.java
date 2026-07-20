@@ -1,9 +1,8 @@
 package com.secondhand.frontend.controller.home;
 
-import com.secondhand.frontend.model.Category;
-import com.secondhand.frontend.model.Subcategory;
+import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
+import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -27,19 +26,25 @@ public class CategoryItemController {
 
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryDetailsResponse category) {
 
         categoryButton.setText(category.getName() + " ▼");
 
         subcategoryContainer.getChildren().clear();
 
-        for (Subcategory sub : category.getSubcategories()) {
+        if (category.getChildren() == null)
+            return;
 
-            Button button = new Button(sub.getName());
+        for (CategorySummaryResponse child : category.getChildren()) {
+
+            Button button = new Button(child.getName());
 
             button.setMaxWidth(Double.MAX_VALUE);
 
             button.getStyleClass().add("subcategory-button");
+
+            // بعداً اینجا فیلتر بر اساس categoryId انجام می‌شود
+            button.setUserData(child.getId());
 
             subcategoryContainer.getChildren().add(button);
 
