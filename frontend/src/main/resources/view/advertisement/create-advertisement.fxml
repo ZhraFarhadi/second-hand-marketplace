@@ -98,9 +98,9 @@
                         <VBox HBox.hgrow="ALWAYS"
                               prefWidth="260">
 
-                            <fx:include
-                                    fx:id="cityComponent"
-                                    source="../components/floating-text-field.fxml"/>
+                            <ComboBox fx:id="cityComboBox"
+                                      prefWidth="220"
+                                      promptText="Select City"/>
 
                         </VBox>
 
