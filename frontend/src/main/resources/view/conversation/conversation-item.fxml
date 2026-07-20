@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.secondhand.frontend.controller.conversation.ConversationItemController"
+      fx:id="root"
+      spacing="5"
+      styleClass="conversation-item">
+
+    <HBox spacing="8">
+
+        <Label fx:id="userLabel"
+               styleClass="conversation-user"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label fx:id="timeLabel"
+               styleClass="conversation-time"/>
+
+    </HBox>
+
+    <Label fx:id="titleLabel"
+           styleClass="conversation-ad"/>
+
+    <HBox spacing="8">
+
+        <Label fx:id="lastMessageLabel"
+               styleClass="conversation-message"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label fx:id="unreadLabel"
+               styleClass="conversation-unread"/>
+
+    </HBox>
+
+</VBox>

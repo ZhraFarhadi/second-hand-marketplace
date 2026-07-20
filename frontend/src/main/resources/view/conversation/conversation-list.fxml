@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.conversation.ConversationListController">
+
+    <top>
+
+        <Label text="Messages"
+               styleClass="page-title"/>
+
+    </top>
+
+    <center>
+
+        <ScrollPane fitToWidth="true">
+
+            <content>
+
+                <VBox fx:id="conversationsContainer"
+                      spacing="10"/>
+
+            </content>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>
