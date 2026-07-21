@@ -78,7 +78,11 @@ public class HomeController {
 
         }
 
+        chatButton.setOnAction(event -> {
 
+            NavigationManager.showConversationList();
+
+        });
 
         loadAdvertisements();
 

@@ -1,5 +1,6 @@
 package com.secondhand.frontend.navigation;
 
+import com.secondhand.frontend.controller.conversation.ChatController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -148,6 +149,33 @@ public class NavigationManager {
 
     }
 
+    private static FXMLLoader loadFXML(
+            String fxmlPath
+    ){
+
+        try{
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    fxmlPath
+                            )
+                    );
+
+            loader.load();
+
+            return loader;
+
+        }
+
+        catch (Exception e){
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
     public static void showLogin() {
 
         loadScene(
@@ -198,6 +226,42 @@ public class NavigationManager {
                 "/view/advertisement/create-advertisement.fxml",
                 "/css/header.css",
                 "/css/create-advertisement.css"
+        );
+
+    }
+
+
+
+    public static void showConversation(
+            Long conversationId
+    ){
+
+        FXMLLoader loader =
+                loadFXML(
+                        "/view/conversation/chat.fxml"
+                );
+
+        ChatController controller =
+                loader.getController();
+
+        controller.setConversationId(
+                conversationId
+        );
+
+        Scene scene =
+                new Scene(
+                        loader.getRoot()
+                );
+
+        primaryStage.setScene(scene);
+
+    }
+
+    public static void showConversationList() {
+
+        loadScene(
+                "/view/conversation/conversation-list.fxml",
+                "/css/conversation.css"
         );
 
     }

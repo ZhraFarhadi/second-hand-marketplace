@@ -66,4 +66,8 @@ public class SessionManager {
     public static String getToken() {
         return token;
     }
+
+    public static void setUserId(Long userId) {
+        SessionManager.userId = userId;
+    }
 }

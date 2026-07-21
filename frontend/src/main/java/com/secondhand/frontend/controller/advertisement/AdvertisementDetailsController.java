@@ -1,11 +1,16 @@
 package com.secondhand.frontend.controller.advertisement;
 
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementAttributeResponse;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementDetailsResponse;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementImageResponse;
 import com.secondhand.frontend.navigation.NavigationManager;
+import com.secondhand.frontend.repository.AdvertisementRepository;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import com.secondhand.frontend.util.RelativeTimeUtil;
 
 public class AdvertisementDetailsController {
 
@@ -15,82 +20,216 @@ public class AdvertisementDetailsController {
     @FXML
     private HBox thumbnailContainer;
 
+    @FXML
+    private VBox attributesContainer;
 
+    @FXML
+    private Label titleLabel;
+
+    @FXML
+    private Label priceLabel;
+
+    @FXML
+    private Label cityLabel;
+
+    @FXML
+    private Label timeLabel;
+
+    @FXML
+    private Label descriptionLabel;
+
+    @FXML
+    private Label sellerNameLabel;
+
+    @FXML
+    private Label sellerRateLabel;
+
+    private Long advertisementId;
 
     private StackPane selectedThumbnail;
 
     @FXML
     public void initialize() {
+        // منتظر loadAdvertisement می‌مانیم
+    }
 
-        loadGallery();
+    @FXML
+    private void onBackClicked() {
+        NavigationManager.showHome();
+    }
+
+    public void loadAdvertisement(Long advertisementId) {
+
+        this.advertisementId = advertisementId;
+
+        try {
+
+            AdvertisementDetailsResponse advertisement =
+                    AdvertisementRepository
+                            .getInstance()
+                            .getAdvertisement(advertisementId);
+
+            showAdvertisement(advertisement);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 
-    private void loadGallery() {
+    private void showAdvertisement(
+            AdvertisementDetailsResponse advertisement
+    ) {
+
+        titleLabel.setText(advertisement.getTitle());
+
+        priceLabel.setText(
+                advertisement.getPrice().toPlainString()
+        );
+
+        cityLabel.setText(
+                advertisement.getCity().getName()
+        );
+
+        descriptionLabel.setText(
+                advertisement.getDescription()
+        );
+
+        sellerNameLabel.setText(
+                advertisement.getSeller().getFullName()
+        );
+
+        sellerRateLabel.setText("Seller");
+
+        timeLabel.setText(
+                RelativeTimeUtil.format(
+                        advertisement.getCreatedAt()
+                )
+        );
+
+        loadImages(advertisement);
+
+        loadAttributes(advertisement);
+
+    }
+
+    private void loadImages(
+            AdvertisementDetailsResponse advertisement
+    ) {
 
         thumbnailContainer.getChildren().clear();
 
-        String[] images = {
+        if (advertisement.getImages() == null
+                || advertisement.getImages().isEmpty()) {
 
-                "/images/sample1.png",
-                "/images/sample2.png",
-                "/images/sample3.png"
+            mainImageView.setImage(null);
+            return;
 
-        };
+        }
 
-        for (String path : images) {
+        AdvertisementImageResponse primaryImage =
+                advertisement.getImages()
+                        .stream()
+                        .filter(AdvertisementImageResponse::isPrimary)
+                        .findFirst()
+                        .orElse(advertisement.getImages().get(0));
 
-            Image image = new Image(
-                    getClass().getResourceAsStream(path)
-            );
+        Image mainImage =
+                new Image(primaryImage.getImageUrl(), true);
 
-            ImageView thumbnail = new ImageView(image);
+        mainImageView.setImage(mainImage);
+
+        for (AdvertisementImageResponse imageResponse
+                : advertisement.getImages()) {
+
+            Image image =
+                    new Image(imageResponse.getImageUrl(), true);
+
+            ImageView thumbnail =
+                    new ImageView(image);
 
             thumbnail.setFitWidth(90);
             thumbnail.setFitHeight(90);
             thumbnail.setPreserveRatio(true);
 
-            StackPane thumbnailPane = new StackPane(thumbnail);
+            StackPane pane =
+                    new StackPane(thumbnail);
 
-            thumbnailPane.getStyleClass().add("thumbnail");
+            pane.getStyleClass().add("thumbnail");
 
-
-            thumbnailPane.setOnMouseClicked(event -> {
+            pane.setOnMouseClicked(event -> {
 
                 mainImageView.setImage(image);
 
                 if (selectedThumbnail != null) {
-                    selectedThumbnail.getStyleClass().remove("thumbnail-selected");
+
+                    selectedThumbnail.getStyleClass()
+                            .remove("thumbnail-selected");
+
                 }
 
-                thumbnailPane.getStyleClass().add("thumbnail-selected");
+                pane.getStyleClass()
+                        .add("thumbnail-selected");
 
-                selectedThumbnail = thumbnailPane;
+                selectedThumbnail = pane;
 
             });
 
-            thumbnailContainer.getChildren().add(thumbnailPane);
+            thumbnailContainer.getChildren().add(pane);
 
         }
-
-        mainImageView.setImage(
-                new Image(
-                        getClass().getResourceAsStream(images[0])
-                )
-        );
 
         selectedThumbnail =
                 (StackPane) thumbnailContainer.getChildren().get(0);
 
-        selectedThumbnail.getStyleClass().add("thumbnail-selected");
-
+        selectedThumbnail.getStyleClass()
+                .add("thumbnail-selected");
 
     }
 
-    @FXML
-    private void onBackClicked() {
+    private void loadAttributes(
+            AdvertisementDetailsResponse advertisement
+    ) {
 
-        NavigationManager.showHome();
+        attributesContainer.getChildren().clear();
+
+        if (advertisement.getAttributes() == null) {
+            return;
+        }
+
+        for (AdvertisementAttributeResponse attribute
+                : advertisement.getAttributes()) {
+
+            HBox row = new HBox(15);
+
+            Label key =
+                    new Label(attribute.getAttributeName());
+
+            key.getStyleClass().add("attribute-name");
+
+            Label value =
+                    new Label(attribute.getValue());
+
+            value.getStyleClass().add("attribute-value");
+
+            Region spacer = new Region();
+
+            HBox.setHgrow(
+                    spacer,
+                    Priority.ALWAYS
+            );
+
+            row.getChildren().addAll(
+                    key,
+                    spacer,
+                    value
+            );
+
+            attributesContainer.getChildren().add(row);
+
+        }
 
     }
 

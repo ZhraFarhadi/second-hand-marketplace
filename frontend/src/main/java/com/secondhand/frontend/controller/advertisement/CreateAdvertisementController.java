@@ -1,37 +1,58 @@
 package com.secondhand.frontend.controller.advertisement;
 
 import com.secondhand.frontend.controller.advertisement.components.CategorySelectorController;
+import com.secondhand.frontend.controller.advertisement.components.ImageItemController;
 import com.secondhand.frontend.controller.components.FloatingPriceFieldController;
 import com.secondhand.frontend.controller.components.FloatingTextAreaController;
 import com.secondhand.frontend.controller.components.FloatingTextFieldController;
-import com.secondhand.frontend.mock.SpecificationData;
+
+import com.secondhand.frontend.dto.advertisement.request.AdvertisementAttributeRequest;
+import com.secondhand.frontend.dto.advertisement.request.AdvertisementImageRequest;
+import com.secondhand.frontend.dto.advertisement.request.CreateAdvertisementRequest;
+
+import com.secondhand.frontend.dto.category.response.CategoryAttributeResponse;
+import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
+import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
+
+import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
+
 import com.secondhand.frontend.model.AttributeType;
-import com.secondhand.frontend.model.SpecificationField;
 import com.secondhand.frontend.model.Subcategory;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.FileChooser;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.image.Image;
+
+import com.secondhand.frontend.navigation.NavigationManager;
+import com.secondhand.frontend.repository.AdvertisementRepository;
+import com.secondhand.frontend.repository.CategoryRepository;
+import com.secondhand.frontend.repository.CityRepository;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
+import javafx.scene.image.Image;
+
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+
+import javafx.stage.FileChooser;
+
+import java.io.File;
+
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.Control;
-import com.secondhand.frontend.controller.advertisement.components.ImageItemController;
+
+import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
+
+
+
 
 public class CreateAdvertisementController {
-
-    private final List<Control> specificationInputs = new ArrayList<>();
 
     @FXML
     private FloatingTextFieldController titleComponentController;
@@ -40,45 +61,159 @@ public class CreateAdvertisementController {
     private FloatingPriceFieldController priceComponentController;
 
     @FXML
-    private FloatingTextFieldController cityComponentController;
-
-    @FXML
     private FloatingTextAreaController descriptionComponentController;
-
-    @FXML
-    private TextArea descriptionArea;
-
-    @FXML
-    private VBox specificationsContainer;
 
     @FXML
     private CategorySelectorController categorySelectorController;
 
     @FXML
-    private Label errorLabel;
+    private VBox specificationsContainer;
 
     @FXML
     private FlowPane imageContainer;
 
-    private final List<File> selectedImages = new ArrayList<>();
+    @FXML
+    private Label errorLabel;
+
+    @FXML
+    private ComboBox<CitySummaryResponse> cityComboBox;
+
+
+
+    private final AdvertisementRepository advertisementRepository =
+            AdvertisementRepository.getInstance();
+
+    private final CategoryRepository categoryRepository =
+            CategoryRepository.getInstance();
+
+    private final CityRepository cityRepository =
+            CityRepository.getInstance();
+
+    private final List<Control> specificationInputs =
+            new ArrayList<>();
+
+    private final List<CategoryAttributeResponse> currentAttributes =
+            new ArrayList<>();
+
+    private final List<File> selectedImages =
+            new ArrayList<>();
+
+    private List<CategoryDetailsResponse> categories =
+            new ArrayList<>();
 
     @FXML
     public void initialize() {
 
         titleComponentController.setLabel("Title");
-        priceComponentController.setLabel("Price");
-        cityComponentController.setLabel("City");
 
-        titleComponentController.getTextField().setPrefWidth(550);
-        priceComponentController.getTextField().setPrefWidth(220);
-        cityComponentController.getTextField().setPrefWidth(220);
+        priceComponentController.setLabel("Price");
 
         descriptionComponentController.setLabel("Description");
+
         descriptionComponentController.setRTL(true);
 
-        categorySelectorController.setOnSubcategorySelected(this::loadSpecifications);
+        titleComponentController.getTextField().setPrefWidth(550);
 
-        System.out.println("Create Advertisement Loaded");
+        priceComponentController.getTextField().setPrefWidth(220);
+
+        categorySelectorController.setOnSubcategorySelected(
+                this::loadSpecifications
+        );
+
+        loadCategories();
+
+        loadCities();
+
+    }
+
+    private void loadCategories() {
+
+        try {
+
+            categories =
+                    categoryRepository.getCategories();
+
+            categorySelectorController.setCategories(categories);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private void loadCities() {
+
+        try {
+
+            var cities =
+                    cityRepository.getCities();
+
+            cityComboBox.getItems().setAll(cities);
+
+            cityComboBox.setCellFactory(param -> new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                        CitySummaryResponse item,
+                        boolean empty
+                ) {
+
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+
+                        setText(null);
+
+                    }
+
+                    else {
+
+                        setText(item.getName());
+
+                    }
+
+                }
+
+            });
+
+            cityComboBox.setButtonCell(new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                        CitySummaryResponse item,
+                        boolean empty
+                ) {
+
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+
+                        setText("Select City");
+
+                    }
+
+                    else {
+
+                        setText(item.getName());
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
     }
 
     private void loadSpecifications(Subcategory subcategory) {
@@ -87,100 +222,60 @@ public class CreateAdvertisementController {
 
         specificationInputs.clear();
 
+        currentAttributes.clear();
+
         if (subcategory == null)
             return;
 
-        var fields = SpecificationData.getFields(subcategory.getName());
+        CategoryDetailsResponse details = categories
+                .stream()
+                .filter(c ->
+                        c.getName().equals(subcategory.getName()))
+                .findFirst()
+                .orElse(null);
 
-        HBox currentRow = null;
+        if (details == null)
+            return;
+
+        currentAttributes.addAll(details.getAttributes());
+
+        HBox row = null;
+
         int column = 0;
 
-        for (SpecificationField field : fields) {
+        for (CategoryAttributeResponse attribute : currentAttributes) {
 
             if (column == 0) {
 
-                 currentRow = new HBox(18);
-                currentRow.setFillHeight(true);
-                specificationsContainer.getChildren().add(currentRow);
+                row = new HBox(18);
+
+                specificationsContainer.getChildren().add(row);
 
             }
 
             VBox fieldBox = new VBox(6);
 
-            Label label = new Label(field.getLabel());
+            Label label = new Label(attribute.getName());
 
-            Node input;
+            Control input;
 
-            switch (field.getType()) {
-
-                case TEXT -> {
-
-                    TextField tf = new TextField();
-
-                    specificationInputs.add(tf);
-
-                    tf.setPromptText(field.getLabel());
-
-                    tf.setPrefHeight(44);
-
-                    tf.setStyle("""
-    -fx-font-size:15px;
-    -fx-alignment:CENTER_LEFT;
-""");
-
-                    tf.setMaxWidth(Double.MAX_VALUE);
-
-                    input = tf;
-
-                }
+            switch (AttributeType.valueOf(attribute.getDataType())) {
 
                 case NUMBER -> {
 
                     TextField tf = new TextField();
 
-                    specificationInputs.add(tf);
-
-                    tf.setPromptText(field.getLabel());
-
-                    tf.setPrefHeight(44);
-
-                    tf.setStyle("""
-    -fx-font-size:15px;
-    -fx-alignment:CENTER_LEFT;
-""");
-
-                    tf.setMaxWidth(Double.MAX_VALUE);
+                    tf.setPromptText(attribute.getName());
 
                     input = tf;
-
-                }
-
-                case DROPDOWN -> {
-
-                    ComboBox<String> combo = new ComboBox<>();
-
-                    specificationInputs.add(combo);
-
-                    combo.getItems().addAll(field.getOptions());
-
-                    combo.setPromptText(field.getLabel());
-
-                    combo.setPrefHeight(44);
-
-                    combo.setStyle("""
-    -fx-font-size:15px;
-""");
-
-                    combo.setMaxWidth(Double.MAX_VALUE);
-
-                    input = combo;
 
                 }
 
                 default -> {
 
                     TextField tf = new TextField();
-                    tf.setPromptText(field.getLabel());
+
+                    tf.setPromptText(attribute.getName());
 
                     input = tf;
 
@@ -188,24 +283,26 @@ public class CreateAdvertisementController {
 
             }
 
+            input.setMaxWidth(Double.MAX_VALUE);
+
+            specificationInputs.add(input);
+
             VBox.setVgrow(fieldBox, Priority.NEVER);
+
             HBox.setHgrow(fieldBox, Priority.ALWAYS);
-            fieldBox.setPrefWidth(260);
-            fieldBox.setMaxWidth(Double.MAX_VALUE);
 
             fieldBox.getChildren().addAll(label, input);
 
-            currentRow.getChildren().add(fieldBox);
-            
+            row.getChildren().add(fieldBox);
 
             column++;
 
             if (column == 3)
                 column = 0;
+
         }
+
     }
-
-
     private boolean validateForm() {
 
         boolean valid = true;
@@ -214,15 +311,17 @@ public class CreateAdvertisementController {
 
         titleComponentController.setError(false);
         priceComponentController.setError(false);
-        cityComponentController.setError(false);
         descriptionComponentController.setError(false);
 
         categorySelectorController.setCategoryError(false);
         categorySelectorController.setSubcategoryError(false);
 
-        if (titleComponentController.getTextField().getText().isBlank()) {
+        cityComboBox.setStyle("");
+
+        if (titleComponentController.getText().isBlank()) {
 
             titleComponentController.setError(true);
+
             valid = false;
 
         }
@@ -230,6 +329,7 @@ public class CreateAdvertisementController {
         if (categorySelectorController.getSelectedCategory() == null) {
 
             categorySelectorController.setCategoryError(true);
+
             valid = false;
 
         }
@@ -237,32 +337,42 @@ public class CreateAdvertisementController {
         if (categorySelectorController.getSelectedSubcategory() == null) {
 
             categorySelectorController.setSubcategoryError(true);
+
             valid = false;
 
         }
 
-        if (priceComponentController.getTextField().getText().isBlank()) {
+        if (priceComponentController.getValue() <= 0) {
 
             priceComponentController.setError(true);
+
             valid = false;
 
         }
 
-        if (cityComponentController.getTextField().getText().isBlank()) {
+        if (cityComboBox.getValue() == null) {
 
-            cityComponentController.setError(true);
+            cityComboBox.setStyle("""
+            -fx-border-color:#e53935;
+            -fx-border-width:2;
+            """);
+
             valid = false;
 
         }
+        else {
 
-        if (descriptionComponentController.getTextArea().getText().isBlank()) {
+            cityComboBox.setStyle("");
+
+        }
+
+        if (descriptionComponentController.getText().isBlank()) {
 
             descriptionComponentController.setError(true);
+
             valid = false;
 
         }
-
-        // Validation Specifications
 
         for (Control control : specificationInputs) {
 
@@ -274,27 +384,14 @@ public class CreateAdvertisementController {
 
             }
 
-            else if (control instanceof ComboBox<?> combo) {
-
-                empty = combo.getValue() == null;
-
-            }
-
             if (empty) {
 
                 control.setStyle("""
                     -fx-border-color:#e53935;
                     -fx-border-width:2;
-                    -fx-border-radius:8;
                     """);
 
                 valid = false;
-
-            }
-
-            else {
-
-                control.setStyle("");
 
             }
 
@@ -303,7 +400,10 @@ public class CreateAdvertisementController {
         if (!valid) {
 
             errorLabel.setVisible(true);
-            errorLabel.setText("Please complete all required fields.");
+
+            errorLabel.setText(
+                    "Please complete all required fields."
+            );
 
         }
 
@@ -312,22 +412,11 @@ public class CreateAdvertisementController {
     }
 
     @FXML
-    private void publishAdvertisement() {
-
-        if (!validateForm()) {
-            return;
-        }
-
-        System.out.println("Advertisement Published!");
-
-    }
-
-    @FXML
     private void chooseImages() {
 
         FileChooser chooser = new FileChooser();
 
-        chooser.setTitle("Select Advertisement Images");
+        chooser.setTitle("Select Images");
 
         chooser.getExtensionFilters().add(
 
@@ -346,7 +435,7 @@ public class CreateAdvertisementController {
 
         );
 
-        if (files == null || files.isEmpty())
+        if (files == null)
             return;
 
         selectedImages.addAll(files);
@@ -363,21 +452,25 @@ public class CreateAdvertisementController {
 
             try {
 
-                FXMLLoader loader = new FXMLLoader(
+                FXMLLoader loader =
+                        new FXMLLoader(
 
-                        getClass().getResource(
-                                "/view/advertisement/components/image-item.fxml"
-                        )
+                                getClass().getResource(
+                                        "/view/advertisement/components/image-item.fxml"
+                                )
 
-                );
+                        );
 
                 Node node = loader.load();
 
-                ImageItemController controller = loader.getController();
+                ImageItemController controller =
+                        loader.getController();
 
                 controller.setImage(
 
-                        new Image(file.toURI().toString())
+                        new Image(
+                                file.toURI().toString()
+                        )
 
                 );
 
@@ -398,6 +491,140 @@ public class CreateAdvertisementController {
                 e.printStackTrace();
 
             }
+
+        }
+
+    }
+
+    private CreateAdvertisementRequest buildRequest() {
+
+        CreateAdvertisementRequest request =
+                new CreateAdvertisementRequest();
+
+        request.setTitle(
+
+                titleComponentController.getText()
+
+        );
+
+        request.setDescription(
+
+                descriptionComponentController.getText()
+
+        );
+
+        request.setPrice(
+
+                BigDecimal.valueOf(
+                        priceComponentController.getValue()
+                )
+
+        );
+
+        request.setCategoryId(
+
+                categorySelectorController
+                        .getSelectedSubcategory()
+                        .getId()
+
+        );
+
+        request.setCityId(
+
+                cityComboBox
+                        .getValue()
+                        .getId()
+
+        );
+
+        List<AdvertisementAttributeRequest> attributes =
+                new ArrayList<>();
+
+        for (int i = 0; i < currentAttributes.size(); i++) {
+
+            AdvertisementAttributeRequest attribute =
+                    new AdvertisementAttributeRequest();
+
+            attribute.setCategoryAttributeId(
+
+                    currentAttributes.get(i).getId()
+
+            );
+
+            Control control =
+                    specificationInputs.get(i);
+
+            if (control instanceof TextField tf) {
+
+                attribute.setValue(tf.getText());
+
+            }
+
+            attributes.add(attribute);
+
+        }
+
+        request.setAttributes(attributes);
+
+        List<AdvertisementImageRequest> images =
+                new ArrayList<>();
+
+        int order = 0;
+
+        for (File file : selectedImages) {
+
+            AdvertisementImageRequest image =
+                    new AdvertisementImageRequest();
+
+            image.setDisplayOrder(order++);
+
+            image.setPrimary(order == 1);
+
+            image.setImageUrl(
+
+                    file.toURI().toString()
+
+            );
+
+            images.add(image);
+
+        }
+
+        request.setImages(images);
+
+        return request;
+
+    }
+
+    @FXML
+    private void publishAdvertisement() {
+
+        if (!validateForm())
+            return;
+
+        try {
+
+            CreateAdvertisementRequest request =
+                    buildRequest();
+
+            advertisementRepository
+                    .createAdvertisement(request);
+
+            NavigationManager.showHome();
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+            errorLabel.setVisible(true);
+
+            errorLabel.setText(
+
+                    "Failed to publish advertisement."
+
+            );
 
         }
 

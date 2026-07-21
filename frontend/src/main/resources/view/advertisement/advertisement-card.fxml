@@ -7,6 +7,7 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
 <VBox
         fx:id="root"
         xmlns="http://javafx.com/javafx/21"
@@ -70,6 +71,18 @@
             <Label fx:id="timeLabel"
                    text="2 hours ago"
                    styleClass="ad-info"/>
+
+        </HBox>
+
+        <HBox spacing="10"
+              alignment="CENTER_RIGHT">
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button
+                    fx:id="chatButton"
+                    text="Chat"
+                    onAction="#onChatClicked"/>
 
         </HBox>
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<HBox
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.conversation.MessageBubbleController"
+        spacing="8">
+
+    <Region
+            fx:id="leftSpacer"
+            HBox.hgrow="ALWAYS"/>
+
+    <VBox
+            fx:id="bubble"
+            spacing="5"
+            styleClass="message-bubble">
+
+        <Label
+                fx:id="contentLabel"
+                wrapText="true"/>
+
+        <Label
+                fx:id="timeLabel"
+                styleClass="message-time"/>
+
+    </VBox>
+
+    <Region
+            fx:id="rightSpacer"
+            HBox.hgrow="ALWAYS"/>
+
+</HBox>
