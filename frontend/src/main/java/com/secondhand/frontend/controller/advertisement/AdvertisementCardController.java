@@ -121,6 +121,14 @@ public class AdvertisementCardController {
 
     }
 
+    public void disableChat() {
+
+        chatButton.setVisible(false);
+
+        chatButton.setManaged(false);
+
+    }
+
 
 
 

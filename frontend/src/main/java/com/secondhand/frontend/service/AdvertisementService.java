@@ -189,4 +189,20 @@ public class AdvertisementService {
 
     }
 
+    public AdvertisementDetailsResponse getAdvertisementDetails(
+            Long id
+    ) throws Exception {
+
+        String response =
+                ApiClient.get(
+                        "/advertisements/" + id
+                );
+
+        return gson.fromJson(
+                response,
+                AdvertisementDetailsResponse.class
+        );
+
+    }
+
 }

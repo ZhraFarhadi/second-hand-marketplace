@@ -49,6 +49,11 @@
                         maxWidth="Infinity"
                         styleClass="category-button"/>
 
+                <Button fx:id="myAdvertisementsButton"
+                        text="📦 My Advertisements"
+                        maxWidth="Infinity"
+                        styleClass="category-button"/>
+
                 <Button fx:id="chatButton"
                         text="💬 Chats"
                         maxWidth="Infinity"

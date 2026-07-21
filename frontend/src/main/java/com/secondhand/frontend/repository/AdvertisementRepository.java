@@ -129,4 +129,12 @@ public class AdvertisementRepository {
 
     }
 
+    public AdvertisementDetailsResponse getAdvertisementDetails(
+            Long id
+    ) throws Exception {
+
+        return advertisementService.getAdvertisementDetails(id);
+
+    }
+
 }

@@ -10,6 +10,10 @@ import com.secondhand.frontend.dto.advertisement.request.AdvertisementAttributeR
 import com.secondhand.frontend.dto.advertisement.request.AdvertisementImageRequest;
 import com.secondhand.frontend.dto.advertisement.request.CreateAdvertisementRequest;
 
+import com.secondhand.frontend.dto.advertisement.request.UpdateAdvertisementRequest;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementAttributeResponse;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementDetailsResponse;
+import com.secondhand.frontend.dto.advertisement.response.AdvertisementImageResponse;
 import com.secondhand.frontend.dto.category.response.CategoryAttributeResponse;
 import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
 import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
@@ -78,6 +82,19 @@ public class CreateAdvertisementController {
     @FXML
     private ComboBox<CitySummaryResponse> cityComboBox;
 
+    private boolean editMode = false;
+
+    private Long editingAdvertisementId;
+
+    @FXML
+    private Label pageTitle;
+
+    @FXML
+    private Button publishButton;
+
+    private final List<AdvertisementImageRequest> currentImages =
+            new ArrayList<>();
+
 
 
     private final AdvertisementRepository advertisementRepository =
@@ -123,6 +140,11 @@ public class CreateAdvertisementController {
         loadCategories();
 
         loadCities();
+
+
+        pageTitle.setText("Create Advertisement");
+
+        publishButton.setText("Publish Advertisement");
 
     }
 
@@ -604,13 +626,30 @@ public class CreateAdvertisementController {
 
         try {
 
-            CreateAdvertisementRequest request =
-                    buildRequest();
+            if (editMode) {
 
-            advertisementRepository
-                    .createAdvertisement(request);
+                UpdateAdvertisementRequest request =
+                        buildUpdateRequest();
 
-            NavigationManager.showHome();
+                advertisementRepository.updateAdvertisement(
+                        editingAdvertisementId,
+                        request
+                );
+
+            }
+
+            else {
+
+                CreateAdvertisementRequest request =
+                        buildRequest();
+
+                advertisementRepository.createAdvertisement(
+                        request
+                );
+
+            }
+
+            NavigationManager.showMyAdvertisements();
 
         }
 
@@ -621,12 +660,240 @@ public class CreateAdvertisementController {
             errorLabel.setVisible(true);
 
             errorLabel.setText(
-
-                    "Failed to publish advertisement."
-
+                    editMode
+                            ? "Failed to update advertisement."
+                            : "Failed to publish advertisement."
             );
 
         }
 
     }
+
+    public void loadAdvertisementForEdit(Long advertisementId) {
+
+        editMode = true;
+
+        editingAdvertisementId = advertisementId;
+
+        pageTitle.setText("Edit Advertisement");
+
+        publishButton.setText("Update Advertisement");
+
+        try {
+
+            AdvertisementDetailsResponse advertisement =
+                    advertisementRepository.getAdvertisementDetails(
+                            advertisementId
+                    );
+
+            fillForm(advertisement);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    private void fillForm(
+            AdvertisementDetailsResponse advertisement
+    ) {
+
+
+        currentImages.clear();
+
+        for (AdvertisementImageResponse image : advertisement.getImages()) {
+
+            AdvertisementImageRequest request =
+                    new AdvertisementImageRequest();
+
+            request.setImageUrl(
+                    image.getImageUrl()
+            );
+
+            request.setPrimary(
+                    image.isPrimary()
+            );
+
+            currentImages.add(request);
+
+        }
+        /*
+         * Title
+         */
+
+        titleComponentController.setText(
+                advertisement.getTitle()
+        );
+
+        /*
+         * Description
+         */
+
+        descriptionComponentController.setText(
+                advertisement.getDescription()
+        );
+
+        /*
+         * Price
+         */
+
+        priceComponentController.setValue(
+                advertisement.getPrice().longValue()
+        );
+
+        /*
+         * Category
+         */
+
+        categorySelectorController.selectCategory(
+
+                advertisement
+                        .getCategory()
+                        .getId()
+
+        );
+
+        /*
+         * City
+         */
+
+        cityComboBox.getItems().stream()
+
+                .filter(city ->
+                        city.getId().equals(
+                                advertisement.getCity().getId()
+                        )
+                )
+
+                .findFirst()
+
+                .ifPresent(cityComboBox::setValue);
+
+        /*
+         * Specifications
+         */
+
+        for (int i = 0;
+             i < advertisement.getAttributes().size();
+             i++) {
+
+            AdvertisementAttributeResponse attribute =
+                    advertisement.getAttributes().get(i);
+
+            Control control =
+                    specificationInputs.get(i);
+
+            if (control instanceof TextField tf) {
+
+                tf.setText(attribute.getValue());
+
+            }
+
+        }
+
+    }
+
+    private UpdateAdvertisementRequest buildUpdateRequest() {
+
+        UpdateAdvertisementRequest request =
+                new UpdateAdvertisementRequest();
+
+        request.setTitle(
+                titleComponentController.getText()
+        );
+
+        request.setDescription(
+                descriptionComponentController.getText()
+        );
+
+        request.setPrice(
+                BigDecimal.valueOf(
+                        priceComponentController.getValue()
+                )
+        );
+
+        request.setCategoryId(
+                categorySelectorController
+                        .getSelectedSubcategory()
+                        .getId()
+        );
+
+        request.setCityId(
+                cityComboBox
+                        .getValue()
+                        .getId()
+        );
+
+        List<AdvertisementAttributeRequest> attributes =
+                new ArrayList<>();
+
+        for (int i = 0; i < currentAttributes.size(); i++) {
+
+            AdvertisementAttributeRequest attribute =
+                    new AdvertisementAttributeRequest();
+
+            attribute.setCategoryAttributeId(
+                    currentAttributes.get(i).getId()
+            );
+
+            Control control =
+                    specificationInputs.get(i);
+
+            if (control instanceof TextField tf) {
+
+                attribute.setValue(
+                        tf.getText()
+                );
+
+            }
+
+            attributes.add(attribute);
+
+        }
+
+        request.setAttributes(attributes);
+
+        List<AdvertisementImageRequest> images =
+                new ArrayList<>();
+
+        if (!selectedImages.isEmpty()) {
+
+            int order = 0;
+
+            for (File file : selectedImages) {
+
+                AdvertisementImageRequest image =
+                        new AdvertisementImageRequest();
+
+                image.setImageUrl(
+                        file.toURI().toString()
+                );
+
+                image.setPrimary(order == 0);
+
+                order++;
+
+                images.add(image);
+
+            }
+
+        }
+        else {
+
+            images.addAll(currentImages);
+
+        }
+
+
+        request.setImages(images);
+
+        return request;
+
+    }
+
 }

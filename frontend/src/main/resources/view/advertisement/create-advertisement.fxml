@@ -29,10 +29,12 @@
                             left="40"/>
                 </padding>
 
-                <!-- ================= PAGE TITLE ================= -->
+                <!-- PAGE TITLE -->
 
-                <Label text="Create Advertisement"
-                       styleClass="page-title"/>
+                <Label
+                        fx:id="pageTitle"
+                        text="Create Advertisement"
+                        styleClass="page-title"/>
 
                 <!-- ================= GENERAL INFORMATION ================= -->
 
@@ -134,7 +136,9 @@
                        visible="false"/>
 
 
-                <Button text="Publish Advertisement"
+                <Button
+                        fx:id="publishButton"
+                        text="Publish Advertisement"
                         styleClass="publish-button"
                         onAction="#publishAdvertisement"/>
 
