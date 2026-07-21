@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.advertisement.MyAdvertisementCardController"
+
+        fx:id="root"
+
+        spacing="10"
+
+        prefWidth="280"
+
+        styleClass="advertisement-card">
+
+    <padding>
+
+        <Insets top="12"
+                right="12"
+                left="12"
+                bottom="12"/>
+
+    </padding>
+
+    <Label
+            fx:id="titleLabel"
+            styleClass="ad-title"/>
+
+    <Label
+            fx:id="priceLabel"
+            styleClass="ad-price"/>
+
+    <HBox spacing="8">
+
+        <Label text="Status:"/>
+
+        <Label
+                fx:id="statusLabel"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label
+                fx:id="timeLabel"/>
+
+    </HBox>
+
+    <HBox
+            fx:id="actionsBox"
+            spacing="8">
+
+        <Button
+                fx:id="editButton"
+                text="Edit"/>
+
+        <Button
+                fx:id="soldButton"
+                text="Sold"/>
+
+        <Button
+                fx:id="deleteButton"
+                text="Delete"/>
+
+    </HBox>
+
+</VBox>

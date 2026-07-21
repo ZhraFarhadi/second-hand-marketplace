@@ -1,11 +1,12 @@
 package com.secondhand.frontend.navigation;
 
+import com.secondhand.frontend.controller.advertisement.CreateAdvertisementController;
 import com.secondhand.frontend.controller.conversation.ChatController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.secondhand.frontend.controller.advertisement.AdvertisementDetailsController;
-
+import com.secondhand.frontend.controller.advertisement.CreateAdvertisementController;
 import java.io.IOException;
 
 public class NavigationManager {
@@ -222,13 +223,42 @@ public class NavigationManager {
 
     public static void showCreateAdvertisement() {
 
-        loadScene(
-                "/view/advertisement/create-advertisement.fxml",
-                "/css/header.css",
-                "/css/create-advertisement.css"
-        );
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/advertisement/create-advertisement.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            scene.getStylesheets().add(
+                    NavigationManager.class.getResource(
+                            "/css/header.css"
+                    ).toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class.getResource(
+                            "/css/create-advertisement.css"
+                    ).toExternalForm()
+            );
+
+            primaryStage.setScene(scene);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
     }
+
 
 
 
@@ -265,6 +295,86 @@ public class NavigationManager {
         );
 
     }
+
+    public static void showMyAdvertisements() {
+
+        loadScene(
+                "/view/advertisement/my-advertisements.fxml",
+                "/css/header.css",
+                "/css/my-advertisements.css"
+        );
+
+    }
+
+
+    public static void showEditAdvertisement(
+            Long advertisementId
+    ) {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/advertisement/create-advertisement.fxml"
+                            )
+                    );
+
+            boolean maximized =
+                    primaryStage.isMaximized();
+
+            double width =
+                    primaryStage.getWidth();
+
+            double height =
+                    primaryStage.getHeight();
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/create-advertisement.css")
+                            .toExternalForm()
+            );
+
+            CreateAdvertisementController controller =
+                    loader.getController();
+
+            controller.loadAdvertisementForEdit(
+                    advertisementId
+            );
+
+            primaryStage.setScene(scene);
+
+            if (maximized) {
+
+                primaryStage.setMaximized(true);
+
+            } else {
+
+                primaryStage.setWidth(width);
+
+                primaryStage.setHeight(height);
+
+            }
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
 
 
 }

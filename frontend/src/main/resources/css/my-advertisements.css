@@ -1,0 +1,51 @@
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.flow-pane {
+    -fx-padding: 20;
+}
+
+.advertisement-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #dddddd;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+}
+
+.ad-title {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.ad-price {
+    -fx-font-size: 18;
+    -fx-text-fill: #1f8f4d;
+    -fx-font-weight: bold;
+}
+
+#statusLabel {
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+#editButton {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+#soldButton {
+    -fx-background-color: #22c55e;
+    -fx-text-fill: white;
+}
+
+#deleteButton {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}

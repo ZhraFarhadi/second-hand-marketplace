@@ -32,6 +32,9 @@ public class HomeController {
     @FXML
     private Button chatButton;
 
+    @FXML
+    private Button myAdvertisementsButton;
+
     private final AdvertisementRepository advertisementRepository =
             AdvertisementRepository.getInstance();
 
@@ -83,6 +86,14 @@ public class HomeController {
             NavigationManager.showConversationList();
 
         });
+
+        myAdvertisementsButton.setOnAction(event -> {
+
+            NavigationManager.showMyAdvertisements();
+
+        });
+
+
 
         loadAdvertisements();
 

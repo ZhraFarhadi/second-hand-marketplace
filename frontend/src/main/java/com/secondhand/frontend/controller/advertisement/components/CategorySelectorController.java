@@ -157,4 +157,36 @@ public class CategorySelectorController {
 
     }
 
+    public void selectCategory(Long subcategoryId) {
+
+        for (Category category : categoryComboBox.getItems()) {
+
+            for (Subcategory subcategory : category.getSubcategories()) {
+
+                if (subcategory.getId().equals(subcategoryId)) {
+
+                    categoryComboBox.setValue(category);
+
+                    subcategoryComboBox.getItems().setAll(
+                            category.getSubcategories()
+                    );
+
+                    subcategoryComboBox.setValue(subcategory);
+
+                    if (subcategorySelectedListener != null) {
+
+                        subcategorySelectedListener.accept(subcategory);
+
+                    }
+
+                    return;
+
+                }
+
+            }
+
+        }
+
+    }
+
 }
