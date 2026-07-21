@@ -33,4 +33,10 @@ public interface AdvertisementRepository
     boolean existsByCategoryAndDeletedAtIsNull(Category category);
 
 
+
+    Page<Advertisement> findAllByOrderByCreatedAtDesc(
+            Pageable pageable
+    );
+
+
 }

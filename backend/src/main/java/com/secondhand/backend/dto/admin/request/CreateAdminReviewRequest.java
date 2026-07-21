@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,8 +19,7 @@ public class CreateAdminReviewRequest {
     private ReviewStatus reviewStatus;
 
     @NotBlank(message = "Comment is required.")
-    @Size(max = 1000,
-            message = "Comment must not exceed 1000 characters.")
+    @Size(max = 1000)
     private String comment;
 
 }

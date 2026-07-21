@@ -1,6 +1,8 @@
 package com.secondhand.backend.mapper.interfaces;
 
 
+import com.secondhand.backend.dto.admin.response.AdminUserDetailsResponse;
+import com.secondhand.backend.dto.admin.response.AdminUserSummaryResponse;
 import com.secondhand.backend.dto.auth.request.RegisterRequest;
 import com.secondhand.backend.dto.auth.response.LoginResponse;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
@@ -30,4 +32,14 @@ public interface UserMapper {
     SellerProfileResponse toSellerProfileResponse(
             User user
     );
+
+    AdminUserSummaryResponse toAdminSummaryResponse(
+            User user
+    );
+
+    AdminUserDetailsResponse toAdminDetailsResponse(
+            User user
+    );
+
+
 }

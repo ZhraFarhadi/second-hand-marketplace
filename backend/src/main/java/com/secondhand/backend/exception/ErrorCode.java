@@ -328,6 +328,47 @@ public enum ErrorCode {
             "Advertisement has already been reviewed."
     ),
 
+    ADVERTISEMENT_NOT_PENDING(
+            HttpStatus.BAD_REQUEST,
+            "Advertisement is not pending review."
+    ),
+
+    ADMIN_REVIEW_COMMENT_REQUIRED(
+            HttpStatus.BAD_REQUEST,
+            "Review comment is required."
+    ),
+
+    USER_ALREADY_BLOCKED(
+            HttpStatus.BAD_REQUEST,
+            "User is already blocked."
+    ),
+
+    USER_ALREADY_ACTIVE(
+            HttpStatus.BAD_REQUEST,
+            "User is already active."
+    ),
+
+    CANNOT_BLOCK_ADMIN(
+            HttpStatus.BAD_REQUEST,
+            "Administrator accounts cannot be blocked."
+    ),
+
+    CANNOT_BLOCK_YOURSELF(
+            HttpStatus.BAD_REQUEST,
+            "You cannot block your own account."
+    ),
+
+
+    ADMIN_CANNOT_BLOCK_SELF(
+            HttpStatus.BAD_REQUEST,
+            "You cannot change your own account status."
+    ),
+
+    ADMIN_STATUS_CHANGE_NOT_ALLOWED(
+            HttpStatus.BAD_REQUEST,
+            "Another administrator cannot be blocked or activated."
+    ),
+
     /*
      * ==========================
      * Common

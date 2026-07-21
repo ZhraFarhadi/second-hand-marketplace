@@ -3,6 +3,8 @@ package com.secondhand.backend.repository;
 import com.secondhand.backend.entity.User;
 import com.secondhand.backend.enums.AccountStatus;
 import com.secondhand.backend.enums.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByPhoneNumber(String phoneNumber);
+
+    Page<User> findAllByOrderByCreatedAtDesc(
+            Pageable pageable
+    );
+
+    Page<User> findByAccountStatusOrderByCreatedAtDesc(
+            AccountStatus accountStatus,
+            Pageable pageable
+    );
 
 }

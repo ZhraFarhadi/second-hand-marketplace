@@ -29,4 +29,10 @@ public interface AdminReviewRepository
             Advertisement advertisement
     );
 
+    Page<AdminReview>
+    findByAdvertisementOrderByReviewedAtDesc(
+            Advertisement advertisement,
+            Pageable pageable
+    );
+
 }

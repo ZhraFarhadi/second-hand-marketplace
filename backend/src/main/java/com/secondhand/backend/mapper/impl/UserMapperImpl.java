@@ -1,4 +1,6 @@
 package com.secondhand.backend.mapper.impl;
+import com.secondhand.backend.dto.admin.response.AdminUserDetailsResponse;
+import com.secondhand.backend.dto.admin.response.AdminUserSummaryResponse;
 import com.secondhand.backend.dto.auth.request.RegisterRequest;
 import com.secondhand.backend.dto.auth.response.LoginResponse;
 import com.secondhand.backend.dto.auth.response.UserProfileResponse;
@@ -114,5 +116,54 @@ public class UserMapperImpl
         );
 
     }
+
+    @Override
+    public AdminUserSummaryResponse toAdminSummaryResponse(
+            User user
+    ) {
+
+        if (user == null) {
+            return null;
+        }
+
+        return new AdminUserSummaryResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRole(),
+                user.getAccountStatus(),
+                user.getAverageRating(),
+                user.getRatingCount()
+        );
+
+    }
+
+    @Override
+    public AdminUserDetailsResponse toAdminDetailsResponse(
+            User user
+    ) {
+
+        if (user == null) {
+            return null;
+        }
+
+        return new AdminUserDetailsResponse(
+                user.getId(),
+                user.getFullName(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getRole(),
+                user.getAccountStatus(),
+                user.getAverageRating(),
+                user.getRatingCount(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+
+    }
+
+
 
 }
