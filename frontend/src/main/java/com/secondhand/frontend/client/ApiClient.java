@@ -13,6 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.lang.reflect.Type;
 
 public final class ApiClient {
 
@@ -110,6 +111,79 @@ public final class ApiClient {
 
     }
 
+    public static <T> T post(
+            String endpoint,
+            Object body,
+            Type responseType
+    )
+            throws IOException,
+            InterruptedException,
+            ApiException {
+
+        String json = gson.toJson(body);
+
+        HttpRequest.Builder builder =
+                HttpRequest.newBuilder()
+                        .uri(
+                                URI.create(
+                                        ApiConfig.BASE_URL + endpoint
+                                )
+                        )
+                        .timeout(
+                                Duration.ofSeconds(
+                                        ApiConfig.REQUEST_TIMEOUT_SECONDS
+                                )
+                        )
+                        .header(
+                                "Content-Type",
+                                "application/json"
+                        );
+
+        if (SessionManager.isLoggedIn()
+                && SessionManager.getToken() != null) {
+
+            builder.header(
+                    "Authorization",
+                    "Bearer " + SessionManager.getToken()
+            );
+
+        }
+
+        HttpRequest request =
+                builder.POST(
+                        HttpRequest.BodyPublishers.ofString(json)
+                ).build();
+
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        if (response.statusCode() >= 200 &&
+                response.statusCode() < 300) {
+
+            return gson.fromJson(
+                    response.body(),
+                    responseType
+            );
+
+        }
+
+        ErrorResponse error =
+                gson.fromJson(
+                        response.body(),
+                        ErrorResponse.class
+                );
+
+        throw new ApiException(
+                response.statusCode(),
+                error.getErrorCode(),
+                error.getMessage()
+        );
+
+    }
+
     public static String get(String endpoint)
             throws IOException,
             InterruptedException,
@@ -140,6 +214,9 @@ public final class ApiClient {
         HttpRequest request =
                 builder.GET().build();
 
+        System.out.println("TOKEN = " + SessionManager.getToken());
+        System.out.println("LOGGED = " + SessionManager.isLoggedIn());
+
         HttpResponse<String> response =
                 client.send(
                         request,
@@ -153,23 +230,30 @@ public final class ApiClient {
 
         }
 
+        System.out.println("STATUS = " + response.statusCode());
+        System.out.println("BODY = " + response.body());
         ErrorResponse error =
-                gson.fromJson(
-                        response.body(),
-                        ErrorResponse.class
-                );
+                gson.fromJson(response.body(), ErrorResponse.class);
+
+        if (error == null) {
+
+            throw new ApiException(
+                    response.statusCode(),
+                    "UNKNOWN_ERROR",
+                    "HTTP " + response.statusCode()
+            );
+
+        }
 
         throw new ApiException(
-
                 response.statusCode(),
-
                 error.getErrorCode(),
-
                 error.getMessage()
-
         );
 
     }
+
+
 
     public static void delete(String endpoint)
             throws IOException,
@@ -359,6 +443,86 @@ public final class ApiClient {
         );
 
     }
+
+
+    public static <T> T get(
+            String endpoint,
+            Type responseType
+    )
+            throws IOException,
+            InterruptedException,
+            ApiException {
+
+        HttpRequest.Builder builder =
+                HttpRequest.newBuilder()
+                        .uri(
+                                URI.create(
+                                        ApiConfig.BASE_URL + endpoint
+                                )
+                        )
+                        .timeout(
+                                Duration.ofSeconds(
+                                        ApiConfig.REQUEST_TIMEOUT_SECONDS
+                                )
+                        );
+
+        if (SessionManager.isLoggedIn()
+                && SessionManager.getToken() != null) {
+
+            builder.header(
+                    "Authorization",
+                    "Bearer " + SessionManager.getToken()
+            );
+
+        }
+
+        HttpRequest request =
+                builder.GET().build();
+
+        System.out.println("TOKEN = " + SessionManager.getToken());
+        System.out.println("LOGGED = " + SessionManager.isLoggedIn());
+
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        if (response.statusCode() >= 200
+                && response.statusCode() < 300) {
+
+            return gson.fromJson(
+                    response.body(),
+                    responseType
+            );
+
+        }
+        System.out.println("STATUS = " + response.statusCode());
+        System.out.println("BODY = " + response.body());
+
+
+        ErrorResponse error =
+                gson.fromJson(response.body(), ErrorResponse.class);
+
+        if (error == null) {
+
+            throw new ApiException(
+                    response.statusCode(),
+                    "UNKNOWN_ERROR",
+                    "HTTP " + response.statusCode()
+            );
+
+        }
+
+        throw new ApiException(
+                response.statusCode(),
+                error.getErrorCode(),
+                error.getMessage()
+        );
+
+    }
+
+
 
 
 }
