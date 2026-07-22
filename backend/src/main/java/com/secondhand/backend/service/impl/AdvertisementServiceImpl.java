@@ -26,6 +26,8 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 @Transactional
@@ -41,6 +43,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
+
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * create()
@@ -139,6 +145,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 advertisement,
                 request.getImages()
         );
+
+// حذف تصاویر قبلی را همین الان داخل دیتابیس اعمال کن
+        entityManager.flush();
 
         replaceAttributes(
                 advertisement,
@@ -583,7 +592,22 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             List<AdvertisementImageRequest> images
     ) {
 
-        advertisement.getImages().clear();
+        Iterator<AdvertisementImage> iterator =
+                advertisement.getImages().iterator();
+
+        while (iterator.hasNext()) {
+
+            AdvertisementImage image =
+                    iterator.next();
+
+            iterator.remove();
+
+            image.setAdvertisement(null);
+
+        }
+
+        // این خط خیلی مهم است
+        advertisementRepository.flush();
 
         buildImages(
                 advertisement,

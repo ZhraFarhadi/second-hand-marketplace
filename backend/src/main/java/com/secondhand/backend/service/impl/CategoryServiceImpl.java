@@ -2,10 +2,7 @@ package com.secondhand.backend.service.impl;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
-import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
-import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
-import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
+import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.entity.Category;
 import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
@@ -119,12 +116,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategorySummaryResponse> getCategories() {
-        return categoryRepository.findAllByParentIsNullOrderByNameAsc()
-                .stream()
-                .map(categoryMapper::toSummaryResponse)
-                .toList();
+    public List<CategoryDetailsResponse> getCategories() {
 
+        System.out.println("STEP A");
+
+        List<CategoryDetailsResponse> result =
+                categoryRepository
+                        .findAllByParentIsNullOrderByNameAsc()
+                        .stream()
+                        .map(categoryMapper::toDetailsResponse)
+                        .toList();
+
+        System.out.println("STEP B");
+        System.out.println(result.size());
+
+        return result;
     }
 
     @Override

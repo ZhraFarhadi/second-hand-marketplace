@@ -2,10 +2,7 @@ package com.secondhand.backend.controller;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
-import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
-import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
-import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
+import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.service.interfaces.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -67,10 +64,9 @@ public class CategoryController {
     }
 
     @GetMapping("/root")
-    public List<CategorySummaryResponse> getRootCategories() {
-
+    public List<CategoryDetailsResponse> getRootCategories() {
+        System.out.println("ENTER CategoryController.getRootCategories");
         return categoryService.getCategories();
-
     }
 
     @GetMapping("/{categoryId}")

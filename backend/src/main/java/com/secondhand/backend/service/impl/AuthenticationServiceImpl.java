@@ -39,25 +39,33 @@ public class AuthenticationServiceImpl
         userRepository.save(user);
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
 
+        System.out.println("STEP 1");
+
         User user =
                 getUserByUsername(request.getUsername());
 
-        validateLogin(
-                user,
-                request.getPassword()
-        );
+        System.out.println("STEP 2");
+
+        validateLogin(user, request.getPassword());
+
+        System.out.println("STEP 3");
 
         String token =
                 jwtService.generateToken(user);
 
-        return userMapper.toLoginResponse(
-                user,
-                token
-        );
+        System.out.println("STEP 4");
+
+        LoginResponse response =
+                userMapper.toLoginResponse(user, token);
+
+        System.out.println("STEP 5");
+
+        return response;
     }
 
     private void validateRegistrationData(
@@ -124,28 +132,25 @@ public class AuthenticationServiceImpl
                 );
     }
 
-    private void validateLogin(
-            User user,
-            String password
-    ) {
+    private void validateLogin(User user, String password) {
 
-        if (user.getAccountStatus()
-                == AccountStatus.BLOCKED) {
+        boolean match = passwordEncoder.matches(password, user.getPassword());
 
-            throw new BusinessException(
-                    ErrorCode.USER_BLOCKED
-            );
-        }
+        System.out.println("Password match = " + match);
 
-        if (!passwordEncoder.matches(
-                password,
-                user.getPassword())) {
-
+        if (!match) {
             throw new BusinessException(
                     ErrorCode.INVALID_CREDENTIALS
             );
         }
 
+        if (user.getAccountStatus() == AccountStatus.BLOCKED) {
+            throw new BusinessException(
+                    ErrorCode.USER_BLOCKED
+            );
+        }
     }
+
+
 
 }

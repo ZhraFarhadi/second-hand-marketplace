@@ -63,6 +63,8 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
 
+        ex.printStackTrace();   // <<< اضافه کن
+
         ErrorResponse response = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())

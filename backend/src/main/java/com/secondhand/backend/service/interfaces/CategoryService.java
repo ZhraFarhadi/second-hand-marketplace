@@ -2,10 +2,7 @@ package com.secondhand.backend.service.interfaces;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
-import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
-import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
-import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
+import com.secondhand.backend.dto.category.response.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public interface CategoryService {
             Long categoryId
     );
 
-    List<CategorySummaryResponse> getCategories();
+    List<CategoryDetailsResponse> getCategories();
 
     CategoryWithAttributesResponse getCategoryDetails(
             Long categoryId
