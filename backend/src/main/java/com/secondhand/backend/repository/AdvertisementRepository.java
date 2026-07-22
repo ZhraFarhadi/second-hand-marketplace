@@ -38,5 +38,13 @@ public interface AdvertisementRepository
             Pageable pageable
     );
 
+    long countByStatus(AdvertisementStatus status);
+
+    long countByStatusAndDeletedAtIsNull(
+            AdvertisementStatus status
+    );
+
+    long countByDeletedAtIsNull();
+
 
 }

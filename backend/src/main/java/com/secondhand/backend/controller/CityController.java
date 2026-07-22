@@ -24,7 +24,4 @@ public class CityController {
         return cityService.getCityDetails(cityId);
 
     }
-
-
-
 }

@@ -39,4 +39,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
             Pageable pageable
     );
 
+    long countByAccountStatus(
+            AccountStatus accountStatus
+    );
+
 }

@@ -22,10 +22,20 @@ public interface CategoryAttributeRepository
             String name
     );
 
+    boolean existsByCategoryAndNameIgnoreCaseAndIdNot(
+            Category category,
+            String name,
+            Long id
+    );
+
     Optional<CategoryAttribute> findById(
             Long id
     );
 
     boolean existsByCategory(Category category);
+
+    boolean existsByAdvertisementAttributesIsNotEmpty(
+            CategoryAttribute categoryAttribute
+    );
 
 }

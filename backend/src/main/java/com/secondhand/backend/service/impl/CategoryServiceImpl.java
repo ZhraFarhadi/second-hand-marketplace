@@ -275,6 +275,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         validateHasNoAdvertisements(category);
 
+        validateHasNoAttributes(category);
+
     }
 
 
@@ -433,6 +435,20 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         if (categoryAttributeRepository.existsByCategory(parent)) {
+
+            throw new BusinessException(
+                    ErrorCode.CATEGORY_HAS_ATTRIBUTES
+            );
+
+        }
+
+    }
+
+    private void validateHasNoAttributes(
+            Category category
+    ) {
+
+        if (categoryAttributeRepository.existsByCategory(category)) {
 
             throw new BusinessException(
                     ErrorCode.CATEGORY_HAS_ATTRIBUTES
