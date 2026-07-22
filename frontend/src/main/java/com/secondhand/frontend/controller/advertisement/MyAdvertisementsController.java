@@ -1,5 +1,6 @@
 package com.secondhand.frontend.controller.advertisement;
 
+import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.dto.advertisement.response.MyAdvertisementSummaryResponse;
 import com.secondhand.frontend.repository.AdvertisementRepository;
 import javafx.fxml.FXML;
@@ -68,5 +69,16 @@ public class MyAdvertisementsController {
         }
 
     }
+
+    @FXML
+    private HeaderController headerController;
+
+    public void setBackVisible(boolean visible) {
+
+        headerController.setBackVisible(visible);
+
+    }
+
+
 
 }

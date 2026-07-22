@@ -9,7 +9,10 @@
         fx:controller="com.secondhand.frontend.controller.advertisement.MyAdvertisementsController">
 
     <top>
-        <fx:include source="../components/header.fxml"/>
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
+
     </top>
 
     <center>

@@ -28,6 +28,12 @@
                 left="20"/>
     </padding>
 
+    <Button fx:id="backButton"
+            text="←"
+            onAction="#goBack"
+            managed="false"
+            visible="false"/>
+
     <Label
             text="Marketplace"
             styleClass="logo"/>
@@ -41,10 +47,9 @@
     <Button text="+ New Advertisement"
             onAction="#showCreateAdvertisement"/>
 
-    <Button text="Profile"/>
+    <Button
+            text="Profile"
+            onAction="#showProfile"/>
 
-    <Button fx:id="logoutButton"
-            text="Logout"
-            onAction="#logout"/>
 
 </HBox>

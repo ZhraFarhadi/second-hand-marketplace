@@ -24,17 +24,15 @@ public class CityService {
         return INSTANCE;
     }
 
-    public List<CitySummaryResponse> getCities()
+    public List<CitySummaryResponse> getCitiesByProvince(Long provinceId)
             throws Exception {
 
         String response =
-                ApiClient.get("/cities");
+                ApiClient.get("/provinces/" + provinceId + "/cities");
 
         Type type =
-                new TypeToken<List<CitySummaryResponse>>(){}.getType();
+                new TypeToken<List<CitySummaryResponse>>() {}.getType();
 
         return gson.fromJson(response, type);
-
     }
-
 }

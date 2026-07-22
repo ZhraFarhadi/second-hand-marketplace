@@ -362,6 +362,9 @@ public final class ApiClient {
 
         }
 
+        System.out.println("STATUS = " + response.statusCode());
+        System.out.println("BODY = " + response.body());
+
         ErrorResponse error =
                 gson.fromJson(
                         response.body(),
@@ -522,6 +525,130 @@ public final class ApiClient {
 
     }
 
+
+    public static <T> T put(
+            String endpoint,
+            Object body,
+            Type responseType
+    )
+            throws IOException,
+            InterruptedException,
+            ApiException {
+
+        String json = gson.toJson(body);
+
+        HttpRequest.Builder builder =
+                HttpRequest.newBuilder()
+                        .uri(URI.create(ApiConfig.BASE_URL + endpoint))
+                        .timeout(Duration.ofSeconds(
+                                ApiConfig.REQUEST_TIMEOUT_SECONDS))
+                        .header("Content-Type","application/json");
+
+        if (SessionManager.isLoggedIn()
+                && SessionManager.getToken() != null) {
+
+            builder.header(
+                    "Authorization",
+                    "Bearer " + SessionManager.getToken()
+            );
+
+        }
+
+        HttpRequest request =
+                builder.PUT(
+                        HttpRequest.BodyPublishers.ofString(json)
+                ).build();
+
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        if (response.statusCode() >= 200 &&
+                response.statusCode() < 300) {
+
+            return gson.fromJson(
+                    response.body(),
+                    responseType
+            );
+
+        }
+
+        ErrorResponse error =
+                gson.fromJson(
+                        response.body(),
+                        ErrorResponse.class
+                );
+
+        throw new ApiException(
+                response.statusCode(),
+                error.getErrorCode(),
+                error.getMessage()
+        );
+
+    }
+
+
+    public static void patch(
+            String endpoint,
+            Object body
+    )
+            throws IOException,
+            InterruptedException,
+            ApiException {
+
+        String json = gson.toJson(body);
+
+        HttpRequest.Builder builder =
+                HttpRequest.newBuilder()
+                        .uri(URI.create(ApiConfig.BASE_URL + endpoint))
+                        .timeout(Duration.ofSeconds(
+                                ApiConfig.REQUEST_TIMEOUT_SECONDS))
+                        .header("Content-Type","application/json");
+
+        if (SessionManager.isLoggedIn()
+                && SessionManager.getToken() != null) {
+
+            builder.header(
+                    "Authorization",
+                    "Bearer " + SessionManager.getToken()
+            );
+
+        }
+
+        HttpRequest request =
+                builder.method(
+                        "PATCH",
+                        HttpRequest.BodyPublishers.ofString(json)
+                ).build();
+
+        HttpResponse<String> response =
+                client.send(
+                        request,
+                        HttpResponse.BodyHandlers.ofString()
+                );
+
+        if (response.statusCode() >= 200 &&
+                response.statusCode() < 300) {
+
+            return;
+
+        }
+
+        ErrorResponse error =
+                gson.fromJson(
+                        response.body(),
+                        ErrorResponse.class
+                );
+
+        throw new ApiException(
+                response.statusCode(),
+                error.getErrorCode(),
+                error.getMessage()
+        );
+
+    }
 
 
 

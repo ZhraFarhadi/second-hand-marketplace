@@ -1,5 +1,6 @@
 package com.secondhand.frontend.controller.conversation;
 
+import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.dto.common.PageResponse;
 import com.secondhand.frontend.dto.conversation.response.ConversationSummaryResponse;
 import com.secondhand.frontend.navigation.NavigationManager;
@@ -68,6 +69,15 @@ public class ConversationListController {
             }
 
         });
+
+    }
+
+    @FXML
+    private HeaderController headerController;
+
+    public void setBackVisible(boolean visible) {
+
+        headerController.setBackVisible(visible);
 
     }
 

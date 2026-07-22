@@ -4,14 +4,27 @@ import java.util.List;
 
 public class Category {
 
+    private final Long id;
+
     private final String name;
 
     private final List<Subcategory> subcategories;
 
-    public Category(String name, List<Subcategory> subcategories) {
+    public Category(
+            Long id,
+            String name,
+            List<Subcategory> subcategories
+    ) {
 
+        this.id = id;
         this.name = name;
         this.subcategories = subcategories;
+
+    }
+
+    public Long getId() {
+
+        return id;
 
     }
 

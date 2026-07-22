@@ -53,40 +53,44 @@ public class LoginController {
     @FXML
     private void handleLogin() {
 
-        hideErrors();
-
-        String username = usernameComponentController.getText().trim();
-        String password = passwordComponentController.getText();
-
-        boolean hasError = false;
-
-        if (username.isEmpty()) {
-
-            showUsernameError("Username is required.");
-            hasError = true;
-
-        }
-
-        if (password.isEmpty()) {
-
-            showPasswordError("Password is required.");
-            hasError = true;
-
-        }
-
-        if (hasError) {
-            return;
-        }
+        System.out.println("===== Login button clicked =====");
 
         try {
 
-            LoginRequest request = new LoginRequest();
+            hideErrors();
 
+            String username = usernameComponentController.getText().trim();
+            String password = passwordComponentController.getText();
+
+            System.out.println("Username = " + username);
+            System.out.println("Password length = " + password.length());
+
+            boolean hasError = false;
+
+            if (username.isEmpty()) {
+                showUsernameError("Username is required.");
+                hasError = true;
+            }
+
+            if (password.isEmpty()) {
+                showPasswordError("Password is required.");
+                hasError = true;
+            }
+
+            if (hasError) {
+                System.out.println("Validation failed");
+                return;
+            }
+
+            System.out.println("Calling AuthenticationService...");
+
+            LoginRequest request = new LoginRequest();
             request.setUsername(username);
             request.setPassword(password);
 
-            LoginResponse response =
-                    authenticationService.login(request);
+            LoginResponse response = authenticationService.login(request);
+
+            System.out.println("Returned from AuthenticationService");
 
             Role role = Role.valueOf(response.getRole());
 
@@ -97,26 +101,19 @@ public class LoginController {
                     response.getToken()
             );
 
+            System.out.println("Going to Home");
+
             NavigationManager.showHome();
 
         }
-
-        catch (ApiException ex) {
-
-            handleLoginError(ex);
-
-        }
-
         catch (Exception ex) {
 
-            showGeneralError(
-                    "Unable to connect to server."
-            );
+            System.out.println("===== EXCEPTION =====");
+            ex.printStackTrace();
 
+            showGeneralError(ex.getMessage());
         }
-
     }
-
 
 
     private void hideErrors() {
@@ -159,30 +156,31 @@ public class LoginController {
 
     private void handleLoginError(ApiException ex) {
 
-        switch (ex.getErrorCode()) {
+        String errorCode = ex.getErrorCode();
+
+        if (errorCode == null) {
+
+            showGeneralError(ex.getMessage());
+            return;
+
+        }
+
+        switch (errorCode) {
 
             case "INVALID_CREDENTIALS" ->
-
                     showPasswordError(
                             "Username or password is incorrect."
                     );
 
             case "USER_BLOCKED" ->
-
                     showGeneralError(
                             "Your account has been blocked."
                     );
 
             default ->
-
-                    showGeneralError(
-                            ex.getMessage()
-                    );
+                    showGeneralError(ex.getMessage());
 
         }
-
-
-
 
     }
 

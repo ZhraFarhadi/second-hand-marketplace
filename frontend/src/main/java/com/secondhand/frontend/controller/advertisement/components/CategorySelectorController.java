@@ -4,6 +4,7 @@ import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
 import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 import com.secondhand.frontend.model.Category;
 import com.secondhand.frontend.model.Subcategory;
+import com.secondhand.frontend.repository.CategoryRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 
@@ -21,8 +22,7 @@ public class CategorySelectorController {
 
     private Consumer<Subcategory> subcategorySelectedListener;
 
-    private List<CategoryDetailsResponse> categories =
-            new ArrayList<>();
+
 
     @FXML
     public void initialize() {
@@ -32,30 +32,38 @@ public class CategorySelectorController {
             setCategoryError(false);
             setSubcategoryError(false);
 
-            Category selectedCategory =
-                    categoryComboBox.getValue();
+            Category selectedCategory = categoryComboBox.getValue();
 
             subcategoryComboBox.getItems().clear();
 
-            if (selectedCategory != null) {
+            if (selectedCategory == null)
+                return;
 
-                subcategoryComboBox
-                        .getItems()
-                        .addAll(selectedCategory.getSubcategories());
+            try {
+
+                var children =
+                        CategoryRepository
+                                .getInstance()
+                                .getChildren(selectedCategory.getId());
+
+                for (var child : children) {
+
+                    subcategoryComboBox.getItems().add(
+
+                            new Subcategory(
+                                    child.getId(),
+                                    child.getName()
+                            )
+
+                    );
+
+                }
 
             }
 
-        });
+            catch (Exception e) {
 
-        subcategoryComboBox.setOnAction(event -> {
-
-            setSubcategoryError(false);
-
-            if (subcategorySelectedListener != null) {
-
-                subcategorySelectedListener.accept(
-                        subcategoryComboBox.getValue()
-                );
+                e.printStackTrace();
 
             }
 
@@ -63,33 +71,18 @@ public class CategorySelectorController {
 
     }
 
-    public void setCategories(List<CategoryDetailsResponse> categories) {
-
-        this.categories = categories;
+    public void setCategories(List<CategorySummaryResponse> categories) {
 
         categoryComboBox.getItems().clear();
 
-        for (CategoryDetailsResponse category : categories) {
+        for (CategorySummaryResponse category : categories) {
 
             Category uiCategory =
                     new Category(
+                            category.getId(),
                             category.getName(),
                             new ArrayList<>()
                     );
-
-            for (CategorySummaryResponse child
-                    : category.getChildren()) {
-
-                uiCategory.getSubcategories().add(
-
-                        new Subcategory(
-                                child.getId(),
-                                child.getName()
-                        )
-
-                );
-
-            }
 
             categoryComboBox.getItems().add(uiCategory);
 

@@ -10,7 +10,9 @@
             fx:controller="com.secondhand.frontend.controller.advertisement.CreateAdvertisementController">
 
     <top>
-        <fx:include source="../components/header.fxml"/>
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
     </top>
 
     <center>
@@ -86,7 +88,10 @@
                     <fx:include fx:id="descriptionComponent"
                                 source="../components/floating-text-area.fxml"/>
 
-                    <HBox spacing="20">
+                    <HBox spacing="30"
+                          alignment="TOP_LEFT">
+
+                        <!-- Price -->
 
                         <VBox HBox.hgrow="ALWAYS"
                               prefWidth="260">
@@ -97,11 +102,30 @@
 
                         </VBox>
 
-                        <VBox HBox.hgrow="ALWAYS"
-                              prefWidth="260">
+                        <!-- Province -->
+
+                        <VBox spacing="8"
+                              prefWidth="250">
+
+                            <Label text="Province"
+                                   styleClass="field-label"/>
+
+                            <ComboBox fx:id="provinceComboBox"
+                                      prefWidth="250"
+                                      promptText="Select Province"/>
+
+                        </VBox>
+
+                        <!-- City -->
+
+                        <VBox spacing="8"
+                              prefWidth="250">
+
+                            <Label text="City"
+                                   styleClass="field-label"/>
 
                             <ComboBox fx:id="cityComboBox"
-                                      prefWidth="220"
+                                      prefWidth="250"
                                       promptText="Select City"/>
 
                         </VBox>

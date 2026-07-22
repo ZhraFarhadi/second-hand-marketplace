@@ -27,8 +27,16 @@ public final class AuthenticationService {
         String response =
                 ApiClient.post("/auth/login", request);
 
-        return GSON.fromJson(response, LoginResponse.class);
+        System.out.println("RAW RESPONSE = " + response);
 
+        LoginResponse loginResponse =
+                GSON.fromJson(response, LoginResponse.class);
+
+        System.out.println("USER = " + loginResponse.getUsername());
+        System.out.println("ROLE = " + loginResponse.getRole());
+        System.out.println("TOKEN = " + loginResponse.getToken());
+
+        return loginResponse;
     }
 
     public void register(RegisterRequest request) throws Exception {

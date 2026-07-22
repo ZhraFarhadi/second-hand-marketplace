@@ -11,7 +11,7 @@ public class CategoryRepository {
     private static final CategoryRepository INSTANCE =
             new CategoryRepository();
 
-    private final CategoryService service =
+    private final CategoryService categoryService =
             CategoryService.getInstance();
 
     private CategoryRepository() {
@@ -21,17 +21,30 @@ public class CategoryRepository {
         return INSTANCE;
     }
 
-    public List<CategoryDetailsResponse> getCategories()
+    /**
+     * فقط دسته‌بندی‌های ریشه را برمی‌گرداند.
+     */
+    public List<CategorySummaryResponse> getRootCategories()
             throws Exception {
 
-        return service.getRootCategories();
+        return categoryService.getRootCategories();
 
     }
 
+    /**
+     * جزئیات یک دسته‌بندی شامل Attributeها را برمی‌گرداند.
+     */
     public CategoryDetailsResponse getCategory(Long id)
             throws Exception {
 
-        return service.getCategory(id);
+        return categoryService.getCategory(id);
+
+    }
+
+    public List<CategorySummaryResponse> getChildren(Long categoryId)
+            throws Exception {
+
+        return categoryService.getChildren(categoryId);
 
     }
 

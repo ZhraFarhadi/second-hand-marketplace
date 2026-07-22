@@ -13,6 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import com.secondhand.frontend.repository.AdvertisementRepository;
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 public class MyAdvertisementCardController {
 
     @FXML
@@ -43,6 +46,13 @@ public class MyAdvertisementCardController {
     private Button deleteButton;
 
     private MyAdvertisementSummaryResponse advertisement;
+
+
+    @FXML
+    private ImageView advertisementImageView;
+
+    @FXML
+    private Label cityLabel;
 
     @FXML
     public void initialize() {
@@ -207,8 +217,19 @@ public class MyAdvertisementCardController {
                 advertisement.getTitle()
         );
 
+        if (advertisement.getPrimaryImageUrl() != null) {
+
+            advertisementImageView.setImage(
+                    new Image(
+                            advertisement.getPrimaryImageUrl(),
+                            true
+                    )
+            );
+
+        }
+
         priceLabel.setText(
-                advertisement.getPrice().toPlainString()
+                advertisement.getPrice().toPlainString() + " تومان"
         );
 
         statusLabel.setText(
@@ -264,6 +285,13 @@ public class MyAdvertisementCardController {
                     );
 
         }
+
+        System.out.println("Title = " + advertisement.getTitle());
+        System.out.println("Price = " + advertisement.getPrice());
+        System.out.println("Status = " + advertisement.getStatus());
+        System.out.println("Created = " + advertisement.getCreatedAt());
     }
+
+
 
 }

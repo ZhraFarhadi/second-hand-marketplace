@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import com.secondhand.frontend.util.RelativeTimeUtil;
+import com.secondhand.frontend.repository.FavoriteRepository;
 
 public class AdvertisementDetailsController {
 
@@ -46,10 +47,24 @@ public class AdvertisementDetailsController {
 
     private Long advertisementId;
 
+    @FXML
+    private Label favoriteButton;
+
+
     private StackPane selectedThumbnail;
+
+    private final FavoriteRepository favoriteRepository =
+            new FavoriteRepository();
 
     @FXML
     public void initialize() {
+
+
+        favoriteButton.setOnMouseClicked(e -> {
+
+            favoriteClicked();
+
+        });
         // منتظر loadAdvertisement می‌مانیم
     }
 
@@ -108,6 +123,23 @@ public class AdvertisementDetailsController {
                         advertisement.getCreatedAt()
                 )
         );
+        favorite = advertisement.isFavorite();
+
+        updateFavoriteIcon();
+
+        if (advertisement.isOwner()) {
+
+            favoriteButton.setVisible(false);
+            favoriteButton.setManaged(false);
+
+        }
+        else {
+
+            favoriteButton.setVisible(true);
+            favoriteButton.setManaged(true);
+
+        }
+
 
         loadImages(advertisement);
 
@@ -228,6 +260,56 @@ public class AdvertisementDetailsController {
             );
 
             attributesContainer.getChildren().add(row);
+
+        }
+
+    }
+
+    private boolean favorite;
+
+    private void updateFavoriteIcon() {
+
+        if (favorite) {
+
+            favoriteButton.setText("♥");
+
+            favoriteButton.getStyleClass().add(
+                    "favorite-heart-active"
+            );
+
+        } else {
+
+            favoriteButton.setText("♡");
+
+            favoriteButton.getStyleClass().remove(
+                    "favorite-heart-active"
+            );
+
+        }
+
+    }
+
+    @FXML
+    private void favoriteClicked() {
+
+        if (advertisementId == null)
+            return;
+
+        try {
+
+            favoriteRepository.toggleFavorite(
+                    advertisementId
+            );
+
+            favorite = !favorite;
+
+            updateFavoriteIcon();
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
 
         }
 

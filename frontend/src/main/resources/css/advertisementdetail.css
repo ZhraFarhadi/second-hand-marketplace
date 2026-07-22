@@ -332,3 +332,13 @@
     -fx-text-fill: #1b6fd8;
 
 }
+
+.favorite-heart {
+    -fx-font-size: 30px;
+    -fx-text-fill: #9a9a9a;
+    -fx-cursor: hand;
+}
+
+.favorite-heart-active {
+    -fx-text-fill: #ff3b30;
+}

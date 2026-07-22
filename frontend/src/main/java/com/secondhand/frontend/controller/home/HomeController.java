@@ -1,6 +1,7 @@
 package com.secondhand.frontend.controller.home;
 
 
+import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.AdvertisementRepository;
 import javafx.fxml.FXML;
@@ -15,7 +16,7 @@ import com.secondhand.frontend.controller.advertisement.AdvertisementCardControl
 import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.frontend.repository.CategoryRepository;
 import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
-
+import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 
 public class HomeController {
 
@@ -44,6 +45,11 @@ public class HomeController {
 
 
     @FXML
+    private HeaderController headerController;
+
+
+
+    @FXML
     public void initialize() {
 
         categoryContainer.getChildren().clear();
@@ -51,9 +57,9 @@ public class HomeController {
         try {
 
             var categories =
-                    categoryRepository.getCategories();
+                    categoryRepository.getRootCategories();
 
-            for (CategoryDetailsResponse category : categories) {
+            for (CategorySummaryResponse category : categories) {
 
                 FXMLLoader loader =
                         new FXMLLoader(
@@ -93,7 +99,11 @@ public class HomeController {
 
         });
 
+        favoritesButton.setOnAction(event -> {
 
+            NavigationManager.showFavorites();
+
+        });
 
         loadAdvertisements();
 
@@ -135,6 +145,12 @@ public class HomeController {
             e.printStackTrace();
 
         }
+
+    }
+
+    public void setBackVisible(boolean visible){
+
+        headerController.setBackVisible(visible);
 
     }
 }

@@ -15,6 +15,17 @@ module com.secondhand.frontend {
     opens com.secondhand.frontend.dto.auth.request to com.google.gson;
     opens com.secondhand.frontend.dto.auth.response to com.google.gson;
     opens com.secondhand.frontend.controller.conversation to javafx.fxml;
+    opens com.secondhand.frontend.controller.profile to javafx.fxml;
+    opens com.secondhand.frontend.dto.province.response to com.google.gson;
+    opens com.secondhand.frontend.dto.advertisement.request to com.google.gson;
+    opens com.secondhand.frontend.dto.profile.response to com.google.gson;
+    opens com.secondhand.frontend.model to com.google.gson;
+    opens com.secondhand.frontend.controller.favorite to javafx.fxml;
+    opens com.secondhand.frontend.dto.conversation.response
+            to com.google.gson;
+
+
+    exports com.secondhand.frontend.controller.profile;
 
 
 

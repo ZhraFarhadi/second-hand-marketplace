@@ -13,7 +13,10 @@
 
     <top>
 
-            <fx:include source="../components/header.fxml"/>
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
+
 
     </top>
 

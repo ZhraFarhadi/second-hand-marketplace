@@ -4,6 +4,7 @@ import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryRe
 import com.secondhand.frontend.dto.conversation.response.ConversationDetailsResponse;
 import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.ConversationRepository;
+import com.secondhand.frontend.repository.FavoriteRepository;
 import com.secondhand.frontend.util.RelativeTimeUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import com.secondhand.frontend.dto.conversation.response.ConversationDetailsResponse;
 import com.secondhand.frontend.repository.ConversationRepository;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 
@@ -33,12 +35,21 @@ public class AdvertisementCardController {
     private Label timeLabel;
 
     @FXML
-    private Button chatButton;
+    private ImageView advertisementImageView;
+
+
 
     private AdvertisementSummaryResponse advertisement;
 
-    private final ConversationRepository conversationRepository =
-            new ConversationRepository();
+    private Long advertisementId;
+
+    @FXML
+    private Label favoriteButton;
+
+
+    private boolean favorite;
+
+
 
     @FXML
     public void initialize() {
@@ -55,13 +66,6 @@ public class AdvertisementCardController {
 
         });
 
-        chatButton.setOnAction(event -> {
-
-            onChatClicked();
-
-            event.consume();
-
-        });
 
     }
 
@@ -71,16 +75,17 @@ public class AdvertisementCardController {
 
         this.advertisement = advertisement;
 
+        this.advertisementId = advertisement.getId();
+
         titleLabel.setText(
                 advertisement.getTitle()
         );
 
         priceLabel.setText(
-                advertisement.getPrice().toPlainString()
+                advertisement.getPrice().toPlainString() + " تومان"
         );
 
-        cityLabel.setText(
-                advertisement.getCity().getName()
+        cityLabel.setText(advertisement.getCity().getName()
         );
 
         timeLabel.setText(
@@ -88,6 +93,21 @@ public class AdvertisementCardController {
                         advertisement.getCreatedAt()
                 )
         );
+
+        setFavorite(advertisement.isFavorite());
+
+
+        if (advertisement.getPrimaryImageUrl() != null
+                && !advertisement.getPrimaryImageUrl().isBlank()) {
+
+            advertisementImageView.setImage(
+                    new Image(
+                            advertisement.getPrimaryImageUrl(),
+                            true
+                    )
+            );
+
+        }
 
     }
 
@@ -121,11 +141,20 @@ public class AdvertisementCardController {
 
     }
 
-    public void disableChat() {
 
-        chatButton.setVisible(false);
+    public void setFavorite(boolean favorite) {
 
-        chatButton.setManaged(false);
+        this.favorite = favorite;
+
+        updateFavoriteIcon();
+
+    }
+
+    private void updateFavoriteIcon() {
+
+        favoriteButton.setText(
+                favorite ? "♥" : "♡"
+        );
 
     }
 

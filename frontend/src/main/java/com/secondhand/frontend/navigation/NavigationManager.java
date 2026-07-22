@@ -3,6 +3,7 @@ package com.secondhand.frontend.navigation;
 import com.secondhand.frontend.controller.advertisement.CreateAdvertisementController;
 import com.secondhand.frontend.controller.conversation.ChatController;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.secondhand.frontend.controller.advertisement.AdvertisementDetailsController;
@@ -30,13 +31,14 @@ public class NavigationManager {
                     NavigationManager.class.getResource(fxmlPath)
             );
 
-            // ذخیره وضعیت فعلی Stage
+            Parent root = loader.load();
+
             boolean maximized = primaryStage.isMaximized();
 
             double width = primaryStage.getWidth();
             double height = primaryStage.getHeight();
 
-            Scene scene = new Scene(loader.load(), 900, 650);
+            Scene scene = new Scene(root, 900, 650);
 
             for (String cssPath : cssPaths) {
 
@@ -51,17 +53,46 @@ public class NavigationManager {
 
                         scene.getStylesheets().add(url.toExternalForm());
 
-                    } else {
-
-                        System.out.println("CSS NOT FOUND!");
-
                     }
+
                 }
+
+            }
+
+            Object controller = loader.getController();
+
+            if (controller instanceof com.secondhand.frontend.controller.home.HomeController home) {
+
+                home.setBackVisible(false);
+
+            }
+
+            if (controller instanceof com.secondhand.frontend.controller.profile.ProfileController profile) {
+
+                profile.setBackVisible(true);
+
+            }
+
+            if (controller instanceof com.secondhand.frontend.controller.favorite.FavoritesController favorites) {
+
+                favorites.setBackVisible(true);
+
+            }
+
+            if (controller instanceof com.secondhand.frontend.controller.advertisement.MyAdvertisementsController myAdvertisements) {
+
+                myAdvertisements.setBackVisible(true);
+
+            }
+
+            if (controller instanceof com.secondhand.frontend.controller.conversation.ConversationListController conversationList) {
+
+                conversationList.setBackVisible(true);
+
             }
 
             primaryStage.setScene(scene);
 
-            // برگرداندن اندازه قبلی پنجره
             if (maximized) {
 
                 primaryStage.setMaximized(true);
@@ -150,17 +181,13 @@ public class NavigationManager {
 
     }
 
-    private static FXMLLoader loadFXML(
-            String fxmlPath
-    ){
+    private static FXMLLoader loadFXML(String fxmlPath){
 
         try{
 
             FXMLLoader loader =
                     new FXMLLoader(
-                            NavigationManager.class.getResource(
-                                    fxmlPath
-                            )
+                            NavigationManager.class.getResource(fxmlPath)
                     );
 
             loader.load();
@@ -372,6 +399,41 @@ public class NavigationManager {
             e.printStackTrace();
 
         }
+
+    }
+
+    public static void showFavorites() {
+
+        loadScene(
+                "/view/favorite/favorites.fxml",
+                "/css/header.css",
+                "/css/home.css",
+                "/css/advertisement-card.css"
+        );
+
+    }
+
+    public static void showProfile() {
+
+
+        System.out.println("NavigationManager class = "
+                + NavigationManager.class);
+
+        System.out.println("ClassLoader = "
+                + NavigationManager.class.getClassLoader());
+
+        System.out.println("Root = "
+                + NavigationManager.class.getResource("/"));
+
+        System.out.println("Profile = "
+                + NavigationManager.class.getResource("/view/profile/profile.fxml"));
+
+
+        loadScene(
+                "/view/profile/profile.fxml",
+                "/css/header.css",
+                "/css/profile.css"
+        );
 
     }
 

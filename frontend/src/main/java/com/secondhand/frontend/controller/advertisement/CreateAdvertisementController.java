@@ -5,7 +5,8 @@ import com.secondhand.frontend.controller.advertisement.components.ImageItemCont
 import com.secondhand.frontend.controller.components.FloatingPriceFieldController;
 import com.secondhand.frontend.controller.components.FloatingTextAreaController;
 import com.secondhand.frontend.controller.components.FloatingTextFieldController;
-
+import javafx.application.Platform;
+import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.dto.advertisement.request.AdvertisementAttributeRequest;
 import com.secondhand.frontend.dto.advertisement.request.AdvertisementImageRequest;
 import com.secondhand.frontend.dto.advertisement.request.CreateAdvertisementRequest;
@@ -20,6 +21,7 @@ import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
 
 import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
 
+import com.secondhand.frontend.dto.province.response.ProvinceResponse;
 import com.secondhand.frontend.model.AttributeType;
 import com.secondhand.frontend.model.Subcategory;
 
@@ -28,6 +30,7 @@ import com.secondhand.frontend.repository.AdvertisementRepository;
 import com.secondhand.frontend.repository.CategoryRepository;
 import com.secondhand.frontend.repository.CityRepository;
 
+import com.secondhand.frontend.repository.ProvinceRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
@@ -51,7 +54,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
+
 
 
 
@@ -92,8 +95,18 @@ public class CreateAdvertisementController {
     @FXML
     private Button publishButton;
 
+    @FXML
+    private HeaderController headerController;
+
+    @FXML
+    private ComboBox<ProvinceResponse> provinceComboBox;
+
+
+
     private final List<AdvertisementImageRequest> currentImages =
             new ArrayList<>();
+
+
 
 
 
@@ -112,11 +125,9 @@ public class CreateAdvertisementController {
     private final List<CategoryAttributeResponse> currentAttributes =
             new ArrayList<>();
 
-    private final List<File> selectedImages =
-            new ArrayList<>();
 
-    private List<CategoryDetailsResponse> categories =
-            new ArrayList<>();
+    private final ProvinceRepository provinceRepository =
+            ProvinceRepository.getInstance();
 
     @FXML
     public void initialize() {
@@ -139,7 +150,22 @@ public class CreateAdvertisementController {
 
         loadCategories();
 
-        loadCities();
+        loadProvinces();
+
+        provinceComboBox.setOnAction(event -> {
+
+            ProvinceResponse province =
+                    provinceComboBox.getValue();
+
+            if (province != null) {
+
+                loadCities(province.getId());
+
+            }
+
+        });
+
+        headerController.setBackVisible(true);
 
 
         pageTitle.setText("Create Advertisement");
@@ -152,10 +178,10 @@ public class CreateAdvertisementController {
 
         try {
 
-            categories =
-                    categoryRepository.getCategories();
+            List<CategorySummaryResponse> rootCategories =
+                    categoryRepository.getRootCategories();
 
-            categorySelectorController.setCategories(categories);
+            categorySelectorController.setCategories(rootCategories);
 
         }
 
@@ -167,12 +193,15 @@ public class CreateAdvertisementController {
 
     }
 
-    private void loadCities() {
+    private void loadCities(Long provinceId) {
 
         try {
 
             var cities =
-                    cityRepository.getCities();
+                    cityRepository.getCitiesByProvince(provinceId);
+
+            System.out.println(cities);
+            System.out.println("SIZE = " + cities.size());
 
             cityComboBox.getItems().setAll(cities);
 
@@ -190,9 +219,7 @@ public class CreateAdvertisementController {
 
                         setText(null);
 
-                    }
-
-                    else {
+                    } else {
 
                         setText(item.getName());
 
@@ -216,9 +243,7 @@ public class CreateAdvertisementController {
 
                         setText("Select City");
 
-                    }
-
-                    else {
+                    } else {
 
                         setText(item.getName());
 
@@ -249,78 +274,84 @@ public class CreateAdvertisementController {
         if (subcategory == null)
             return;
 
-        CategoryDetailsResponse details = categories
-                .stream()
-                .filter(c ->
-                        c.getName().equals(subcategory.getName()))
-                .findFirst()
-                .orElse(null);
+        try {
 
-        if (details == null)
-            return;
+            CategoryDetailsResponse details =
+                    categoryRepository.getCategory(subcategory.getId());
 
-        currentAttributes.addAll(details.getAttributes());
+            if (details == null)
+                return;
 
-        HBox row = null;
+            currentAttributes.addAll(details.getAttributes());
 
-        int column = 0;
+            HBox row = null;
 
-        for (CategoryAttributeResponse attribute : currentAttributes) {
+            int column = 0;
 
-            if (column == 0) {
+            for (CategoryAttributeResponse attribute : currentAttributes) {
 
-                row = new HBox(18);
+                if (column == 0) {
 
-                specificationsContainer.getChildren().add(row);
+                    row = new HBox(18);
 
-            }
-
-            VBox fieldBox = new VBox(6);
-
-            Label label = new Label(attribute.getName());
-
-            Control input;
-
-            switch (AttributeType.valueOf(attribute.getDataType())) {
-
-                case NUMBER -> {
-
-                    TextField tf = new TextField();
-
-                    tf.setPromptText(attribute.getName());
-
-                    input = tf;
+                    specificationsContainer.getChildren().add(row);
 
                 }
 
-                default -> {
+                VBox fieldBox = new VBox(6);
 
-                    TextField tf = new TextField();
+                Label label = new Label(attribute.getName());
 
-                    tf.setPromptText(attribute.getName());
+                Control input;
 
-                    input = tf;
+                switch (AttributeType.valueOf(attribute.getDataType())) {
+
+                    case NUMBER -> {
+
+                        TextField tf = new TextField();
+
+                        tf.setPromptText(attribute.getName());
+
+                        input = tf;
+
+                    }
+
+                    default -> {
+
+                        TextField tf = new TextField();
+
+                        tf.setPromptText(attribute.getName());
+
+                        input = tf;
+
+                    }
 
                 }
 
+                input.setMaxWidth(Double.MAX_VALUE);
+
+                specificationInputs.add(input);
+
+                VBox.setVgrow(fieldBox, Priority.NEVER);
+
+                HBox.setHgrow(fieldBox, Priority.ALWAYS);
+
+                fieldBox.getChildren().addAll(label, input);
+
+                row.getChildren().add(fieldBox);
+
+                column++;
+
+                if (column == 3)
+                    column = 0;
+
             }
 
-            input.setMaxWidth(Double.MAX_VALUE);
+        }
 
-            specificationInputs.add(input);
+        catch (Exception e) {
 
-            VBox.setVgrow(fieldBox, Priority.NEVER);
-
-            HBox.setHgrow(fieldBox, Priority.ALWAYS);
-
-            fieldBox.getChildren().addAll(label, input);
-
-            row.getChildren().add(fieldBox);
-
-            column++;
-
-            if (column == 3)
-                column = 0;
+            e.printStackTrace();
 
         }
 
@@ -451,16 +482,36 @@ public class CreateAdvertisementController {
 
         );
 
-        List<File> files = chooser.showOpenMultipleDialog(
+        List<File> files =
+                chooser.showOpenMultipleDialog(
 
-                imageContainer.getScene().getWindow()
+                        imageContainer.getScene().getWindow()
 
-        );
+                );
 
-        if (files == null)
+        if (files == null || files.isEmpty())
             return;
 
-        selectedImages.addAll(files);
+        for (File file : files) {
+
+            AdvertisementImageRequest request =
+                    new AdvertisementImageRequest();
+
+            request.setId(null);
+
+            request.setImageUrl(
+                    file.toURI().toString()
+            );
+
+            request.setPrimary(false);
+
+            request.setDisplayOrder(
+                    currentImages.size() + 1
+            );
+
+            currentImages.add(request);
+
+        }
 
         refreshImages();
 
@@ -470,7 +521,7 @@ public class CreateAdvertisementController {
 
         imageContainer.getChildren().clear();
 
-        for (File file : selectedImages) {
+        for (AdvertisementImageRequest image : currentImages) {
 
             try {
 
@@ -491,14 +542,14 @@ public class CreateAdvertisementController {
                 controller.setImage(
 
                         new Image(
-                                file.toURI().toString()
+                                image.getImageUrl()
                         )
 
                 );
 
                 controller.setRemoveAction(() -> {
 
-                    selectedImages.remove(file);
+                    currentImages.remove(image);
 
                     refreshImages();
 
@@ -588,31 +639,7 @@ public class CreateAdvertisementController {
 
         request.setAttributes(attributes);
 
-        List<AdvertisementImageRequest> images =
-                new ArrayList<>();
-
-        int order = 0;
-
-        for (File file : selectedImages) {
-
-            AdvertisementImageRequest image =
-                    new AdvertisementImageRequest();
-
-            image.setDisplayOrder(order++);
-
-            image.setPrimary(order == 1);
-
-            image.setImageUrl(
-
-                    file.toURI().toString()
-
-            );
-
-            images.add(image);
-
-        }
-
-        request.setImages(images);
+        request.setImages(currentImages);
 
         return request;
 
@@ -649,7 +676,7 @@ public class CreateAdvertisementController {
 
             }
 
-            NavigationManager.showMyAdvertisements();
+            NavigationManager.showHome();
 
         }
 
@@ -711,15 +738,17 @@ public class CreateAdvertisementController {
             AdvertisementImageRequest request =
                     new AdvertisementImageRequest();
 
-            request.setImageUrl(
-                    image.getImageUrl()
-            );
+            request.setId(image.getId());
 
-            request.setPrimary(
-                    image.isPrimary()
-            );
+            request.setImageUrl(image.getImageUrl());
+
+            request.setDisplayOrder(image.getDisplayOrder());
+
+            request.setPrimary(image.isPrimary());
 
             currentImages.add(request);
+
+
 
         }
         /*
@@ -796,6 +825,8 @@ public class CreateAdvertisementController {
 
         }
 
+        refreshImages();
+
     }
 
     private UpdateAdvertisementRequest buildUpdateRequest() {
@@ -858,42 +889,125 @@ public class CreateAdvertisementController {
 
         request.setAttributes(attributes);
 
-        List<AdvertisementImageRequest> images =
-                new ArrayList<>();
+        System.out.println("===== UPDATE IMAGES =====");
 
-        if (!selectedImages.isEmpty()) {
+        for (AdvertisementImageRequest img : currentImages) {
 
-            int order = 0;
-
-            for (File file : selectedImages) {
-
-                AdvertisementImageRequest image =
-                        new AdvertisementImageRequest();
-
-                image.setImageUrl(
-                        file.toURI().toString()
-                );
-
-                image.setPrimary(order == 0);
-
-                order++;
-
-                images.add(image);
-
-            }
-
-        }
-        else {
-
-            images.addAll(currentImages);
+            System.out.println(
+                    img.getId()
+                            + " | "
+                            + img.getDisplayOrder()
+                            + " | "
+                            + img.getImageUrl()
+                            + " | "
+                            + img.isPrimary()
+            );
 
         }
 
+        request.setImages(currentImages);
 
-        request.setImages(images);
 
         return request;
 
     }
+
+
+    private void loadProvinces() {
+
+        try {
+
+            var provinces =
+                    provinceRepository.getProvinces();
+
+            System.out.println("===== PROVINCES FROM API =====");
+            System.out.println(provinces);
+            System.out.println("SIZE = " + provinces.size());
+
+            for (ProvinceResponse province : provinces) {
+
+                System.out.println(
+                        province.getId()
+                                + " -> "
+                                + province.getName()
+                );
+
+            }
+
+            provinceComboBox.getItems().setAll(provinces);
+
+            Platform.runLater(() -> {
+
+                System.out.println(
+                        "COMBO ITEM COUNT = "
+                                + provinceComboBox.getItems().size()
+                );
+
+            });
+
+            provinceComboBox.setCellFactory(param -> new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                        ProvinceResponse item,
+                        boolean empty
+                ) {
+
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+
+                        setText(null);
+
+                    }
+
+                    else {
+
+                        setText(item.getName());
+
+                    }
+
+                }
+
+            });
+
+            provinceComboBox.setButtonCell(new ListCell<>() {
+
+                @Override
+                protected void updateItem(
+                        ProvinceResponse item,
+                        boolean empty
+                ) {
+
+                    super.updateItem(item, empty);
+
+                    if (empty || item == null) {
+
+                        setText("Select Province");
+
+                    }
+
+                    else {
+
+                        setText(item.getName());
+
+                    }
+
+                }
+
+            });
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+
 
 }

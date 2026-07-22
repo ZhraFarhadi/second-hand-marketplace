@@ -20,10 +20,11 @@ public class CityRepository {
         return INSTANCE;
     }
 
-    public List<CitySummaryResponse> getCities()
-            throws Exception {
+    public List<CitySummaryResponse> getCitiesByProvince(
+            Long provinceId
+    ) throws Exception {
 
-        return service.getCities();
+        return service.getCitiesByProvince(provinceId);
 
     }
 

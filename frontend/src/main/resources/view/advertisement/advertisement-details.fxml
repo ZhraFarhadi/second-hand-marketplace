@@ -245,8 +245,9 @@
                         <HBox spacing="18"
                               alignment="CENTER_LEFT">
 
-                            <Button fx:id="favoriteButton"
-                                    text="❤ Add to Favorites"/>
+                            <Label fx:id="favoriteButton"
+                                   text="♡"
+                                   styleClass="favorite-heart"/>
 
                             <Button fx:id="chatButton"
                                     text="💬 Start Chat"/>

@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 public class ConversationService {
 
     private static final String BASE =
-            "/api/conversations";
+            "/conversations";
 
     public ConversationDetailsResponse startConversation(
             Long advertisementId

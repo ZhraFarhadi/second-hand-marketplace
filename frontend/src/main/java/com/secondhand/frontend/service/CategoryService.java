@@ -25,19 +25,26 @@ public class CategoryService {
         return INSTANCE;
     }
 
-    public List<CategoryDetailsResponse>  getRootCategories()
+    /**
+     * GET /categories/root
+     */
+    public List<CategorySummaryResponse> getRootCategories()
             throws Exception {
 
         String response =
-                ApiClient.get("/categories");
+                ApiClient.get("/categories/root");
 
         Type type =
-                new TypeToken<List<CategorySummaryResponse>>(){}.getType();
+                new TypeToken<List<CategorySummaryResponse>>() {
+                }.getType();
 
         return gson.fromJson(response, type);
 
     }
 
+    /**
+     * GET /categories/{id}
+     */
     public CategoryDetailsResponse getCategory(Long id)
             throws Exception {
 
@@ -48,6 +55,19 @@ public class CategoryService {
                 response,
                 CategoryDetailsResponse.class
         );
+
+    }
+
+    public List<CategorySummaryResponse> getChildren(Long categoryId)
+            throws Exception {
+
+        String response =
+                ApiClient.get("/categories/" + categoryId + "/children");
+
+        Type type =
+                new TypeToken<List<CategorySummaryResponse>>() {}.getType();
+
+        return gson.fromJson(response, type);
 
     }
 

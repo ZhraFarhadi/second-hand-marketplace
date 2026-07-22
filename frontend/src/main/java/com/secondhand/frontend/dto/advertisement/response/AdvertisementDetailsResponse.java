@@ -34,6 +34,10 @@ public class AdvertisementDetailsResponse {
 
     private LocalDateTime updatedAt;
 
+    private boolean favorite;
+
+    private boolean owner;
+
     public AdvertisementDetailsResponse() {
     }
 
@@ -131,5 +135,21 @@ public class AdvertisementDetailsResponse {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public boolean isOwner() {
+        return owner;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
     }
 }

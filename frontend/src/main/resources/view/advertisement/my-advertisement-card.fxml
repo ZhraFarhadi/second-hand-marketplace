@@ -2,68 +2,86 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
 
 <VBox
+        fx:id="root"
         xmlns="http://javafx.com/javafx/21"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="com.secondhand.frontend.controller.advertisement.MyAdvertisementCardController"
 
-        fx:id="root"
+        prefWidth="290"
+        prefHeight="420"
 
-        spacing="10"
+        spacing="14"
 
-        prefWidth="280"
+        alignment="TOP_CENTER"
 
         styleClass="advertisement-card">
 
-    <padding>
+    <!-- تصویر -->
 
-        <Insets top="12"
-                right="12"
-                left="12"
-                bottom="12"/>
+    <StackPane prefWidth="260"
+               prefHeight="220"
+               alignment="CENTER">
 
-    </padding>
+        <Rectangle width="260"
+                   height="220"
+                   arcWidth="18"
+                   arcHeight="18"
+                   fill="#efefef"/>
 
-    <Label
-            fx:id="titleLabel"
-            styleClass="ad-title"/>
+        <ImageView fx:id="advertisementImageView"
+                   fitWidth="260"
+                   fitHeight="220"
+                   preserveRatio="false"/>
 
-    <Label
-            fx:id="priceLabel"
-            styleClass="ad-price"/>
+    </StackPane>
 
-    <HBox spacing="8">
+    <!-- اطلاعات -->
 
-        <Label text="Status:"/>
+    <VBox spacing="10">
 
-        <Label
-                fx:id="statusLabel"/>
+        <padding>
+            <Insets left="18"
+                    right="18"/>
+        </padding>
 
-        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="titleLabel"
+               wrapText="true"
+               styleClass="ad-title"/>
 
-        <Label
-                fx:id="timeLabel"/>
+        <Label fx:id="priceLabel"
+               styleClass="ad-price"/>
 
-    </HBox>
+        <HBox alignment="CENTER_LEFT">
 
-    <HBox
-            fx:id="actionsBox"
-            spacing="8">
+            <Label fx:id="statusLabel"
+                   styleClass="ad-info"/>
 
-        <Button
-                fx:id="editButton"
-                text="Edit"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-        <Button
-                fx:id="soldButton"
-                text="Sold"/>
+            <Label fx:id="timeLabel"
+                   styleClass="ad-info"/>
 
-        <Button
-                fx:id="deleteButton"
-                text="Delete"/>
+        </HBox>
 
-    </HBox>
+        <HBox spacing="10"
+              alignment="CENTER">
+
+            <Button fx:id="editButton"
+                    text="Edit"/>
+
+            <Button fx:id="soldButton"
+                    text="Mark Sold"/>
+
+            <Button fx:id="deleteButton"
+                    text="Delete"/>
+
+        </HBox>
+
+    </VBox>
 
 </VBox>

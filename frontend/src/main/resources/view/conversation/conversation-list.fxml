@@ -11,6 +11,9 @@
 
     <top>
 
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
         <Label text="Messages"
                styleClass="page-title"/>
 
