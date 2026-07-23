@@ -6,10 +6,13 @@ import com.secondhand.backend.dto.category.request.UpdateCategoryAttributeReques
 import com.secondhand.backend.dto.category.response.CategoryAttributeResponse;
 import com.secondhand.backend.entity.Category;
 import com.secondhand.backend.entity.CategoryAttribute;
+import com.secondhand.backend.entity.CategoryAttributeOption;
+import com.secondhand.backend.enums.AttributeDataType;
 import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
 import com.secondhand.backend.mapper.interfaces.CategoryAttributeMapper;
 import com.secondhand.backend.repository.AdvertisementAttributeRepository;
+import com.secondhand.backend.repository.CategoryAttributeOptionRepository;
 import com.secondhand.backend.repository.CategoryAttributeRepository;
 import com.secondhand.backend.repository.CategoryRepository;
 import com.secondhand.backend.service.interfaces.CategoryAttributeService;
@@ -36,6 +39,9 @@ public class CategoryAttributeServiceImpl
     private final CategoryAttributeMapper
             categoryAttributeMapper;
 
+    private final CategoryAttributeOptionRepository
+            categoryAttributeOptionRepository;
+
 
     @Override
     public CategoryAttributeResponse create(
@@ -56,6 +62,14 @@ public class CategoryAttributeServiceImpl
                 attributeName
         );
 
+        validateSelectAttribute(
+
+                request.getDataType(),
+
+                request.getOptions()
+
+        );
+
         CategoryAttribute attribute =
                 buildAttribute(
                         category,
@@ -65,6 +79,11 @@ public class CategoryAttributeServiceImpl
 
         CategoryAttribute savedAttribute =
                 categoryAttributeRepository.save(attribute);
+
+        saveOptions(
+                savedAttribute,
+                request.getOptions()
+        );
 
         return categoryAttributeMapper
                 .toResponse(savedAttribute);
@@ -101,10 +120,26 @@ public class CategoryAttributeServiceImpl
                 attributeName
         );
 
+        validateSelectAttribute(
+
+                request.getDataType(),
+
+                request.getOptions()
+
+        );
+
         updateAttribute(
                 attribute,
                 attributeName,
                 request
+        );
+
+        replaceOptions(
+
+                attribute,
+
+                request.getOptions()
+
         );
 
         CategoryAttribute updatedAttribute =
@@ -327,6 +362,96 @@ public class CategoryAttributeServiceImpl
             throw new BusinessException(
                     ErrorCode.CATEGORY_ATTRIBUTE_NOT_FOUND
             );
+
+        }
+
+    }
+
+    private void saveOptions(
+
+            CategoryAttribute attribute,
+
+            List<String> options
+
+    ) {
+
+        if (attribute.getDataType() != AttributeDataType.SELECT) {
+            return;
+        }
+
+        if (options == null || options.isEmpty()) {
+
+            throw new BusinessException(
+                    ErrorCode.SELECT_ATTRIBUTE_OPTIONS_REQUIRED
+            );
+
+        }
+
+        int order = 1;
+
+        for (String value : options) {
+
+            CategoryAttributeOption option =
+                    new CategoryAttributeOption();
+
+            option.setCategoryAttribute(attribute);
+
+            option.setValue(value.trim());
+
+            option.setDisplayOrder(order++);
+
+            categoryAttributeOptionRepository.save(option);
+
+        }
+
+    }
+
+    private void replaceOptions(
+
+            CategoryAttribute attribute,
+
+            List<String> options
+
+    ) {
+
+        categoryAttributeOptionRepository.deleteAll(
+
+                categoryAttributeOptionRepository
+                        .findByCategoryAttributeOrderByDisplayOrderAsc(
+                                attribute
+                        )
+
+        );
+
+        saveOptions(
+
+                attribute,
+
+                options
+
+        );
+
+    }
+
+    private void validateSelectAttribute(
+
+            AttributeDataType dataType,
+
+            List<String> options
+
+    ) {
+
+        if (dataType == AttributeDataType.SELECT) {
+
+            if (options == null || options.isEmpty()) {
+
+                throw new BusinessException(
+
+                        ErrorCode.SELECT_ATTRIBUTE_OPTIONS_REQUIRED
+
+                );
+
+            }
 
         }
 

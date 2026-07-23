@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface CategoryAttributeService {
 
+
     CategoryAttributeResponse create(
             Long categoryId,
             CreateCategoryAttributeRequest request

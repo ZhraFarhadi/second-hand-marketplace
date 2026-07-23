@@ -8,10 +8,11 @@ The Favorite module allows authenticated users to save advertisements for later 
 
 Favorites are implemented as a **toggle operation**, meaning the same endpoint is used to both add and remove an advertisement from the user's favorites.
 
+To support the frontend UI, advertisement-related responses also include favorite state information so the client can correctly display the favorite (heart) icon.
+
 This feature includes:
 
-- Add Advertisement to Favorites
-- Remove Advertisement from Favorites
+- Toggle Favorite
 - Get Favorite Advertisements
 - Get Favorites Count
 
@@ -19,7 +20,7 @@ This feature includes:
 
 # Architecture
 
-```
+```text
 Client
    │
    │ Toggle / List Favorites
@@ -42,7 +43,7 @@ PostgreSQL
 
 ## Toggle Favorite
 
-```
+```text
 Client
     │
 POST /api/favorites/{advertisementId}
@@ -52,7 +53,9 @@ Authenticate User
     │
 Load Advertisement
     │
-Check Advertisement Status
+Validate Advertisement
+    │
+Check Advertisement Owner
     │
 Check Existing Favorite
     │
@@ -62,36 +65,18 @@ Check Existing Favorite
         │
    Yes  │  No
         │
- Delete Favorite
+Delete  │  Create
+Favorite│  Favorite
         │
         ▼
-  Favorite Removed
-```
-
-or
-
-```
-Client
-    │
-POST /api/favorites/{advertisementId}
-    │
-    ▼
-Authenticate User
-    │
-Load Advertisement
-    │
-Create Favorite
-    │
-Save
-    │
-Favorite Added
+Return Updated Favorite State
 ```
 
 ---
 
-## Get Favorites
+## Get Favorite Advertisements
 
-```
+```text
 Client
     │
 GET /api/favorites
@@ -100,6 +85,8 @@ GET /api/favorites
 Authenticate User
     │
 Load Favorites
+    │
+Exclude Deleted Advertisements
     │
 Sort By CreatedAt DESC
     │
@@ -110,7 +97,7 @@ Return Advertisement List
 
 ## Get Favorites Count
 
-```
+```text
 Client
     │
 GET /api/favorites/count
@@ -127,19 +114,46 @@ Return Count
 
 # Business Rules
 
-A user can add only **ACTIVE** advertisements to favorites.
+A user can favorite only **ACTIVE** advertisements.
 
 A user cannot favorite:
 
+- Their own advertisements
 - PENDING advertisements
 - SOLD advertisements
 - Deleted advertisements
 
-Adding the same advertisement twice removes it from favorites.
+Adding an advertisement that is already in favorites removes it from favorites.
 
 Favorites are displayed from newest to oldest.
 
-Only the owner of the favorites can access them.
+Only the authenticated user can access their own favorites.
+
+---
+
+# Frontend Behavior
+
+Advertisement-related DTOs expose two fields:
+
+- `isFavorite`
+- `isOwner`
+
+The frontend should use them as follows:
+
+| isOwner | isFavorite | UI Behavior |
+|----------|------------|-------------|
+| true | - | Hide favorite icon |
+| false | true | Show filled heart |
+| false | false | Show empty heart |
+
+### My Advertisements
+
+`MyAdvertisementSummaryResponse` does **not** contain:
+
+- `isFavorite`
+- `isOwner`
+
+Therefore, the frontend must never display the favorite icon on the **My Advertisements** page.
 
 ---
 
@@ -149,34 +163,38 @@ Only the owner of the favorites can access them.
 
 # Toggle Favorite
 
-Adds or removes an advertisement from favorites.
+Adds or removes an advertisement from the authenticated user's favorites.
 
 ## Endpoint
 
-```
+```http
 POST /api/favorites/{advertisementId}
 ```
 
-Authentication:
+### Authentication
 
-```
 Required
-```
 
 ---
 
 ## Success Response
 
-When added
+### Advertisement added
 
-```
-204 No Content
+```json
+{
+  "advertisementId": 21,
+  "favorite": true
+}
 ```
 
-When removed
+### Advertisement removed
 
-```
-204 No Content
+```json
+{
+  "advertisementId": 21,
+  "favorite": false
+}
 ```
 
 ---
@@ -185,8 +203,9 @@ When removed
 
 | HTTP | ErrorCode |
 |------|-----------|
-|401|UNAUTHORIZED|
-|404|ADVERTISEMENT_NOT_FOUND|
+| 401 | UNAUTHORIZED |
+| 403 | CANNOT_FAVORITE_OWN_ADVERTISEMENT |
+| 404 | ADVERTISEMENT_NOT_FOUND |
 
 ---
 
@@ -196,15 +215,13 @@ Returns the authenticated user's favorite advertisements.
 
 ## Endpoint
 
-```
+```http
 GET /api/favorites
 ```
 
-Authentication:
+### Authentication
 
-```
 Required
-```
 
 ---
 
@@ -213,36 +230,43 @@ Required
 ```json
 [
   {
-    "id": 5,
-    "advertisement": {
-      "id": 21,
-      "title": "iPhone 14 Pro",
-      "price": 85000000,
-      "primaryImageUrl": "...",
-      "category": {
-        "id": 3,
-        "name": "Mobile Phones"
-      },
-      "seller": {
-        "id": 8,
-        "fullName": "John Doe"
-      },
-      "city": {
-        "id": 15,
-        "name": "Tehran"
-      }
-    }
+    "id": 21,
+    "title": "iPhone 14 Pro",
+    "price": 85000000,
+    "primaryImageUrl": "...",
+    "category": {
+      "id": 3,
+      "name": "Mobile Phones"
+    },
+    "seller": {
+      "id": 8,
+      "fullName": "John Doe"
+    },
+    "city": {
+      "id": 15,
+      "name": "Tehran"
+    },
+    "isFavorite": true,
+    "isOwner": false
   }
 ]
 ```
 
 ---
 
+## Notes
+
+- Responses reuse `AdvertisementSummaryResponse`.
+- `isFavorite` is always `true` for this endpoint.
+- `isOwner` remains available for consistency across advertisement APIs.
+
+---
+
 ## Possible Errors
 
-|HTTP|ErrorCode|
-|----|----------|
-|401|UNAUTHORIZED|
+| HTTP | ErrorCode |
+|------|-----------|
+| 401 | UNAUTHORIZED |
 
 ---
 
@@ -252,15 +276,13 @@ Returns the total number of favorite advertisements.
 
 ## Endpoint
 
-```
+```http
 GET /api/favorites/count
 ```
 
-Authentication:
+### Authentication
 
-```
 Required
-```
 
 ---
 
@@ -268,7 +290,7 @@ Required
 
 ```json
 {
-    "count": 12
+  "count": 12
 }
 ```
 
@@ -276,30 +298,32 @@ Required
 
 ## Possible Errors
 
-|HTTP|ErrorCode|
-|----|----------|
-|401|UNAUTHORIZED|
+| HTTP | ErrorCode |
+|------|-----------|
+| 401 | UNAUTHORIZED |
 
 ---
 
 # Error Codes
 
-|ErrorCode|Description|
-|----------|-----------|
-|ADVERTISEMENT_NOT_FOUND|Advertisement not found or unavailable.|
-|UNAUTHORIZED|Authentication required.|
-|ACCESS_DENIED|Access denied.|
+| ErrorCode | Description |
+|-----------|-------------|
+| ADVERTISEMENT_NOT_FOUND | Advertisement not found or unavailable. |
+| UNAUTHORIZED | Authentication required. |
+| ACCESS_DENIED | Access denied. |
+| CANNOT_FAVORITE_OWN_ADVERTISEMENT | Users cannot favorite their own advertisements. |
 
 ---
 
 # Implementation Notes
 
 - Favorite is implemented as a toggle operation.
-- Each user can favorite an advertisement only once.
+- A user can favorite an advertisement only once.
 - A unique database constraint prevents duplicate favorites.
-- Only ACTIVE advertisements can be added to favorites.
+- Only ACTIVE advertisements can be favorited.
+- Users cannot favorite their own advertisements.
 - Deleted advertisements are excluded from favorite lists.
-- Favorite advertisements are ordered by creation date (newest first).
-- Favorite responses reuse `AdvertisementSummaryResponse`.
+- Favorite advertisements are ordered by favorite creation time (newest first).
+- Favorite list responses reuse `AdvertisementSummaryResponse`.
 - Authentication is required for all Favorite APIs.
-- Favorite business logic is isolated inside `FavoriteService`.
+- All favorite-related business logic is implemented inside `FavoriteService`.

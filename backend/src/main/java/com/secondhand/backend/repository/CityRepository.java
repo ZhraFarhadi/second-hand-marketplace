@@ -13,7 +13,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findByNameAndProvince(String name,
                                          Province province);
-    List<City> findAllByProvinceOrderByNameAsc(
+    List<City> findAllByProvinceOrderByDisplayOrderAscNameAsc(
             Province province
     );
 
@@ -22,6 +22,6 @@ public interface CityRepository extends JpaRepository<City, Long> {
             Province province
     );
 
-    List<City> findAllByOrderByNameAsc();
+    List<City> findAllByOrderByDisplayOrderAscNameAsc();
 
 }

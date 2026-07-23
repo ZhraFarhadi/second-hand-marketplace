@@ -13,6 +13,6 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 
     boolean existsByNameIgnoreCase(String name);
 
-    List<Province> findAllByOrderByNameAsc();
+    List<Province> findAllByOrderByDisplayOrderAscNameAsc();
 
 }

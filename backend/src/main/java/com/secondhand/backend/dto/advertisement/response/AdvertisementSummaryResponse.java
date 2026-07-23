@@ -1,5 +1,6 @@
 package com.secondhand.backend.dto.advertisement.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
 import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
 import com.secondhand.backend.dto.city.response.CitySummaryResponse;
@@ -26,4 +27,9 @@ public class AdvertisementSummaryResponse {
 
     private CitySummaryResponse city;
 
+    @JsonProperty("isFavorite")
+    private boolean isFavorite;
+
+    @JsonProperty("isOwner")
+    private boolean isOwner;
 }

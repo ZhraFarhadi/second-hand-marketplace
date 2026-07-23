@@ -1,6 +1,10 @@
 package com.secondhand.backend.mapper.impl;
 
-import com.secondhand.backend.dto.advertisement.response.*;
+import com.secondhand.backend.dto.advertisement.response.AdvertisementAttributeResponse;
+import com.secondhand.backend.dto.advertisement.response.AdvertisementDetailsResponse;
+import com.secondhand.backend.dto.advertisement.response.AdvertisementImageResponse;
+import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
+import com.secondhand.backend.dto.advertisement.response.MyAdvertisementSummaryResponse;
 import com.secondhand.backend.entity.Advertisement;
 import com.secondhand.backend.entity.AdvertisementAttribute;
 import com.secondhand.backend.entity.AdvertisementImage;
@@ -11,7 +15,6 @@ import com.secondhand.backend.mapper.interfaces.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -25,6 +28,16 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
     @Override
     public AdvertisementDetailsResponse toDetailsResponse(
             Advertisement advertisement
+    ) {
+        return toDetailsResponse(advertisement, false, false);
+    }
+
+
+    @Override
+    public AdvertisementDetailsResponse toDetailsResponse(
+            Advertisement advertisement,
+            boolean isFavorite,
+            boolean isOwner
     ) {
 
         if (advertisement == null) {
@@ -49,13 +62,25 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                         .map(this::mapAttribute)
                         .toList(),
                 advertisement.getCreatedAt(),
-                advertisement.getUpdatedAt()
+                advertisement.getUpdatedAt(),
+                isFavorite,
+                isOwner
         );
     }
+
 
     @Override
     public AdvertisementSummaryResponse toSummaryResponse(
             Advertisement advertisement
+    ) {
+        return toSummaryResponse(advertisement, false, false);
+    }
+
+    @Override
+    public AdvertisementSummaryResponse toSummaryResponse(
+            Advertisement advertisement,
+            boolean isFavorite,
+            boolean isOwner
     ) {
 
         if (advertisement == null) {
@@ -69,9 +94,12 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                 getPrimaryImageUrl(advertisement.getImages()),
                 categoryMapper.toSummaryResponse(advertisement.getCategory()),
                 userMapper.toSummaryResponse(advertisement.getSeller()),
-                cityMapper.toSummaryResponse(advertisement.getCity())
+                cityMapper.toSummaryResponse(advertisement.getCity()),
+                isFavorite,
+                isOwner
         );
     }
+
 
     @Override
     public MyAdvertisementSummaryResponse toMySummaryResponse(

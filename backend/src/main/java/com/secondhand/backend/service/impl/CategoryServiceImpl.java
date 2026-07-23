@@ -120,7 +120,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<CategorySummaryResponse> getCategories() {
-        return categoryRepository.findAllByParentIsNullOrderByNameAsc()
+        return categoryRepository.findAllByParentIsNullOrderByDisplayOrderAscNameAsc()
                 .stream()
                 .map(categoryMapper::toSummaryResponse)
                 .toList();
@@ -379,7 +379,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category parent = getCategoryOrThrow(categoryId);
 
         List<Category> children =
-                categoryRepository.findAllByParentOrderByNameAsc(parent);
+                categoryRepository.findAllByParentOrderByDisplayOrderAscNameAsc(parent);
 
         Set<Long> parentIds =
                 new HashSet<>(categoryRepository.findParentCategoryIds());
