@@ -3,10 +3,7 @@ package com.secondhand.backend.controller;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
-import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
-import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
-import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
+import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.service.interfaces.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -62,11 +59,13 @@ public class AdminCategoryController {
     }
 
     @GetMapping
-    public List<CategorySummaryResponse> getCategories() {
+    public List<CategoryDetailsResponse> getCategories() {
 
         return categoryService.getCategories();
 
     }
+
+
 
     @GetMapping("/{categoryId}")
     public CategoryWithAttributesResponse getCategoryDetails(

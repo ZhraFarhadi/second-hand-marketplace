@@ -34,8 +34,8 @@ public interface CategoryAttributeRepository
 
     boolean existsByCategory(Category category);
 
-    boolean existsByAdvertisementAttributesIsNotEmpty(
+  /*  boolean existsByAdvertisementAttributesIsNotEmpty(
             CategoryAttribute categoryAttribute
     );
-
+*/
 }

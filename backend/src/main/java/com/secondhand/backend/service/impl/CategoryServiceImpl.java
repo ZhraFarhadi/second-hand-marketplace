@@ -114,23 +114,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+
+
+
+
+
     @Override
     @Transactional(readOnly = true)
     public List<CategoryDetailsResponse> getCategories() {
 
-        System.out.println("STEP A");
+        return categoryRepository
+                .findAllByParentIsNullOrderByNameAsc()
+                .stream()
+                .map(categoryMapper::toDetailsResponse)
+                .toList();
 
-        List<CategoryDetailsResponse> result =
-                categoryRepository
-                        .findAllByParentIsNullOrderByNameAsc()
-                        .stream()
-                        .map(categoryMapper::toDetailsResponse)
-                        .toList();
-
-        System.out.println("STEP B");
-        System.out.println(result.size());
-
-        return result;
     }
 
     @Override
