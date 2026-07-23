@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.secondhand.frontend.controller.home.CategoryItemController"
+      spacing="5">
+
+    <Button fx:id="categoryButton"
+            maxWidth="Infinity"
+            onAction="#toggleCategory"
+            styleClass="category-button">
+
+        <padding>
+            <Insets top="12"
+                    right="15"
+                    bottom="12"
+                    left="15"/>
+        </padding>
+
+    </Button>
+
+    <VBox fx:id="subcategoryContainer"
+          spacing="4"
+          managed="false"
+          visible="false"/>
+
+</VBox>

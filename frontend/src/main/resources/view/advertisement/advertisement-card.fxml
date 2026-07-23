@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Button?>
+<VBox
+        fx:id="root"
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.advertisement.AdvertisementCardController"
+
+        prefWidth="290"
+        prefHeight="370"
+
+        spacing="14"
+
+        alignment="TOP_CENTER"
+
+        styleClass="advertisement-card">
+
+    <!-- تصویر -->
+
+    <StackPane prefWidth="260"
+               prefHeight="220"
+               alignment="CENTER">
+
+        <Rectangle width="260"
+                   height="220"
+                   arcWidth="18"
+                   arcHeight="18"
+                   fill="#efefef"/>
+
+        <ImageView fx:id="advertisementImageView"
+                   fitWidth="260"
+                   fitHeight="220"
+                   preserveRatio="false"/>
+
+    </StackPane>
+
+    <!-- اطلاعات -->
+
+    <VBox spacing="10">
+
+        <padding>
+            <Insets left="18"
+                    right="18"/>
+        </padding>
+
+        <Label fx:id="titleLabel"
+               text="Gaming Laptop"
+               wrapText="true"
+               styleClass="ad-title"/>
+
+        <HBox alignment="CENTER_LEFT">
+
+            <Label fx:id="priceLabel"
+                   styleClass="ad-price"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="favoriteButton"
+                   text="♡"
+                   styleClass="favorite-heart"/>
+
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT">
+
+            <Label fx:id="cityLabel"
+                   text="Kerman"
+                   styleClass="ad-info"/>
+
+
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="timeLabel"
+                   text="2 hours ago"
+                   styleClass="ad-info"/>
+
+        </HBox>
+
+
+    </VBox>
+
+</VBox>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.image.ImageView?>
+<BorderPane
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.conversation.ChatController">
+
+    <top>
+
+        <HBox spacing="15"
+              alignment="CENTER_LEFT">
+
+            <ImageView fx:id="userAvatarImage"
+                       fitWidth="55"
+                       fitHeight="55"/>
+
+            <VBox spacing="4">
+
+                <Label fx:id="userNameLabel"/>
+
+                <Label fx:id="advertisementTitleLabel"/>
+
+            </VBox>
+
+        </HBox>
+
+    </top>
+
+    <center>
+
+        <ScrollPane
+                fx:id="scrollPane"
+                fitToWidth="true">
+
+            <VBox
+                    fx:id="messagesContainer"
+                    spacing="10"
+                    fillWidth="true"/>
+
+        </ScrollPane>
+
+    </center>
+
+    <bottom>
+
+        <HBox spacing="10">
+
+            <TextField
+                    fx:id="messageField"
+                    HBox.hgrow="ALWAYS"/>
+
+            <Button
+                    fx:id="sendButton"
+                    text="Send"
+                    onAction="#sendMessage"/>
+
+        </HBox>
+
+    </bottom>
+
+</BorderPane>

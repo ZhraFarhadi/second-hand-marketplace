@@ -1,0 +1,206 @@
+.root {
+
+    -fx-background-color: #f5f6fa;
+
+}
+
+/* ===========================
+        Root Container
+   =========================== */
+
+.root-container {
+
+    -fx-padding: 40;
+
+}
+
+/* ===========================
+            Title
+   =========================== */
+
+.title {
+
+    -fx-font-size: 28px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #2c3e50;
+
+}
+
+/* ===========================
+        Form Container
+   =========================== */
+
+.form-container {
+
+    -fx-padding: 25;
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 12;
+
+    -fx-border-radius: 12;
+
+    -fx-border-color: #dcdde1;
+
+    -fx-border-width: 1;
+
+}
+
+/* ===========================
+        Text Fields
+   =========================== */
+
+.text-field-custom {
+
+    -fx-pref-width: 280;
+
+    -fx-pref-height: 40;
+
+    -fx-background-radius: 8;
+
+    -fx-border-radius: 8;
+
+    -fx-border-color: #dcdde1;
+
+    -fx-border-width: 1;
+
+    -fx-font-size: 14px;
+
+}
+
+/* ===========================
+        Login Button
+   =========================== */
+
+.login-button {
+
+    -fx-pref-width: 280;
+
+    -fx-pref-height: 40;
+
+    -fx-background-color: #2d89ef;
+
+    -fx-background-radius: 8;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+}
+
+.login-button:hover {
+
+    -fx-background-color: #1b6fd8;
+
+}
+
+/* ===========================
+            Labels
+   =========================== */
+
+.normal-label {
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #555555;
+
+}
+
+/* ===========================
+          Hyperlink
+   =========================== */
+
+.register-link {
+
+    -fx-font-size: 13px;
+
+}
+
+.error-label {
+
+    -fx-text-fill: #d32f2f;
+
+    -fx-font-size: 12px;
+
+}
+
+.floating-container{
+
+    -fx-pref-width:280;
+    -fx-pref-height:52;
+
+}
+
+.floating-text-field{
+
+    -fx-pref-width:280;
+    -fx-pref-height:52;
+
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+
+    -fx-border-color:#dcdde1;
+
+    -fx-background-color:white;
+
+    -fx-padding:18 12 6 12;
+
+    -fx-font-size:14px;
+
+}
+
+.floating-label{
+
+    -fx-text-fill:#888;
+
+    -fx-font-size:14px;
+
+    -fx-translate-x:-95;
+
+    -fx-translate-y:0;
+
+    -fx-background-color:white;
+
+    -fx-padding:0 4 0 4;
+
+    -fx-mouse-transparent:true;
+
+}
+
+.floating-label-top{
+
+    -fx-translate-y:-20;
+
+    -fx-font-size:11px;
+
+    -fx-text-fill:#2d89ef;
+
+}
+
+.currency-label{
+
+    -fx-font-size:15px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:#555555;
+
+    -fx-padding:0 10 0 0;
+
+}
+
+.floating-label{
+
+    -fx-font-size:16px;
+
+}
+
+.floating-label-top{
+
+    -fx-font-size:13px;
+
+}

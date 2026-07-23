@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.home.HomeController">
+
+    <!-- ================= HEADER ================= -->
+
+    <top>
+
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
+
+
+    </top>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <left>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    styleClass="sidebar-scroll">
+
+            <VBox prefWidth="280"
+                  spacing="15"
+                  styleClass="sidebar">
+
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <Label text="Categories"
+                       styleClass="section-title"/>
+
+                <VBox fx:id="categoryContainer"
+                      spacing="8"/>
+
+                <Separator/>
+
+                <Label text="Quick Access"
+                       styleClass="section-title"/>
+
+                <Button fx:id="favoritesButton"
+                        text="❤ Favorites"
+                        maxWidth="Infinity"
+                        styleClass="category-button"/>
+
+                <Button fx:id="myAdvertisementsButton"
+                        text="📦 My Advertisements"
+                        maxWidth="Infinity"
+                        styleClass="category-button"/>
+
+                <Button fx:id="chatButton"
+                        text="💬 Chats"
+                        maxWidth="Infinity"
+                        styleClass="category-button"/>
+
+            </VBox>
+
+        </ScrollPane>
+
+    </left>
+
+    <!-- ================= CONTENT ================= -->
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    styleClass="content-scroll">
+
+            <FlowPane fx:id="advertisementContainer"
+                      hgap="22"
+                      vgap="22"
+                      prefWrapLength="1200">
+                <padding>
+                    <Insets top="20"
+                            right="20"
+                            bottom="20"
+                            left="20"/>
+                </padding>
+            </FlowPane>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

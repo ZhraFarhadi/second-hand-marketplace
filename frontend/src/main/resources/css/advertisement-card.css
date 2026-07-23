@@ -1,0 +1,88 @@
+.advertisement-card {
+
+    -fx-background-color: white;
+
+    -fx-background-radius: 18;
+
+    -fx-border-radius: 18;
+
+    -fx-border-color: #e5e7eb;
+
+    -fx-border-width: 1;
+
+    -fx-padding: 15;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0,0,0,0.08),
+            14,
+            0,
+            0,
+            2
+    );
+
+}
+
+.advertisement-card:hover {
+
+    -fx-cursor: hand;
+
+    -fx-border-color: #3b82f6;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0,0,0,0.18),
+            20,
+            0,
+            0,
+            5
+    );
+
+    -fx-translate-y: -3;
+
+}
+
+/* ---------- تصویر ---------- */
+
+.image-placeholder {
+
+    -fx-fill: #eeeeee;
+
+}
+
+.image-icon {
+
+    -fx-font-size: 36px;
+
+}
+
+.image-text {
+
+    -fx-font-size: 14px;
+
+    -fx-text-fill: #8f8f8f;
+
+}
+
+/* ---------- عنوان ---------- */
+
+.ad-title{
+    -fx-font-size:20px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#202020;
+}
+
+/* ---------- قیمت ---------- */
+
+.ad-price{
+    -fx-font-size:17px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#c62828;
+}
+
+/* ---------- شهر و زمان ---------- */
+
+.ad-info{
+    -fx-font-size:14px;
+    -fx-text-fill:#757575;
+}

@@ -34,6 +34,10 @@ public class Advertisement extends BaseEntity {
     private User seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -46,6 +50,7 @@ public class Advertisement extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("displayOrder ASC")
     private List<AdvertisementImage> images = new ArrayList<>();
 
     @OneToMany(
@@ -53,6 +58,7 @@ public class Advertisement extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+   // @OrderBy("categoryAttribute.name ASC")
     private List<AdvertisementAttribute> attributes = new ArrayList<>();
 
 
@@ -71,5 +77,37 @@ public class Advertisement extends BaseEntity {
 
     @OneToMany(mappedBy = "advertisement")
     private List<Favorite> favorites = new ArrayList<>();
+
+    public void addImage(AdvertisementImage image) {
+        images.add(image);
+        image.setAdvertisement(this);
+    }
+
+    public void removeImage(AdvertisementImage image) {
+        images.remove(image);
+        image.setAdvertisement(null);
+    }
+
+    public void addAttribute(AdvertisementAttribute attribute) {
+        attributes.add(attribute);
+        attribute.setAdvertisement(this);
+    }
+
+    public void removeAttribute(AdvertisementAttribute attribute) {
+        attributes.remove(attribute);
+        attribute.setAdvertisement(null);
+    }
+
+    public void addFavorite(Favorite favorite) {
+        favorites.add(favorite);
+        favorite.setAdvertisement(this);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
+        favorite.setAdvertisement(null);
+    }
+
+
 
 }

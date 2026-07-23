@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.CreateCategoryController">
+
+    <top>
+
+        <ToolBar>
+
+            <Button text="← Back"
+                    onAction="#goBack"/>
+
+            <Label text="Create Category"/>
+
+        </ToolBar>
+
+    </top>
+
+    <center>
+
+        <VBox spacing="15">
+
+            <padding>
+                <Insets top="25" right="25" bottom="25" left="25"/>
+            </padding>
+
+            <Label text="Category Name"/>
+
+            <TextField fx:id="nameField"/>
+
+            <Label text="Description"/>
+
+            <TextArea fx:id="descriptionField"
+                      prefRowCount="6"/>
+
+            <Button text="Create"
+                    onAction="#createCategory"/>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

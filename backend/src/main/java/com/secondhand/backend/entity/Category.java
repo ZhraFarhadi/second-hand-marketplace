@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "categories")
 public class Category extends BaseEntity {
 
-    @Column(name = "name", nullable = false, unique = true, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,6 +22,7 @@ public class Category extends BaseEntity {
     private Category parent;
 
     @OneToMany(mappedBy = "parent")
+    @OrderBy("name ASC")
     private List<Category> children = new ArrayList<>();
 
     @OneToMany(mappedBy = "category")
@@ -32,5 +33,9 @@ public class Category extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @OrderBy("name ASC")
     private List<CategoryAttribute> attributes = new ArrayList<>();
+
+    @Column(name = "display_order", nullable = false)
+    private Integer displayOrder = 0;
 }

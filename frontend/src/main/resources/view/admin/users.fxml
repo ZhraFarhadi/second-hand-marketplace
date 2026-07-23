@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.UsersController">
+
+    <top>
+
+        <ToolBar>
+
+            <Button text="← Dashboard"
+                    onAction="#goDashboard"/>
+
+            <Label text="Users"/>
+
+        </ToolBar>
+
+    </top>
+
+    <center>
+
+        <TableView fx:id="usersTable">
+
+            <columns>
+
+                <TableColumn fx:id="idColumn"
+                             text="ID"/>
+
+                <TableColumn fx:id="usernameColumn"
+                             text="Username"/>
+
+                <TableColumn fx:id="fullNameColumn"
+                             text="Full Name"/>
+
+                <TableColumn fx:id="emailColumn"
+                             text="Email"/>
+
+                <TableColumn fx:id="roleColumn"
+                             text="Role"/>
+
+                <TableColumn fx:id="statusColumn"
+                             text="Status"/>
+
+                <TableColumn fx:id="ratingColumn"
+                             text="Rating"/>
+
+                <TableColumn fx:id="actionColumn"
+                             text="Action"
+                             prefWidth="120"/>
+
+
+            </columns>
+
+        </TableView>
+
+    </center>
+
+</BorderPane>

@@ -40,4 +40,7 @@ public abstract class BaseEntity {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }

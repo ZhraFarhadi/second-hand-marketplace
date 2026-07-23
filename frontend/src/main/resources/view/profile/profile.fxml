@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.profile.ProfileController">
+
+    <!-- ================= HEADER ================= -->
+
+    <top>
+
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
+
+    </top>
+
+    <!-- ================= CONTENT ================= -->
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    fitToHeight="true"
+                    hbarPolicy="NEVER">
+
+            <content>
+
+                <StackPane alignment="TOP_CENTER">
+
+                    <VBox spacing="15"
+                          maxWidth="550"
+                          alignment="TOP_CENTER">
+
+                        <padding>
+                            <Insets top="30"
+                                    right="30"
+                                    bottom="30"
+                                    left="30"/>
+                        </padding>
+
+                        <Label text="My Profile"
+                               styleClass="page-title"/>
+
+                        <Separator/>
+
+                        <Label text="Full Name"/>
+
+                        <TextField fx:id="fullNameField"/>
+
+                        <Label text="Username"/>
+
+                        <TextField fx:id="usernameField"
+                                   editable="false"
+                                   focusTraversable="false"
+                                   styleClass="readonly-field"/>
+
+                        <Label text="Email"/>
+
+                        <TextField fx:id="emailField"/>
+
+                        <Label text="Phone Number"/>
+
+                        <TextField fx:id="phoneField"/>
+
+                        <Label text="Role"/>
+
+                        <TextField fx:id="roleField"
+                                   editable="false"
+                                   focusTraversable="false"
+                                   styleClass="readonly-field"/>
+
+                        <Label text="Account Status"/>
+
+                        <TextField fx:id="statusField"
+                                   editable="false"
+                                   focusTraversable="false"
+                                   styleClass="readonly-field"/>
+
+                        <Button fx:id="saveProfileButton"
+                                text="Save Changes"
+                                onAction="#saveProfile"/>
+
+                        <Separator/>
+
+                        <Label text="Current Password"/>
+
+                        <PasswordField fx:id="currentPasswordField"/>
+
+                        <Label text="New Password"/>
+
+                        <PasswordField fx:id="newPasswordField"/>
+
+                        <Label text="Confirm Password"/>
+
+                        <PasswordField fx:id="confirmPasswordField"/>
+
+                        <Button fx:id="changePasswordButton"
+                                text="Change Password"
+                                onAction="#changePassword"/>
+
+                        <Separator/>
+
+                        <Button fx:id="logoutButton"
+                                text="Logout"
+                                onAction="#logout"/>
+
+                    </VBox>
+
+                </StackPane>
+
+            </content>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

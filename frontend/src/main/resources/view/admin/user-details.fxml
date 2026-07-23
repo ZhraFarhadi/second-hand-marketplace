@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.UserDetailsController">
+
+    <top>
+
+        <ToolBar>
+
+            <Button text="← Back"
+                    onAction="#goBack"/>
+
+            <Label text="User Details"/>
+
+        </ToolBar>
+
+    </top>
+
+    <center>
+
+        <VBox spacing="12">
+
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Full Name"/>
+            <Label fx:id="fullNameLabel"/>
+
+            <Label text="Username"/>
+            <Label fx:id="usernameLabel"/>
+
+            <Label text="Email"/>
+            <Label fx:id="emailLabel"/>
+
+            <Label text="Phone"/>
+            <Label fx:id="phoneLabel"/>
+
+            <Label text="Role"/>
+            <Label fx:id="roleLabel"/>
+
+            <Label text="Status"/>
+            <Label fx:id="statusLabel"/>
+
+            <Label text="Rating"/>
+            <Label fx:id="ratingLabel"/>
+
+            <Label text="Created At"/>
+            <Label fx:id="createdAtLabel"/>
+
+            <Button fx:id="blockButton"
+                    text="Block"
+                    onAction="#toggleBlock"/>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

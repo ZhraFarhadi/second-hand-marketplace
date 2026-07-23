@@ -36,4 +36,13 @@ public class CategoryAttribute extends BaseEntity {
     @OneToMany(mappedBy = "categoryAttribute")
     private List<AdvertisementAttribute> advertisementAttributes = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "categoryAttribute",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @OrderBy("displayOrder ASC")
+    private List<CategoryAttributeOption> options =
+            new ArrayList<>();
+
 }

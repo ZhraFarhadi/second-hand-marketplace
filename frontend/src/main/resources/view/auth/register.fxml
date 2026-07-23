@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            xmlns:components="com.secondhand.frontend.controller.components"
+            fx:controller="com.secondhand.frontend.controller.auth.RegisterController">
+
+    <center>
+
+        <VBox alignment="CENTER"
+              spacing="15"
+              styleClass="login-container">
+
+            <Label text="Marketplace"
+                   styleClass="title"/>
+
+            <Label text="Create Account"
+                   styleClass="subtitle-label"/>
+
+            <VBox spacing="8"
+                  maxWidth="350">
+
+                <!-- Full Name -->
+
+                <fx:include
+                        fx:id="fullNameComponent"
+                        source="../components/floating-text-field.fxml"/>
+
+                <Label
+                        fx:id="fullNameErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Username -->
+
+                <fx:include
+                        fx:id="usernameComponent"
+                        source="../components/floating-text-field.fxml"/>
+
+                <Label
+                        fx:id="usernameErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Email -->
+
+                <fx:include
+                        fx:id="emailComponent"
+                        source="../components/floating-text-field.fxml"/>
+
+                <Label
+                        fx:id="emailErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Phone -->
+
+                <fx:include
+                        fx:id="phoneComponent"
+                        source="../components/floating-text-field.fxml"/>
+
+                <Label
+                        fx:id="phoneErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Password -->
+
+                <fx:include
+                        fx:id="passwordComponent"
+                        source="../components/floating-password-field.fxml"/>
+
+                <Label
+                        fx:id="passwordErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Confirm Password -->
+
+                <fx:include
+                        fx:id="confirmPasswordComponent"
+                        source="../components/floating-password-field.fxml"/>
+
+                <Label
+                        fx:id="confirmPasswordErrorLabel"
+                        styleClass="error-label"
+                        visible="false"
+                        managed="false"/>
+
+                <!-- Register Button -->
+
+                <Button text="Register"
+                        fx:id="registerButton"
+                        onAction="#onRegisterClicked"
+                        maxWidth="Infinity"
+                        styleClass="login-button"/>
+
+                <Hyperlink
+                        fx:id="backToLoginLink"
+                        text="Already have an account? Login"
+                        onAction="#onBackToLoginClicked"/>
+
+            </VBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

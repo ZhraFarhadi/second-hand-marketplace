@@ -1,0 +1,54 @@
+.root{
+    -fx-background-color:#f6f6f6;
+}
+
+.page-title{
+
+    -fx-font-size:28px;
+    -fx-font-weight:bold;
+
+}
+
+.label{
+
+    -fx-font-size:14px;
+
+}
+
+.text-field,
+.password-field{
+
+    -fx-pref-height:42;
+
+    -fx-background-radius:8;
+
+    -fx-border-radius:8;
+
+}
+
+.button{
+
+    -fx-pref-height:42;
+
+    -fx-background-radius:8;
+
+    -fx-cursor:hand;
+
+}
+
+.button:hover{
+
+    -fx-opacity:0.9;
+
+}
+.readonly-field{
+
+    -fx-background-color: #ececec;
+
+    -fx-text-fill: #666666;
+
+    -fx-border-color: #d0d0d0;
+
+    -fx-opacity: 1;
+
+}

@@ -1,0 +1,41 @@
+.message-bubble{
+
+    -fx-background-radius:18;
+
+    -fx-padding:12 16 12 16;
+
+    -fx-max-width:340;
+
+}
+
+.my-message{
+
+    -fx-background-color:#2E7D32;
+
+}
+
+.other-message{
+
+    -fx-background-color:#ECECEC;
+
+}
+
+.my-message .label{
+
+    -fx-text-fill:white;
+
+}
+
+.other-message .label{
+
+    -fx-text-fill:black;
+
+}
+
+.message-time{
+
+    -fx-font-size:10;
+
+    -fx-opacity:0.7;
+
+}

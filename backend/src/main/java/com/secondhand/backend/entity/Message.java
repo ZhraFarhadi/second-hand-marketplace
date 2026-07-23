@@ -28,6 +28,6 @@ public class Message extends BaseEntity {
     private String content;
 
     @Column(name = "is_read", nullable = false)
-    private boolean isRead = false;
+    private boolean read = false;
 
 }

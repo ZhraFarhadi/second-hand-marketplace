@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.advertisement.MyAdvertisementsController">
+
+    <top>
+        <fx:include
+                fx:id="header"
+                source="../components/header.fxml"/>
+
+    </top>
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    styleClass="content-scroll">
+
+            <FlowPane
+                    fx:id="advertisementsContainer"
+                    hgap="20"
+                    vgap="20"
+                    prefWrapLength="1200"/>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

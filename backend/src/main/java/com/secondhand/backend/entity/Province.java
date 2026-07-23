@@ -20,4 +20,10 @@ public class Province extends BaseEntity {
 
     @OneToMany(mappedBy = "province")
     private List<City> cities = new ArrayList<>();
+
+    @Column(name = "code", nullable = false, unique = true, length = 10)
+    private String code;
+
+    @Column(name = "display_order", nullable = false)
+    private Integer displayOrder = 0;
 }

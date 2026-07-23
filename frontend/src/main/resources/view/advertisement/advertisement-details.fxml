@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.advertisement.AdvertisementDetailsController">
+
+    <!-- ================= HEADER ================= -->
+
+    <top>
+
+        <fx:include source="../components/header.fxml"/>
+
+    </top>
+
+    <!-- ================= CENTER ================= -->
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    styleClass="content-scroll">
+
+            <StackPane alignment="TOP_CENTER">
+
+                <HBox alignment="TOP_CENTER"
+                      spacing="45"
+                      maxWidth="1280"
+                      prefWidth="1280">
+
+                    <padding>
+
+                        <Insets top="35"
+                                right="35"
+                                bottom="40"
+                                left="35"/>
+
+                    </padding>
+
+                    <!-- ================================================= -->
+                    <!-- LEFT COLUMN -->
+                    <!-- ================================================= -->
+
+                    <VBox spacing="25"
+                          prefWidth="560"
+                          alignment="TOP_CENTER">
+
+                        <!-- MAIN IMAGE -->
+
+                        <StackPane styleClass="main-image-container">
+
+                            <ImageView fx:id="mainImageView"
+                                       fitWidth="560"
+                                       fitHeight="560"
+                                       preserveRatio="true"/>
+
+
+                        </StackPane>
+
+                        <!-- IMAGE GALLERY -->
+
+                        <VBox spacing="15"
+                              alignment="CENTER">
+
+
+                            <!-- Gallery -->
+
+                            <ScrollPane fitToHeight="true"
+                                        fitToWidth="false"
+                                        hbarPolicy="AS_NEEDED"
+                                        vbarPolicy="NEVER"
+                                        pannable="true"
+                                        styleClass="gallery-scroll">
+
+                                <HBox fx:id="thumbnailContainer"
+                                      spacing="10"
+                                      alignment="CENTER_LEFT"
+                                      />
+                                <padding>
+                                    <Insets top="5"
+                                            right="5"
+                                            bottom="5"
+                                            left="5"/>
+                                </padding>
+
+                            </ScrollPane>
+
+                        </VBox>
+
+                        <!-- SELLER CARD -->
+
+                        <VBox spacing="18"
+                              prefWidth="560"
+                              styleClass="seller-card">
+
+                            <padding>
+
+                                <Insets top="22"
+                                        right="22"
+                                        bottom="22"
+                                        left="22"/>
+
+                            </padding>
+
+                            <Label text="Seller"
+
+                                   styleClass="seller-title"/>
+
+                            <Label fx:id="sellerNameLabel"
+
+                                   text="Seller Name"
+
+                                   styleClass="seller-name"/>
+
+                            <HBox spacing="8"
+                                  alignment="CENTER_LEFT">
+
+                                <Label fx:id="sellerStarsLabel"
+
+                                       text="⭐⭐⭐⭐⭐"/>
+
+                                <Label fx:id="sellerRateLabel"
+
+                                       text="4.8 (32 reviews)"
+
+                                       styleClass="seller-rate"/>
+
+                            </HBox>
+
+                            <Separator/>
+
+                            <Button fx:id="sellerProfileButton"
+
+                                    maxWidth="Infinity"
+
+                                    text="View Seller Profile"/>
+
+                        </VBox>
+
+                    </VBox>
+                    <!-- ================================================= -->
+                    <!-- RIGHT COLUMN -->
+                    <!-- ================================================= -->
+
+                    <VBox spacing="24"
+                          prefWidth="650"
+                          alignment="TOP_LEFT">
+
+                        <HBox spacing="12"
+                              alignment="CENTER_LEFT">
+
+                            <Button fx:id="backButton"
+                                    text="←"
+                                    onAction="#onBackClicked"
+                                    styleClass="back-button"/>
+
+                            <Label fx:id="titleLabel"
+                                   text="Asus ROG Strix G16 Gaming Laptop"
+                                   wrapText="true"
+                                   maxWidth="590"
+                                   styleClass="detail-title"/>
+
+                        </HBox>
+
+                        <!-- Price -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="12">
+
+                            <Label text="Price :"
+                                   styleClass="price-caption"/>
+
+                            <Label fx:id="priceLabel"
+                                   text="25,000,000 "
+                                   styleClass="detail-price"/>
+
+                        </HBox>
+
+                        <!-- City + Time -->
+
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="18">
+
+                            <Label fx:id="cityLabel"
+                                   text="📍 Kerman"
+                                   styleClass="detail-info"/>
+
+                            <Label text="•"/>
+
+                            <Label fx:id="timeLabel"
+                                   text="2 hours ago"
+                                   styleClass="detail-info"/>
+
+                        </HBox>
+
+                        <Separator/>
+
+                        <!-- Specifications -->
+
+                        <Label text="Specifications"
+                               styleClass="section-title"/>
+
+                        <!--
+                        بعداً این VBox از Backend پر می‌شود.
+                        -->
+
+                        <VBox fx:id="attributesContainer"
+                              spacing="12"/>
+
+                        <Separator/>
+
+                        <!-- Description -->
+
+                        <Label text="Description"
+                               styleClass="section-title"/>
+
+                        <VBox spacing="12"
+                              prefWidth="650"
+                              styleClass="description-card">
+
+                            <padding>
+
+                                <Insets top="22"
+                                        right="24"
+                                        bottom="22"
+                                        left="24"/>
+
+                            </padding>
+
+                            <Label fx:id="descriptionLabel"
+                                   wrapText="true"
+                                   maxWidth="600"
+                                   styleClass="description-text"
+                                   text="This advertisement description will be loaded from backend."/>
+
+                        </VBox>
+
+                        <!-- Buttons -->
+
+                        <HBox spacing="18"
+                              alignment="CENTER_LEFT">
+
+                            <Label fx:id="favoriteButton"
+                                   text="♡"
+                                   styleClass="favorite-heart"/>
+
+                            <Button fx:id="chatButton"
+                                    text="💬 Start Chat"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
+            </StackPane>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

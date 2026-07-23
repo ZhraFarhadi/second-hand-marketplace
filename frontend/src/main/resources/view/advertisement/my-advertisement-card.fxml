@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox
+        fx:id="root"
+        xmlns="http://javafx.com/javafx/21"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="com.secondhand.frontend.controller.advertisement.MyAdvertisementCardController"
+
+        prefWidth="290"
+        prefHeight="420"
+
+        spacing="14"
+
+        alignment="TOP_CENTER"
+
+        styleClass="advertisement-card">
+
+    <!-- تصویر -->
+
+    <StackPane prefWidth="260"
+               prefHeight="220"
+               alignment="CENTER">
+
+        <Rectangle width="260"
+                   height="220"
+                   arcWidth="18"
+                   arcHeight="18"
+                   fill="#efefef"/>
+
+        <ImageView fx:id="advertisementImageView"
+                   fitWidth="260"
+                   fitHeight="220"
+                   preserveRatio="false"/>
+
+    </StackPane>
+
+    <!-- اطلاعات -->
+
+    <VBox spacing="10">
+
+        <padding>
+            <Insets left="18"
+                    right="18"/>
+        </padding>
+
+        <Label fx:id="titleLabel"
+               wrapText="true"
+               styleClass="ad-title"/>
+
+        <Label fx:id="priceLabel"
+               styleClass="ad-price"/>
+
+        <HBox alignment="CENTER_LEFT">
+
+            <Label fx:id="statusLabel"
+                   styleClass="ad-info"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="timeLabel"
+                   styleClass="ad-info"/>
+
+        </HBox>
+
+        <HBox spacing="10"
+              alignment="CENTER">
+
+            <Button fx:id="editButton"
+                    text="Edit"/>
+
+            <Button fx:id="soldButton"
+                    text="Mark Sold"/>
+
+            <Button fx:id="deleteButton"
+                    text="Delete"/>
+
+        </HBox>
+
+    </VBox>
+
+</VBox>

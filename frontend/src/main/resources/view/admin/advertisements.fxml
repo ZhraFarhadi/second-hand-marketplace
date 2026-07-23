@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.AdvertisementsController">
+
+    <top>
+
+        <ToolBar>
+
+            <Button text="← Dashboard"
+                    onAction="#goDashboard"/>
+
+            <Label text="Pending Advertisements"/>
+
+        </ToolBar>
+
+    </top>
+
+    <center>
+
+        <TableView fx:id="advertisementsTable">
+
+            <columns>
+
+                <TableColumn fx:id="idColumn"
+                             text="ID"/>
+
+                <TableColumn fx:id="titleColumn"
+                             text="Title"/>
+
+                <TableColumn fx:id="sellerColumn"
+                             text="Seller"/>
+
+                <TableColumn fx:id="categoryColumn"
+                             text="Category"/>
+
+                <TableColumn fx:id="cityColumn"
+                             text="City"/>
+
+                <TableColumn fx:id="statusColumn"
+                             text="Status"/>
+
+            </columns>
+
+        </TableView>
+
+    </center>
+
+</BorderPane>
