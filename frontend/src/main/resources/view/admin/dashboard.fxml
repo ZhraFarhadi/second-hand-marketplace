@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.DashboardController">
+
+    <top>
+
+        <ToolBar>
+
+            <Label text="Admin Dashboard"/>
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <Button text="Logout"
+                    onAction="#logout"/>
+
+        </ToolBar>
+
+    </top>
+
+    <center>
+
+        <VBox spacing="15"
+              alignment="CENTER">
+
+            <HBox spacing="20">
+
+                <VBox alignment="CENTER">
+                    <Label text="Users"/>
+                    <Label fx:id="totalUsersLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Blocked"/>
+                    <Label fx:id="blockedUsersLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Ads"/>
+                    <Label fx:id="totalAdvertisementsLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Pending"/>
+                    <Label fx:id="pendingAdvertisementsLabel"/>
+                </VBox>
+
+            </HBox>
+
+            <HBox spacing="20">
+
+                <VBox alignment="CENTER">
+                    <Label text="Active"/>
+                    <Label fx:id="activeAdvertisementsLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Sold"/>
+                    <Label fx:id="soldAdvertisementsLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Categories"/>
+                    <Label fx:id="totalCategoriesLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Cities"/>
+                    <Label fx:id="totalCitiesLabel"/>
+                </VBox>
+
+            </HBox>
+
+            <HBox spacing="20">
+
+                <VBox alignment="CENTER">
+                    <Label text="Provinces"/>
+                    <Label fx:id="totalProvincesLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Ratings"/>
+                    <Label fx:id="totalRatingsLabel"/>
+                </VBox>
+
+                <VBox alignment="CENTER">
+                    <Label text="Chats"/>
+                    <Label fx:id="totalConversationsLabel"/>
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <HBox spacing="20">
+
+                <Button text="Users"
+                        onAction="#showUsers"/>
+
+                <Button text="Pending Ads"
+                        onAction="#showPendingAdvertisements"/>
+
+                <Button text="Categories"
+                        onAction="#showCategories"/>
+
+            </HBox>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

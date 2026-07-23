@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.secondhand.frontend.controller.admin.AdvertisementReviewController">
+
+    <top>
+        <fx:include source="../components/header.fxml"/>
+    </top>
+
+    <center>
+
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER">
+
+            <StackPane alignment="TOP_CENTER">
+
+                <HBox alignment="TOP_CENTER"
+                      spacing="45"
+                      maxWidth="1280"
+                      prefWidth="1280">
+
+                    <padding>
+                        <Insets top="35"
+                                right="35"
+                                bottom="40"
+                                left="35"/>
+                    </padding>
+
+                    <!-- ================= LEFT ================= -->
+
+                    <VBox spacing="25"
+                          prefWidth="560"
+                          alignment="TOP_CENTER">
+
+                        <StackPane>
+
+                            <ImageView fx:id="mainImageView"
+                                       fitWidth="560"
+                                       fitHeight="560"
+                                       preserveRatio="true"/>
+
+                        </StackPane>
+
+                        <ScrollPane fitToHeight="true"
+                                    hbarPolicy="AS_NEEDED"
+                                    vbarPolicy="NEVER">
+
+                            <HBox fx:id="thumbnailContainer"
+                                  spacing="10"/>
+
+                        </ScrollPane>
+
+                        <VBox spacing="18">
+
+                            <padding>
+                                <Insets top="20"
+                                        right="20"
+                                        bottom="20"
+                                        left="20"/>
+                            </padding>
+
+                            <Label text="Seller"/>
+
+                            <Label fx:id="sellerNameLabel"/>
+
+                            <Label fx:id="sellerRateLabel"/>
+
+                        </VBox>
+
+                    </VBox>
+
+                    <!-- ================= RIGHT ================= -->
+
+                    <VBox spacing="20"
+                          prefWidth="650">
+
+                        <HBox spacing="12">
+
+                            <Button text="←"
+                                    onAction="#back"/>
+
+                            <Label fx:id="titleLabel"
+                                   wrapText="true"/>
+
+                        </HBox>
+
+                        <HBox spacing="10">
+
+                            <Label text="Price :"/>
+
+                            <Label fx:id="priceLabel"/>
+
+                        </HBox>
+
+                        <HBox spacing="10">
+
+                            <Label fx:id="cityLabel"/>
+
+                            <Label text="•"/>
+
+                            <Label fx:id="timeLabel"/>
+
+                        </HBox>
+
+                        <Separator/>
+
+                        <Label text="Specifications"/>
+
+                        <VBox fx:id="attributesContainer"
+                              spacing="10"/>
+
+                        <Separator/>
+
+                        <Label text="Description"/>
+
+                        <VBox>
+
+                            <padding>
+                                <Insets top="15"
+                                        right="20"
+                                        bottom="15"
+                                        left="20"/>
+                            </padding>
+
+                            <Label fx:id="descriptionLabel"
+                                   wrapText="true"/>
+
+                        </VBox>
+
+                        <Separator/>
+
+                        <Label text="Reject Reason"/>
+
+                        <TextArea fx:id="rejectReasonField"
+                                  promptText="Reason for rejection..."
+                                  prefRowCount="5"
+                                  wrapText="true"/>
+
+                        <HBox spacing="20">
+
+                            <Button text="Approve"
+                                    onAction="#approveAdvertisement"/>
+
+                            <Button text="Reject"
+                                    onAction="#rejectAdvertisement"/>
+
+                        </HBox>
+
+                    </VBox>
+
+                </HBox>
+
+            </StackPane>
+
+        </ScrollPane>
+
+    </center>
+
+</BorderPane>

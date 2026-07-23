@@ -4,6 +4,7 @@ package com.secondhand.frontend.controller.home;
 import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.AdvertisementRepository;
+import com.secondhand.frontend.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;

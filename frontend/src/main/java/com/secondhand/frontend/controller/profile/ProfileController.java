@@ -159,6 +159,7 @@ public class ProfileController {
 
         NavigationManager.showLogin();
 
+
     }
 
     public void setBackVisible(boolean visible){

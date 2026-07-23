@@ -14,6 +14,8 @@ public class SessionManager {
 
     private static String token;
 
+
+
     public static void login(
             Long id,
             String user,
@@ -69,5 +71,9 @@ public class SessionManager {
 
     public static void setUserId(Long userId) {
         SessionManager.userId = userId;
+    }
+
+    public static void setRole(Role role) {
+        SessionManager.role = role;
     }
 }

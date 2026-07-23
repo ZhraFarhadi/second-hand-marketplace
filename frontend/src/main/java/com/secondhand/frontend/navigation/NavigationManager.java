@@ -1,5 +1,7 @@
 package com.secondhand.frontend.navigation;
 
+import com.secondhand.frontend.controller.admin.AdvertisementReviewController;
+import com.secondhand.frontend.controller.admin.UserDetailsController;
 import com.secondhand.frontend.controller.advertisement.CreateAdvertisementController;
 import com.secondhand.frontend.controller.conversation.ChatController;
 import javafx.fxml.FXMLLoader;
@@ -438,5 +440,206 @@ public class NavigationManager {
     }
 
 
+    public static void showAdminDashboard(){
 
+        loadScene(
+                "/view/admin/admin-dashboard.fxml",
+                "/css/header.css",
+                "/css/admin.css"
+        );
+
+    }
+
+    public static void showAdminUsers(){
+
+        loadScene(
+                "/view/admin/admin-users.fxml",
+                "/css/header.css",
+                "/css/admin.css"
+        );
+
+    }
+
+    public static void showPendingAdvertisements(){
+
+        loadScene(
+                "/view/admin/admin-pending-ads.fxml",
+                "/css/header.css",
+                "/css/admin.css"
+        );
+
+    }
+
+
+
+    public static void showDashboard() {
+
+        loadScene(
+                "/view/admin/dashboard.fxml",
+                "/css/header.css",
+                "/css/dashboard.css"
+        );
+
+    }
+
+    public static void showUsers() {
+
+        loadScene(
+                "/view/admin/users.fxml",
+                "/css/header.css",
+                "/css/users.css"
+        );
+
+    }
+
+
+
+    public static void showAdvertisements() {
+
+        loadScene("/view/admin/advertisements.fxml");
+
+    }
+
+
+
+    public static void showAdvertisementReview(
+            Long advertisementId
+    ){
+
+        try{
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/admin/advertisement-review.fxml"
+                            )
+                    );
+
+            boolean maximized =
+                    primaryStage.isMaximized();
+
+            double width =
+                    primaryStage.getWidth();
+
+            double height =
+                    primaryStage.getHeight();
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            AdvertisementReviewController controller =
+                    loader.getController();
+
+            controller.setAdvertisementId(
+                    advertisementId
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/admin.css")
+                            .toExternalForm()
+            );
+
+            primaryStage.setScene(scene);
+
+            if(maximized){
+
+                primaryStage.setMaximized(true);
+
+            }
+
+            else{
+
+                primaryStage.setWidth(width);
+
+                primaryStage.setHeight(height);
+
+            }
+
+        }
+
+        catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    public static void showUserDetails(Long userId){
+
+        try{
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/admin/user-details.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            UserDetailsController controller =
+                    loader.getController();
+
+            controller.setUserId(userId);
+
+            primaryStage.setScene(scene);
+
+        }
+
+        catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    public static void showCategories(){
+
+        loadScene(
+                "/view/admin/categories.fxml",
+                "/css/header.css",
+                "/css/admin.css"
+        );
+
+    }
+    public static void showCreateCategory(){
+
+        loadScene(
+
+                "/view/admin/create-category.fxml",
+
+                "/css/header.css",
+
+                "/css/admin.css"
+
+        );
+
+    }
+
+  /*  public static void showCategoryDetails(Long categoryId){
+
+        loadScene(  "/view/admin/category-details.fxml",
+                "/css/header.css",
+                "/css/admin.css");
+
+
+        CategoryDetailsController controller =
+                loader.getController();
+
+        controller.loadCategory(categoryId);
+
+    }
+*/
 }
