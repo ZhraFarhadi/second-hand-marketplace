@@ -2,7 +2,10 @@ package com.secondhand.backend.service.impl;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.*;
+import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
+import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
+import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
+import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
 import com.secondhand.backend.entity.Category;
 import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
@@ -114,19 +117,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
-
-
-
-
-
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryDetailsResponse> getCategories() {
-
-        return categoryRepository
-                .findAllByParentIsNullOrderByNameAsc()
+    public List<CategorySummaryResponse> getCategories() {
+        return categoryRepository.findAllByParentIsNullOrderByDisplayOrderAscNameAsc()
                 .stream()
-                .map(categoryMapper::toDetailsResponse)
+                .map(categoryMapper::toSummaryResponse)
                 .toList();
 
     }
@@ -383,7 +379,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category parent = getCategoryOrThrow(categoryId);
 
         List<Category> children =
-                categoryRepository.findAllByParentOrderByNameAsc(parent);
+                categoryRepository.findAllByParentOrderByDisplayOrderAscNameAsc(parent);
 
         Set<Long> parentIds =
                 new HashSet<>(categoryRepository.findParentCategoryIds());

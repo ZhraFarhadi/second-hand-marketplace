@@ -19,4 +19,18 @@ public interface AdvertisementMapper {
             Advertisement advertisement
     );
 
+    AdvertisementSummaryResponse toSummaryResponse(
+            Advertisement advertisement,
+            boolean isFavorite,
+            boolean isOwner
+    );
+
+    AdvertisementDetailsResponse toDetailsResponse(
+            Advertisement advertisement,
+            boolean isFavorite,
+            boolean isOwner
+    );
+
+
+
 }

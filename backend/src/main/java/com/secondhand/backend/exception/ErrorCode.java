@@ -197,6 +197,17 @@ public enum ErrorCode {
             "Category attribute name is invalid."
     ),
 
+    ATTRIBUTE_OPTION_REQUIRED(
+            HttpStatus.BAD_REQUEST,
+            "An option must be selected for this attribute."
+    ),
+
+    SELECT_ATTRIBUTE_OPTIONS_REQUIRED(
+            HttpStatus.BAD_REQUEST,
+            "Select attribute must contain at least one option."
+    ),
+
+
 
 
     /*
@@ -261,6 +272,12 @@ public enum ErrorCode {
      * Favorite
      * ==========================
      */
+
+    CANNOT_FAVORITE_OWN_ADVERTISEMENT(
+            HttpStatus.FORBIDDEN,
+            "You cannot favorite your own advertisement."
+    ),
+
 
 
 

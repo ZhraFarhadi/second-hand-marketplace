@@ -5,6 +5,8 @@ import com.secondhand.backend.enums.AttributeDataType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 public class CategoryAttributeResponse {
@@ -16,5 +18,7 @@ public class CategoryAttributeResponse {
     private AttributeDataType dataType;
 
     private boolean required;
+
+    private List<String> options;
 
 }

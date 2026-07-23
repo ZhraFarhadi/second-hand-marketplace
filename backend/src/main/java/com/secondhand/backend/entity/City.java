@@ -33,4 +33,10 @@ public class City extends BaseEntity {
     @OneToMany(mappedBy = "city")
     private List<Advertisement> advertisements = new ArrayList<>();
 
+    @Column(name = "code", nullable = false, unique = true, length = 10)
+    private String code;
+
+    @Column(name = "display_order", nullable = false)
+    private Integer displayOrder = 0;
+
 }

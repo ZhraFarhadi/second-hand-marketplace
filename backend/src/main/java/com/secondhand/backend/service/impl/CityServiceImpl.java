@@ -36,7 +36,7 @@ public class CityServiceImpl
         Province province = getProvinceOrThrow(provinceId);
 
         return cityRepository
-                .findAllByProvinceOrderByNameAsc(province)
+                .findAllByProvinceOrderByDisplayOrderAscNameAsc(province)
                 .stream()
                 .map(cityMapper::toSummaryResponse)
                 .toList();

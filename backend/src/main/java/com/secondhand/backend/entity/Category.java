@@ -35,4 +35,7 @@ public class Category extends BaseEntity {
     )
     @OrderBy("name ASC")
     private List<CategoryAttribute> attributes = new ArrayList<>();
+
+    @Column(name = "display_order", nullable = false)
+    private Integer displayOrder = 0;
 }

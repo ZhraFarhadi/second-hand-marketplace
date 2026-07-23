@@ -43,6 +43,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final CurrentUserService currentUserService;
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
+    private final FavoriteRepository favoriteRepository;
 
 
     @PersistenceContext
@@ -228,24 +229,34 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     @Transactional
-    public AdvertisementDetailsResponse getAdvertisementDetails(
-            Long advertisementId
-    ) {
+    public AdvertisementDetailsResponse getAdvertisementDetails(Long advertisementId) {
 
-        Advertisement advertisement =
-                getExistingAdvertisement(advertisementId);
+        Advertisement advertisement = getExistingAdvertisement(advertisementId);
 
-        User authenticatedUser =
-                currentUserService.getCurrentUserOrNull();
+        User authenticatedUser = currentUserService.getCurrentUserOrNull();
 
-        validateAdvertisementVisibility(
+        validateAdvertisementVisibility(advertisement, authenticatedUser);
+
+        boolean isOwner = authenticatedUser != null
+                && advertisement.getSeller().getId().equals(authenticatedUser.getId());
+
+        boolean isFavorite = false;
+
+        if (authenticatedUser != null && !isOwner) {
+            isFavorite = favoriteRepository.existsByUserAndAdvertisement(
+                    authenticatedUser,
+                    advertisement
+            );
+        }
+
+        return advertisementMapper.toDetailsResponse(
                 advertisement,
-                authenticatedUser
+                isFavorite,
+                isOwner
         );
-
-        return advertisementMapper.toDetailsResponse(advertisement);
-
     }
+
+
 
     @Override
     @Transactional
@@ -269,22 +280,50 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     @Transactional
-    public Page<AdvertisementSummaryResponse> getAdvertisements(
-            Pageable pageable
-    ) {
+    public Page<AdvertisementSummaryResponse> getAdvertisements(Pageable pageable) {
 
         Page<Advertisement> advertisements =
-                advertisementRepository
-                        .findByStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
-                                AdvertisementStatus.ACTIVE,
-                                pageable
-                        );
+                advertisementRepository.findByStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
+                        AdvertisementStatus.ACTIVE,
+                        pageable
+                );
 
-        return advertisements.map(
-                advertisementMapper::toSummaryResponse
-        );
+        User currentUser = currentUserService.getCurrentUserOrNull();
 
+        Set<Long> favoriteAdvertisementIds = Collections.emptySet();
+
+        if (currentUser != null && !advertisements.isEmpty()) {
+            List<Long> advertisementIds = advertisements.getContent()
+                    .stream()
+                    .map(Advertisement::getId)
+                    .toList();
+
+            favoriteAdvertisementIds =
+                    favoriteRepository.findFavoriteAdvertisementIdsByUserAndAdvertisementIds(
+                            currentUser,
+                            advertisementIds
+                    );
+        }
+
+        Set<Long> finalFavoriteAdvertisementIds = favoriteAdvertisementIds;
+        Long currentUserId = currentUser != null ? currentUser.getId() : null;
+
+        return advertisements.map(advertisement -> {
+            boolean isOwner = currentUserId != null
+                    && advertisement.getSeller().getId().equals(currentUserId);
+
+            boolean isFavorite = !isOwner
+                    && finalFavoriteAdvertisementIds.contains(advertisement.getId());
+
+            return advertisementMapper.toSummaryResponse(
+                    advertisement,
+                    isFavorite,
+                    isOwner
+            );
+        });
     }
+
+
 
     private Category getCategory(Long categoryId) {
 

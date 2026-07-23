@@ -24,7 +24,7 @@ public class ProvinceServiceImpl
     public List<ProvinceResponse> getProvinces() {
 
         return provinceRepository
-                .findAllByOrderByNameAsc()
+                .findAllByOrderByDisplayOrderAscNameAsc()
                 .stream()
                 .map(provinceMapper::toResponse)
                 .toList();
