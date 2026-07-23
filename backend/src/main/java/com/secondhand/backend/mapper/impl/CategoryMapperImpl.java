@@ -2,6 +2,7 @@ package com.secondhand.backend.mapper.impl;
 
 import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.entity.Category;
+import com.secondhand.backend.entity.CategoryAttribute;
 import com.secondhand.backend.mapper.interfaces.CategoryAttributeMapper;
 import com.secondhand.backend.mapper.interfaces.CategoryMapper;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +87,18 @@ public class CategoryMapperImpl implements CategoryMapper {
             return null;
         }
 
+
+        System.out.println("============== MAPPER ==============");
+
+        System.out.println(category.getName());
+
+        System.out.println(category.getAttributes().size());
+
+        for (CategoryAttribute attribute : category.getAttributes()) {
+
+            System.out.println(attribute.getName());
+
+        }
         return new CategoryWithAttributesResponse(
                 category.getId(),
                 category.getName(),

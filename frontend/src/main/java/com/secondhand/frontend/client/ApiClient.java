@@ -185,9 +185,13 @@ public final class ApiClient {
     }
 
     public static String get(String endpoint)
+
             throws IOException,
             InterruptedException,
             ApiException {
+
+        System.out.println("STEP 9 ApiClient GET");
+
 
         HttpRequest.Builder builder =
                 HttpRequest.newBuilder()
@@ -223,12 +227,15 @@ public final class ApiClient {
                         HttpResponse.BodyHandlers.ofString()
                 );
 
+
+
         if (response.statusCode() >= 200
                 && response.statusCode() < 300) {
 
             return response.body();
 
         }
+
 
         System.out.println("STATUS = " + response.statusCode());
         System.out.println("BODY = " + response.body());

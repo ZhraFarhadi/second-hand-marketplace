@@ -5,6 +5,7 @@ import com.secondhand.frontend.controller.advertisement.components.ImageItemCont
 import com.secondhand.frontend.controller.components.FloatingPriceFieldController;
 import com.secondhand.frontend.controller.components.FloatingTextAreaController;
 import com.secondhand.frontend.controller.components.FloatingTextFieldController;
+import com.secondhand.frontend.exception.ApiException;
 import javafx.application.Platform;
 import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.dto.advertisement.request.AdvertisementAttributeRequest;
@@ -176,12 +177,18 @@ public class CreateAdvertisementController {
 
     private void loadCategories() {
 
+        System.out.println("ENTER loadCategories");
+
         try {
 
             List<CategorySummaryResponse> rootCategories =
                     categoryRepository.getRootCategories();
 
+            System.out.println("ROOT SIZE = " + rootCategories.size());
+
             categorySelectorController.setCategories(rootCategories);
+
+            System.out.println("EXIT loadCategories");
 
         }
 
@@ -265,6 +272,10 @@ public class CreateAdvertisementController {
 
     private void loadSpecifications(Subcategory subcategory) {
 
+
+        System.out.println("----------------------------");
+        System.out.println("loadSpecifications called");
+        System.out.println("subcategory = " + subcategory.getName());
         specificationsContainer.getChildren().clear();
 
         specificationInputs.clear();
@@ -274,15 +285,58 @@ public class CreateAdvertisementController {
         if (subcategory == null)
             return;
 
+
         try {
 
             CategoryDetailsResponse details =
                     categoryRepository.getCategory(subcategory.getId());
 
+            System.out.println("========== CATEGORY ==========");
+            System.out.println("ID = " + details.getId());
+            System.out.println("NAME = " + details.getName());
+
+            System.out.println("ATTRIBUTES = " + details.getAttributes());
+
+            if (details.getAttributes() != null) {
+
+                System.out.println("SIZE = " + details.getAttributes().size());
+
+                for (CategoryAttributeResponse a : details.getAttributes()) {
+
+                    System.out.println(
+                            a.getId() + " | "
+                                    + a.getName() + " | "
+                                    + a.getDataType()
+                    );
+
+                }
+
+            }
+            else {
+
+                System.out.println("ATTRIBUTES IS NULL");
+
+            }
+
             if (details == null)
                 return;
 
             currentAttributes.addAll(details.getAttributes());
+
+            System.out.println("========== CATEGORY ATTRIBUTES ==========");
+
+            for (CategoryAttributeResponse a : currentAttributes) {
+
+                System.out.println(
+                        a.getId() + "  "
+                                + a.getName() + "  "
+                                + a.getDataType()
+                );
+
+            }
+            System.out.println(details);
+            System.out.println(details.getAttributes());
+            System.out.println(details.getAttributes().size());
 
             HBox row = null;
 
@@ -316,6 +370,18 @@ public class CreateAdvertisementController {
 
                     }
 
+                    case SELECT -> {
+
+                        ComboBox<String> comboBox = new ComboBox<>();
+
+                        if (attribute.getOptions() != null) {
+                            comboBox.getItems().addAll(attribute.getOptions());
+                        }
+
+                        input = comboBox;
+
+                    }
+
                     default -> {
 
                         TextField tf = new TextField();
@@ -332,6 +398,15 @@ public class CreateAdvertisementController {
 
                 specificationInputs.add(input);
 
+
+                System.out.println(
+                        "Added Input : " +
+                                attribute.getName() +
+                                " -> " +
+                                attribute.getDataType()
+                );
+
+
                 VBox.setVgrow(fieldBox, Priority.NEVER);
 
                 HBox.setHgrow(fieldBox, Priority.ALWAYS);
@@ -342,10 +417,14 @@ public class CreateAdvertisementController {
 
                 column++;
 
+
                 if (column == 3)
                     column = 0;
 
             }
+
+            System.out.println("currentAttributes = " + currentAttributes.size());
+            System.out.println("specificationInputs = " + specificationInputs.size());
 
         }
 
@@ -412,6 +491,7 @@ public class CreateAdvertisementController {
 
             valid = false;
 
+
         }
         else {
 
@@ -472,21 +552,17 @@ public class CreateAdvertisementController {
         chooser.setTitle("Select Images");
 
         chooser.getExtensionFilters().add(
-
                 new FileChooser.ExtensionFilter(
                         "Images",
                         "*.png",
                         "*.jpg",
                         "*.jpeg"
                 )
-
         );
 
         List<File> files =
                 chooser.showOpenMultipleDialog(
-
                         imageContainer.getScene().getWindow()
-
                 );
 
         if (files == null || files.isEmpty())
@@ -494,27 +570,22 @@ public class CreateAdvertisementController {
 
         for (File file : files) {
 
-            AdvertisementImageRequest request =
+            AdvertisementImageRequest image =
                     new AdvertisementImageRequest();
 
-            request.setId(null);
+            image.setId(null);
 
-            request.setImageUrl(
-                    file.toURI().toString()
-            );
+            image.setImageUrl(file.toURI().toString());
 
-            request.setPrimary(false);
+            image.setDisplayOrder(currentImages.size());
 
-            request.setDisplayOrder(
-                    currentImages.size() + 1
-            );
+            // اولین تصویر Primary باشد
+            image.setPrimary(currentImages.isEmpty());
 
-            currentImages.add(request);
-
+            currentImages.add(image);
         }
 
         refreshImages();
-
     }
 
     private void refreshImages() {
@@ -613,6 +684,16 @@ public class CreateAdvertisementController {
         List<AdvertisementAttributeRequest> attributes =
                 new ArrayList<>();
 
+        System.out.println("currentAttributes = " + currentAttributes.size());
+        System.out.println("specificationInputs = " + specificationInputs.size());
+
+        for (int i = 0; i < specificationInputs.size(); i++) {
+            System.out.println(
+                    i + " -> " +
+                            specificationInputs.get(i).getClass().getSimpleName()
+            );
+        }
+
         for (int i = 0; i < currentAttributes.size(); i++) {
 
             AdvertisementAttributeRequest attribute =
@@ -630,6 +711,19 @@ public class CreateAdvertisementController {
             if (control instanceof TextField tf) {
 
                 attribute.setValue(tf.getText());
+
+            }
+            else if (control instanceof ComboBox<?> comboBox) {
+
+                Object value = comboBox.getValue();
+
+                if (value != null)
+                    attribute.setValue(value.toString());
+
+            }
+            else if (control instanceof CheckBox checkBox) {
+
+                attribute.setValue(String.valueOf(checkBox.isSelected()));
 
             }
 
@@ -667,16 +761,32 @@ public class CreateAdvertisementController {
 
             else {
 
-                CreateAdvertisementRequest request =
-                        buildRequest();
+                CreateAdvertisementRequest request = buildRequest();
 
-                advertisementRepository.createAdvertisement(
-                        request
-                );
+                System.out.println("========== ATTRIBUTES ==========");
+
+                for (AdvertisementAttributeRequest a : request.getAttributes()) {
+
+                    System.out.println(
+                            "attributeId = " + a.getCategoryAttributeId()
+                                    + " value = " + a.getValue()
+                    );
+
+                }
+
+                advertisementRepository.createAdvertisement(request);
 
             }
 
             NavigationManager.showHome();
+
+        }
+
+        catch (ApiException e) {
+
+            errorLabel.setVisible(true);
+
+            errorLabel.setText(e.getMessage());
 
         }
 
@@ -686,11 +796,7 @@ public class CreateAdvertisementController {
 
             errorLabel.setVisible(true);
 
-            errorLabel.setText(
-                    editMode
-                            ? "Failed to update advertisement."
-                            : "Failed to publish advertisement."
-            );
+            errorLabel.setText("Unexpected error.");
 
         }
 

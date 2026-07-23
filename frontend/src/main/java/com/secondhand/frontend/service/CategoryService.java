@@ -47,15 +47,22 @@ public class CategoryService {
      */
     public CategoryDetailsResponse getCategory(Long id)
             throws Exception {
+        System.out.println("STEP 6 Service ENTER");
+        System.out.println("id = " + id);
 
+        System.out.println("STEP 7 before GET");
         String response =
                 ApiClient.get("/categories/" + id);
+
+        System.out.println("STEP 8 after GET");
+        System.out.println(response);
+        System.out.println("========== RAW JSON ==========");
+        System.out.println(response);
 
         return gson.fromJson(
                 response,
                 CategoryDetailsResponse.class
         );
-
     }
 
     public List<CategorySummaryResponse> getChildren(Long categoryId)

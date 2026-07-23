@@ -1,5 +1,7 @@
 package com.secondhand.frontend.dto.category.response;
 
+import java.util.List;
+
 public class CategoryAttributeResponse {
 
     private Long id;
@@ -9,6 +11,8 @@ public class CategoryAttributeResponse {
     private String dataType;
 
     private boolean required;
+
+    private List<String> options;
 
     public CategoryAttributeResponse() {
     }
@@ -43,5 +47,13 @@ public class CategoryAttributeResponse {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
 }

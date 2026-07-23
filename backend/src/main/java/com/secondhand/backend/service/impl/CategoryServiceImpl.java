@@ -2,11 +2,9 @@ package com.secondhand.backend.service.impl;
 
 import com.secondhand.backend.dto.category.request.CreateCategoryRequest;
 import com.secondhand.backend.dto.category.request.UpdateCategoryRequest;
-import com.secondhand.backend.dto.category.response.CategoryBreadcrumbItemResponse;
-import com.secondhand.backend.dto.category.response.CategoryChildrenResponse;
-import com.secondhand.backend.dto.category.response.CategorySummaryResponse;
-import com.secondhand.backend.dto.category.response.CategoryWithAttributesResponse;
+import com.secondhand.backend.dto.category.response.*;
 import com.secondhand.backend.entity.Category;
+import com.secondhand.backend.entity.CategoryAttribute;
 import com.secondhand.backend.exception.BusinessException;
 import com.secondhand.backend.exception.ErrorCode;
 import com.secondhand.backend.mapper.interfaces.CategoryMapper;
@@ -119,10 +117,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategorySummaryResponse> getCategories() {
-        return categoryRepository.findAllByParentIsNullOrderByDisplayOrderAscNameAsc()
+    public List<CategoryDetailsResponse> getCategories() {
+
+        return categoryRepository
+                .findAllByParentIsNullOrderByDisplayOrderAscNameAsc()
                 .stream()
-                .map(categoryMapper::toSummaryResponse)
+                .map(categoryMapper::toDetailsResponse)
                 .toList();
 
     }
@@ -136,6 +136,18 @@ public class CategoryServiceImpl implements CategoryService {
         Category category =
                 getCategoryOrThrow(categoryId);
 
+
+        System.out.println("============== SERVICE ==============");
+
+        System.out.println(category.getName());
+
+        System.out.println(category.getAttributes().size());
+
+        for (CategoryAttribute attribute : category.getAttributes()) {
+
+            System.out.println(attribute.getName());
+
+        }
         return categoryMapper
                 .toCategoryWithAttributesResponse(category);
 

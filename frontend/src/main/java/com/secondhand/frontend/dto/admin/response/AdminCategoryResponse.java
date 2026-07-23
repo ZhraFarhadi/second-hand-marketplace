@@ -3,7 +3,6 @@ package com.secondhand.frontend.dto.admin.response;
 public class AdminCategoryResponse {
 
     private Long id;
-
     private String name;
 
     public Long getId() {

@@ -68,6 +68,19 @@ public class CategorySelectorController {
             }
 
         });
+        subcategoryComboBox.setOnAction(event -> {
+
+            Subcategory selectedSubcategory = subcategoryComboBox.getValue();
+
+            if (selectedSubcategory != null && subcategorySelectedListener != null) {
+
+                System.out.println("SUBCATEGORY SELECTED = " + selectedSubcategory.getName());
+
+                subcategorySelectedListener.accept(selectedSubcategory);
+
+            }
+
+        });
 
     }
 

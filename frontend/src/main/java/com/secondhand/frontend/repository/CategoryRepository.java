@@ -37,7 +37,11 @@ public class CategoryRepository {
     public CategoryDetailsResponse getCategory(Long id)
             throws Exception {
 
+        System.out.println("STEP 4 Repository ENTER");
+        System.out.println("id = " + id);
+
         return categoryService.getCategory(id);
+
 
     }
 

@@ -21,9 +21,8 @@ UPDATE provinces
 SET code = CONCAT('P', id)
 WHERE code IS NULL;
 
-
 ALTER TABLE provinces
-    ALTER COLUMN IF NOT E code SET NOT NULL;
+    ALTER COLUMN code SET NOT NULL;
 
 
 DO $$
