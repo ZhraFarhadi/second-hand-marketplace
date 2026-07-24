@@ -16,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import java.util.List;
+import com.secondhand.backend.enums.ReviewStatus;
+import com.secondhand.backend.entity.AdminReview;
+import java.util.Comparator;
 
 @Component
 @RequiredArgsConstructor
@@ -158,13 +161,21 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             return null;
         }
 
+        String rejectionReason =
+                advertisement.getReviews().stream()
+                        .filter(review -> review.getReviewStatus() == ReviewStatus.REJECTED)
+                        .max(Comparator.comparing(AdminReview::getReviewedAt))
+                        .map(AdminReview::getComment)
+                        .orElse(null);
+
         return new MyAdvertisementSummaryResponse(
                 advertisement.getId(),
                 advertisement.getTitle(),
                 advertisement.getPrice(),
                 advertisement.getStatus(),
                 getPrimaryImageUrl(advertisement.getImages()),
-                advertisement.getCreatedAt()
+                advertisement.getCreatedAt(),
+                rejectionReason
         );
     }
 

@@ -229,4 +229,28 @@ public class AdminReviewServiceImpl
 
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AdminAdvertisementSummaryResponse> getAllAdvertisements(
+            Pageable pageable
+    ) {
+
+        return advertisementRepository
+                .findByDeletedAtIsNullOrderByCreatedAtDesc(pageable)
+                .map(adminAdvertisementMapper::toSummaryResponse);
+
+    }
+
+    @Override
+    public void deleteAdvertisement(Long advertisementId) {
+
+        Advertisement advertisement =
+                getAdvertisement(advertisementId);
+
+        advertisement.setDeletedAt(LocalDateTime.now());
+
+        advertisementRepository.save(advertisement);
+
+    }
+
 }

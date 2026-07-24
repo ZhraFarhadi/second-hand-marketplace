@@ -303,4 +303,53 @@ public class AdminService {
 
         }
     }
+
+    public List<AdminAdvertisementSummaryResponse> getAllAdvertisements(
+            int page,
+            int size
+    ) {
+
+        try {
+
+            Type type =
+                    new TypeToken<PageResponse<AdminAdvertisementSummaryResponse>>() {
+                    }.getType();
+
+            PageResponse<AdminAdvertisementSummaryResponse> response =
+                    ApiClient.get(
+                            "/admin/advertisements?page=" + page + "&size=" + size,
+                            type
+                    );
+
+            return response.getContent();
+
+        }
+
+        catch (Exception e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
+
+    public void deleteAdvertisement(
+            Long advertisementId
+    ) {
+
+        try {
+
+            ApiClient.delete(
+                    "/admin/advertisements/" + advertisementId
+            );
+
+        }
+
+        catch (Exception e) {
+
+            throw new RuntimeException(e);
+
+        }
+
+    }
 }

@@ -135,10 +135,9 @@
                             <Separator/>
 
                             <Button fx:id="sellerProfileButton"
-
                                     maxWidth="Infinity"
-
-                                    text="View Seller Profile"/>
+                                    text="View Seller Profile"
+                                    onAction="#onViewSellerProfileClicked"/>
 
                         </VBox>
 
@@ -253,10 +252,13 @@
                                     text="💬 Start Chat"
                                     onAction="#onChatClicked"/>
 
+
+
                             <Button fx:id="rateSellerButton"
                                     text="⭐ Rate Seller"
                                     visible="false"
-                                    managed="false"/>
+                                    managed="false"
+                                    onAction="#onRateSellerClicked"/>
 
                         </HBox>
 

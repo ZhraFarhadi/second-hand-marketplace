@@ -73,4 +73,18 @@ public class AdminController {
 
     }
 
+    @GetMapping("/advertisements")
+    public Page<AdminAdvertisementSummaryResponse> getAllAdvertisements(
+            Pageable pageable
+    ) {
+        return adminService.getAllAdvertisements(pageable);
+    }
+
+    @DeleteMapping("/advertisements/{advertisementId}")
+    public void deleteAdvertisement(
+            @PathVariable Long advertisementId
+    ) {
+        adminService.deleteAdvertisement(advertisementId);
+    }
+
 }

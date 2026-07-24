@@ -22,22 +22,7 @@ public class HeaderController {
     private Runnable onBackAction = NavigationManager::showHome;
 
 
-    @FXML
-    public void initialize() {
 
-        if (SessionManager.getRole() == Role.ADMIN) {
-
-            adminMenu.setVisible(true);
-            adminMenu.setManaged(true);
-
-        } else {
-
-            adminMenu.setVisible(false);
-            adminMenu.setManaged(false);
-
-        }
-
-    }
 
 
 
@@ -82,10 +67,5 @@ public class HeaderController {
 
     }
 
-    @FXML
-    private void showAdminDashboard() {
 
-        NavigationManager.showAdminDashboard();
-
-    }
 }

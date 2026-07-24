@@ -169,22 +169,38 @@
 
                         <Separator/>
 
-                        <Label text="Reject Reason"
-                               styleClass="section-title"/>
+                        <VBox fx:id="reviewActionsBox" spacing="18">
 
-                        <TextArea fx:id="rejectReasonField"
-                                  promptText="Reason for rejection..."
-                                  prefRowCount="5"
-                                  wrapText="true"/>
+                            <Label text="Reject Reason"
+                                   styleClass="section-title"/>
 
-                        <HBox spacing="18"
-                              alignment="CENTER_LEFT">
+                            <TextArea fx:id="rejectReasonField"
+                                      promptText="Reason for rejection..."
+                                      prefRowCount="5"
+                                      wrapText="true"/>
 
-                            <Button text="Approve"
-                                    onAction="#approveAdvertisement"/>
+                            <HBox spacing="18"
+                                  alignment="CENTER_LEFT">
 
-                            <Button text="Reject"
-                                    onAction="#rejectAdvertisement"/>
+                                <Button text="Approve"
+                                        onAction="#approveAdvertisement"/>
+
+                                <Button text="Reject"
+                                        onAction="#rejectAdvertisement"/>
+
+                            </HBox>
+
+                        </VBox>
+
+                        <HBox fx:id="deleteActionsBox"
+                              spacing="18"
+                              alignment="CENTER_LEFT"
+                              visible="false"
+                              managed="false">
+
+                            <Button text="حذف آگهی"
+                                    onAction="#deleteAdvertisement"
+                                    style="-fx-text-fill: white; -fx-background-color: #d9534f;"/>
 
                         </HBox>
 

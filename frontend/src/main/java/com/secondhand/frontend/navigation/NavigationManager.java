@@ -668,20 +668,70 @@ public class NavigationManager {
 
         );
 
+
+
     }
 
-  /*  public static void showCategoryDetails(Long categoryId){
+    public static void showAdvertisementDetailsForDelete(
+            Long advertisementId
+    ) {
 
-        loadScene(  "/view/admin/category-details.fxml",
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/admin/advertisement-review.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            AdvertisementReviewController controller =
+                    loader.getController();
+
+            controller.setAdvertisementIdForDelete(
+                    advertisementId
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/advertisementdetail.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/admin.css")
+                            .toExternalForm()
+            );
+
+            primaryStage.setScene(scene);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void showAllAdvertisements() {
+
+        loadScene(
+                "/view/admin/all-advertisements.fxml",
                 "/css/header.css",
-                "/css/admin.css");
-
-
-        CategoryDetailsController controller =
-                loader.getController();
-
-        controller.loadCategory(categoryId);
+                "/css/admin.css"
+        );
 
     }
-*/
 }

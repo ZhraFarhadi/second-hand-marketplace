@@ -54,6 +54,9 @@ public class MyAdvertisementCardController {
     private ImageView advertisementImageView;
 
     @FXML
+    private Button reasonButton;
+
+    @FXML
     private Label cityLabel;
 
     @FXML
@@ -79,6 +82,26 @@ public class MyAdvertisementCardController {
                     advertisement.getId(),
                     NavigationManager::showMyAdvertisements
             );
+
+        });
+
+        reasonButton.setOnAction(event -> {
+
+            event.consume();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("دلیل رد آگهی");
+
+            alert.setHeaderText(null);
+
+            alert.setContentText(
+                    advertisement.getRejectionReason() != null
+                            ? advertisement.getRejectionReason()
+                            : "دلیلی ثبت نشده است."
+            );
+
+            alert.show();
 
         });
 
@@ -283,6 +306,25 @@ public class MyAdvertisementCardController {
             soldButton.setText("Mark Sold");
 
             editButton.setDisable(false);
+
+        }
+
+        if (advertisement.getStatus() == AdvertisementStatus.REJECTED) {
+
+            soldButton.setVisible(false);
+            soldButton.setManaged(false);
+
+            reasonButton.setVisible(true);
+            reasonButton.setManaged(true);
+
+        }
+        else {
+
+            soldButton.setVisible(true);
+            soldButton.setManaged(true);
+
+            reasonButton.setVisible(false);
+            reasonButton.setManaged(false);
 
         }
 

@@ -28,7 +28,11 @@ public interface AdminReviewService {
             Pageable pageable
     );
 
+    Page<AdminAdvertisementSummaryResponse> getAllAdvertisements(
+            Pageable pageable
+    );
 
+    void deleteAdvertisement(Long advertisementId);
 
     AdminAdvertisementDetailsResponse getAdvertisementDetails(Long advertisementId);
 }

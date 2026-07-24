@@ -27,6 +27,10 @@ public interface AdvertisementRepository
             Pageable pageable
     );
 
+
+    Page<Advertisement> findByDeletedAtIsNullOrderByCreatedAtDesc(
+            Pageable pageable
+    );
     Page<Advertisement> findByCategoryIdAndStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
             Long categoryId,
             AdvertisementStatus status,

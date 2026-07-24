@@ -223,7 +223,83 @@ public class AdvertisementReviewController {
 
     @FXML
     private void back() {
-        NavigationManager.showAdvertisements();
+
+        if (deleteMode) {
+
+            NavigationManager.showAllAdvertisements();
+
+        } else {
+
+            NavigationManager.showAdvertisements();
+
+        }
+
+    }
+
+    @FXML
+    private VBox reviewActionsBox;
+
+    @FXML
+    private HBox deleteActionsBox;
+
+    private boolean deleteMode = false;
+
+
+    public void setAdvertisementIdForDelete(Long id) {
+
+        this.deleteMode = true;
+
+        this.advertisementId = id;
+
+        reviewActionsBox.setVisible(false);
+        reviewActionsBox.setManaged(false);
+
+        deleteActionsBox.setVisible(true);
+        deleteActionsBox.setManaged(true);
+
+        loadAdvertisement();
+
+    }
+
+    @FXML
+    private void deleteAdvertisement() {
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setHeaderText(null);
+        confirm.setContentText("آیا از حذف این آگهی مطمئن هستید؟");
+
+        confirm.showAndWait().ifPresent(result -> {
+
+            if (result == ButtonType.OK) {
+
+                try {
+
+                    repository.deleteAdvertisement(advertisementId);
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("آگهی با موفقیت حذف شد.");
+                    alert.showAndWait();
+
+                    NavigationManager.showAllAdvertisements();
+
+                }
+
+                catch (Exception e) {
+
+                    e.printStackTrace();
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText(null);
+                    alert.setContentText("حذف آگهی با خطا مواجه شد.");
+                    alert.showAndWait();
+
+                }
+
+            }
+
+        });
+
     }
 
 }

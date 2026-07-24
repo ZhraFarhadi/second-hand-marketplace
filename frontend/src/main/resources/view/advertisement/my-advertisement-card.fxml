@@ -74,6 +74,9 @@
             <Button fx:id="editButton"
                     text="Edit"/>
 
+            <Button fx:id="reasonButton"
+                    text="reason"/>
+
             <Button fx:id="soldButton"
                     text="Mark Sold"/>
 
