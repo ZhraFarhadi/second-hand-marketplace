@@ -126,6 +126,18 @@ public class AdvertisementDetailsController {
 
             e.printStackTrace();
 
+            String message =
+                    e instanceof ApiException
+                            ? e.getMessage()
+                            : "امکان بارگذاری آگهی وجود ندارد.";
+
+            new Alert(
+                    Alert.AlertType.ERROR,
+                    message
+            ).showAndWait();
+
+            onBack.run();
+
         }
 
     }

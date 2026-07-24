@@ -47,7 +47,8 @@
                                styleClass="chat-user-name"/>
 
                         <Label fx:id="advertisementTitleLabel"
-                               styleClass="chat-ad-title"/>
+                               onMouseClicked="#onAdvertisementTitleClicked"
+                               styleClass="chat-ad-title, clickable-link"/>
 
                     </VBox>
 

@@ -31,6 +31,10 @@ public class ChatController {
     @FXML
     private Label advertisementTitleLabel;
 
+    private Long conversationId;
+
+    private Long advertisementId;
+
     private final ConversationRepository conversationRepository =
             new ConversationRepository();
 
@@ -41,7 +45,7 @@ public class ChatController {
     private Label avatarLabel;
 
 
-    private Long conversationId;
+
 
     private Runnable onBack;
 
@@ -91,6 +95,7 @@ public class ChatController {
                         .getTitle()
         );
 
+        advertisementId = conversation.getAdvertisement().getId();
         if (conversation.getBuyer().getId().equals(SessionManager.getUserId())) {
 
             userNameLabel.setText(
@@ -184,6 +189,16 @@ public class ChatController {
         scrollPane.layout();
 
         scrollPane.setVvalue(1.0);
+
+    }
+
+    @FXML
+    private void onAdvertisementTitleClicked() {
+
+        if (advertisementId == null)
+            return;
+
+        NavigationManager.showAdvertisementDetails(advertisementId);
 
     }
 

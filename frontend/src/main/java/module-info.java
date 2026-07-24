@@ -29,6 +29,8 @@ module com.secondhand.frontend {
     opens com.secondhand.frontend.dto.message.response to com.google.gson;
     opens com.secondhand.frontend.dto.message.request to com.google.gson;
     opens com.secondhand.frontend.dto.profile.request to com.google.gson;
+    opens com.secondhand.frontend.dto.rating.response to com.google.gson;
+    opens com.secondhand.frontend.dto.rating.request to com.google.gson;
     exports com.secondhand.frontend.controller.profile;
 
 
