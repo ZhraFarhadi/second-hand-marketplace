@@ -390,6 +390,22 @@ public class CreateAdvertisementController {
 
                     }
 
+                    case SELECT -> {
+
+                        ComboBox<String> cb = new ComboBox<>();
+
+                        cb.setPromptText(attribute.getName());
+
+                        if (attribute.getOptions() != null) {
+
+                            cb.getItems().addAll(attribute.getOptions());
+
+                        }
+
+                        input = cb;
+
+                    }
+
                     default -> {
 
                         TextField tf = new TextField();
@@ -837,6 +853,17 @@ public class CreateAdvertisementController {
                         request
                 );
 
+                Alert successAlert =
+                        new Alert(Alert.AlertType.INFORMATION);
+
+                successAlert.setTitle("Advertisement");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText(
+                        "Advertisement updated successfully."
+                );
+
+                successAlert.showAndWait();
+
             }
 
             else {
@@ -855,6 +882,17 @@ public class CreateAdvertisementController {
                 }
 
                 advertisementRepository.createAdvertisement(request);
+
+                Alert successAlert =
+                        new Alert(Alert.AlertType.INFORMATION);
+
+                successAlert.setTitle("Advertisement");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText(
+                        "Advertisement submitted successfully. It will be reviewed by admin shortly."
+                );
+
+                successAlert.showAndWait();
 
             }
 
@@ -972,54 +1010,83 @@ public class CreateAdvertisementController {
         );
 
         /*
-         * City
+         * Province & City
          */
 
-        cityComboBox.getItems().stream()
+        try {
 
-                .filter(city ->
-                        city.getId().equals(
-                                advertisement.getCity().getId()
-                        )
-                )
+            var cityDetails =
+                    cityRepository.getCityDetails(
+                            advertisement.getCity().getId()
+                    );
 
-                .findFirst()
+            ProvinceResponse province = cityDetails.getProvince();
 
-                .ifPresent(cityComboBox::setValue);
+            provinceComboBox.getItems().stream()
+
+                    .filter(p -> p.getId().equals(province.getId()))
+
+                    .findFirst()
+
+                    .ifPresent(provinceComboBox::setValue);
+
+            loadCities(province.getId());
+
+            cityComboBox.getItems().stream()
+
+                    .filter(city ->
+                            city.getId().equals(
+                                    advertisement.getCity().getId()
+                            )
+                    )
+
+                    .findFirst()
+
+                    .ifPresent(cityComboBox::setValue);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
         /*
          * Specifications
          */
+        /*
+        * Specifications
+        */
 
-        for (int i = 0;
-             i < advertisement.getAttributes().size();
-             i++) {
+        for (AdvertisementAttributeResponse attribute :
+                advertisement.getAttributes()) {
 
-            AdvertisementAttributeResponse attribute =
-                    advertisement.getAttributes().get(i);
+            for (int i = 0; i < currentAttributes.size(); i++) {
 
-            Control control =
-                    specificationInputs.get(i);
+                if (currentAttributes.get(i).getId()
+                        .equals(attribute.getCategoryAttributeId())) {
 
-            for (int j = 0;
-                 j < advertisement.getAttributes().size();
-                 j++) {
+                    Control control =
+                            specificationInputs.get(i);
 
+                    if (control instanceof TextField tf) {
 
+                        tf.setText(attribute.getValue());
 
-                if (control instanceof TextField tf) {
+                    }
 
-                    tf.setText(attribute.getValue());
+                    else if (control instanceof ComboBox<?> cb) {
 
-                }
+                        @SuppressWarnings("unchecked")
+                        ComboBox<String> combo =
+                                (ComboBox<String>) cb;
 
-                else if (control instanceof ComboBox<?> cb) {
+                        combo.setValue(attribute.getValue());
 
-                    @SuppressWarnings("unchecked")
-                    ComboBox<String> combo =
-                            (ComboBox<String>) cb;
+                    }
 
-                    combo.setValue(attribute.getValue());
+                    break;
 
                 }
 
@@ -1219,6 +1286,11 @@ public class CreateAdvertisementController {
 
     }
 
+    public void setOnBack(Runnable onBack) {
+
+        headerController.setOnBack(onBack);
+
+    }
 
 
 

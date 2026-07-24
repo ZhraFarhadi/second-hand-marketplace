@@ -6,10 +6,11 @@ import com.secondhand.backend.dto.admin.response.AdminReviewResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementSummaryResponse;
 
 public interface AdminReviewService {
 
-    Page<AdvertisementSummaryResponse> getPendingAdvertisements(
+    Page<AdminAdvertisementSummaryResponse> getPendingAdvertisements(
             Pageable pageable
     );
 

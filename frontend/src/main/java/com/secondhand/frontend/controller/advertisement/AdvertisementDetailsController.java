@@ -60,6 +60,8 @@ public class AdvertisementDetailsController {
     private final FavoriteRepository favoriteRepository =
             new FavoriteRepository();
 
+    private Runnable onBack = NavigationManager::showHome;
+
     @FXML
     private Button chatButton;
 
@@ -78,10 +80,6 @@ public class AdvertisementDetailsController {
         // منتظر loadAdvertisement می‌مانیم
     }
 
-    @FXML
-    private void onBackClicked() {
-        NavigationManager.showHome();
-    }
 
     public void loadAdvertisement(Long advertisementId) {
 
@@ -359,6 +357,19 @@ public class AdvertisementDetailsController {
             ).showAndWait();
 
         }
+
+    }
+
+    @FXML
+    private void onBackClicked() {
+        onBack.run();
+    }
+
+    public void setOnBack(Runnable onBack) {
+
+        this.onBack = onBack != null
+                ? onBack
+                : NavigationManager::showHome;
 
     }
 

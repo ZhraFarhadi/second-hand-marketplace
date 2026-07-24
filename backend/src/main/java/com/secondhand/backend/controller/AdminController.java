@@ -2,6 +2,7 @@ package com.secondhand.backend.controller;
 
 import com.secondhand.backend.dto.admin.request.CreateAdminReviewRequest;
 import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementSummaryResponse;
 import com.secondhand.backend.dto.admin.response.AdminReviewResponse;
 import com.secondhand.backend.service.interfaces.AdminReviewService;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class AdminController {
 
 
     @GetMapping("/reviews/pending")
-    public Page<AdvertisementSummaryResponse> getPendingAdvertisements(
+    public Page<AdminAdvertisementSummaryResponse> getPendingAdvertisements(
             Pageable pageable
     ) {
         return adminService.getPendingAdvertisements(pageable);

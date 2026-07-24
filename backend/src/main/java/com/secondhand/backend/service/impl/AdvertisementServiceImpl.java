@@ -716,6 +716,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
         advertisement.getAttributes().clear();
 
+        // حذف ویژگی‌های قدیمی را همین الان داخل دیتابیس اعمال کن
+        advertisementRepository.flush();
+
         buildAttributes(
                 advertisement,
                 requestAttributes,

@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import com.secondhand.backend.entity.Advertisement;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementSummaryResponse;
+import com.secondhand.backend.mapper.interfaces.AdminAdvertisementMapper;
 import java.time.LocalDateTime;
 
 @Service
@@ -42,6 +44,8 @@ public class AdminReviewServiceImpl
 
     private final CurrentUserService currentUserService;
 
+    private final AdminAdvertisementMapper adminAdvertisementMapper;
+
 
     @Override
     public AdminAdvertisementDetailsResponse getAdvertisementDetails(
@@ -58,7 +62,7 @@ public class AdminReviewServiceImpl
 
     @Override
     @Transactional(readOnly = true)
-    public Page<AdvertisementSummaryResponse> getPendingAdvertisements(
+    public Page<AdminAdvertisementSummaryResponse> getPendingAdvertisements(
             Pageable pageable
     ) {
 
@@ -67,7 +71,7 @@ public class AdminReviewServiceImpl
                         AdvertisementStatus.PENDING,
                         pageable
                 )
-                .map(advertisementMapper::toSummaryResponse);
+                .map(adminAdvertisementMapper::toSummaryResponse);
 
     }
 

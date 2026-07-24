@@ -162,32 +162,28 @@ public class AdvertisementReviewController {
         }
     }
 
-    public void approveAdvertisement(
-            Long advertisementId
-    ) {
+    @FXML
+    private void approveAdvertisement() {
 
         try {
 
-            CreateAdminReviewRequest request =
-                    new CreateAdminReviewRequest();
+            repository.approveAdvertisement(advertisementId);
 
-            request.setReviewStatus(
-                    ReviewStatus.APPROVED
-            );
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Advertisement approved successfully.");
+            alert.showAndWait();
 
-            request.setComment(
-                    "Advertisement approved by admin"
-            );
-
-            ApiClient.post(
-                    "/admin/advertisements/" + advertisementId + "/review",
-                    request,
-                    Object.class
-            );
+            NavigationManager.showAdvertisements();
 
         } catch (Exception e) {
 
-            throw new RuntimeException(e);
+            e.printStackTrace();
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to approve advertisement.");
+            alert.showAndWait();
 
         }
 
@@ -217,7 +213,7 @@ public class AdvertisementReviewController {
             alert.setContentText("Advertisement rejected successfully.");
             alert.showAndWait();
 
-            NavigationManager.showPendingAdvertisements();
+            NavigationManager.showAdvertisements();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -227,7 +223,7 @@ public class AdvertisementReviewController {
 
     @FXML
     private void back() {
-        NavigationManager.showPendingAdvertisements();
+        NavigationManager.showAdvertisements();
     }
 
 }

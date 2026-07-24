@@ -359,8 +359,19 @@ public class NavigationManager {
     }
 
 
+
+
     public static void showEditAdvertisement(
             Long advertisementId
+    ) {
+
+        showEditAdvertisement(advertisementId, NavigationManager::showHome);
+
+    }
+
+    public static void showEditAdvertisement(
+            Long advertisementId,
+            Runnable onBack
     ) {
 
         try {
@@ -402,6 +413,8 @@ public class NavigationManager {
             controller.loadAdvertisementForEdit(
                     advertisementId
             );
+
+            controller.setOnBack(onBack);
 
             primaryStage.setScene(scene);
 
@@ -560,6 +573,12 @@ public class NavigationManager {
             scene.getStylesheets().add(
                     NavigationManager.class
                             .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/advertisementdetail.css")
                             .toExternalForm()
             );
 

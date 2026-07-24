@@ -19,6 +19,9 @@ public class HeaderController {
     private MenuButton adminMenu;
 
 
+    private Runnable onBackAction = NavigationManager::showHome;
+
+
     @FXML
     public void initialize() {
 
@@ -67,7 +70,15 @@ public class HeaderController {
     @FXML
     private void goBack() {
 
-        NavigationManager.showHome();
+        onBackAction.run();
+
+    }
+
+    public void setOnBack(Runnable onBackAction) {
+
+        this.onBackAction = onBackAction != null
+                ? onBackAction
+                : NavigationManager::showHome;
 
     }
 

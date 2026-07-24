@@ -96,7 +96,7 @@ public class AdminService {
                     ReviewStatus.APPROVED
             );
 
-            request.setComment("");
+            request.setComment("Advertisement approved by admin.");
 
             ApiClient.post(
                     "/admin/advertisements/" + advertisementId + "/review",

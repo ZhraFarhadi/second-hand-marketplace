@@ -7,7 +7,7 @@ import com.secondhand.frontend.model.Subcategory;
 import com.secondhand.frontend.repository.CategoryRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
-
+import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -165,23 +165,51 @@ public class CategorySelectorController {
 
     public void selectCategory(Long subcategoryId) {
 
-        for (Category category : categoryComboBox.getItems()) {
+        try {
 
-            for (Subcategory subcategory : category.getSubcategories()) {
+            CategoryDetailsResponse subDetails =
+                    CategoryRepository.getInstance().getCategory(subcategoryId);
 
-                if (subcategory.getId().equals(subcategoryId)) {
+            if (subDetails == null || subDetails.getParentId() == null)
+                return;
+
+            Long parentId = subDetails.getParentId();
+
+            for (Category category : categoryComboBox.getItems()) {
+
+                if (category.getId().equals(parentId)) {
 
                     categoryComboBox.setValue(category);
 
-                    subcategoryComboBox.getItems().setAll(
-                            category.getSubcategories()
-                    );
+                    var children =
+                            CategoryRepository.getInstance()
+                                    .getChildren(category.getId());
 
-                    subcategoryComboBox.setValue(subcategory);
+                    subcategoryComboBox.getItems().clear();
 
-                    if (subcategorySelectedListener != null) {
+                    for (var child : children) {
 
-                        subcategorySelectedListener.accept(subcategory);
+                        subcategoryComboBox.getItems().add(
+                                new Subcategory(child.getId(), child.getName())
+                        );
+
+                    }
+
+                    for (Subcategory sub : subcategoryComboBox.getItems()) {
+
+                        if (sub.getId().equals(subcategoryId)) {
+
+                            subcategoryComboBox.setValue(sub);
+
+                            if (subcategorySelectedListener != null) {
+
+                                subcategorySelectedListener.accept(sub);
+
+                            }
+
+                            break;
+
+                        }
 
                     }
 
@@ -193,6 +221,11 @@ public class CategorySelectorController {
 
         }
 
-    }
+        catch (Exception e) {
 
+            e.printStackTrace();
+
+        }
+
+    }
 }

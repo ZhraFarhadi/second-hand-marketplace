@@ -76,7 +76,8 @@ public class MyAdvertisementCardController {
             event.consume();
 
             NavigationManager.showEditAdvertisement(
-                    advertisement.getId()
+                    advertisement.getId(),
+                    NavigationManager::showMyAdvertisements
             );
 
         });
@@ -266,12 +267,13 @@ public class MyAdvertisementCardController {
         statusLabel.setText(
                 advertisement.getStatus().name()
         );
-
         if (advertisement.getStatus() == AdvertisementStatus.SOLD) {
 
             soldButton.setDisable(true);
 
             soldButton.setText("Sold");
+
+            editButton.setDisable(true);
 
         }
         else {
@@ -279,6 +281,8 @@ public class MyAdvertisementCardController {
             soldButton.setDisable(false);
 
             soldButton.setText("Mark Sold");
+
+            editButton.setDisable(false);
 
         }
 
