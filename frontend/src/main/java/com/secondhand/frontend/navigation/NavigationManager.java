@@ -87,11 +87,7 @@ public class NavigationManager {
 
             }
 
-            if (controller instanceof com.secondhand.frontend.controller.conversation.ConversationListController conversationList) {
 
-                conversationList.setBackVisible(true);
-
-            }
 
             primaryStage.setScene(scene);
 
@@ -294,6 +290,16 @@ public class NavigationManager {
     public static void showConversation(
             Long conversationId
     ){
+        showConversation(
+                conversationId,
+                NavigationManager::showConversationList
+        );
+    }
+
+    public static void showConversation(
+            Long conversationId,
+            Runnable onBack
+    ){
 
         FXMLLoader loader =
                 loadFXML(
@@ -307,10 +313,27 @@ public class NavigationManager {
                 conversationId
         );
 
+        controller.setOnBack(
+                onBack
+        );
+
         Scene scene =
                 new Scene(
                         loader.getRoot()
                 );
+
+        var cssUrl =
+                NavigationManager.class.getResource(
+                        "/css/chat.css"
+                );
+
+        if (cssUrl != null) {
+
+            scene.getStylesheets().add(
+                    cssUrl.toExternalForm()
+            );
+
+        }
 
         primaryStage.setScene(scene);
 

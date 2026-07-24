@@ -6,6 +6,8 @@ import com.secondhand.frontend.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import com.secondhand.frontend.util.AuthGuard;
+
 
 public class HeaderController {
 
@@ -40,12 +42,18 @@ public class HeaderController {
     @FXML
     private void showCreateAdvertisement() {
 
+        if (!AuthGuard.requireLogin())
+            return;
+
         NavigationManager.showCreateAdvertisement();
 
     }
 
     @FXML
     private void showProfile() {
+
+        if (!AuthGuard.requireLogin())
+            return;
 
         NavigationManager.showProfile();
 

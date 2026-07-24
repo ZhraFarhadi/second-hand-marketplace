@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 
 
 
+
 public class AdvertisementCardController {
 
     @FXML

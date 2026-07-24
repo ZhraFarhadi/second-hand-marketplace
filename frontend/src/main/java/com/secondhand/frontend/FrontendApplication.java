@@ -17,7 +17,7 @@ public class FrontendApplication extends Application {
 
         NavigationManager.initialize(stage);
 
-      NavigationManager.showLogin();
+        NavigationManager.showHome();
 
 
         stage.show();

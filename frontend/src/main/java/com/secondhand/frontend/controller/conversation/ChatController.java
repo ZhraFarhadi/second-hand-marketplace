@@ -37,7 +37,34 @@ public class ChatController {
     private final MessageRepository messageRepository =
             new MessageRepository();
 
+    @FXML
+    private Label avatarLabel;
+
+
     private Long conversationId;
+
+    private Runnable onBack;
+
+    public void setOnBack(Runnable onBack) {
+        this.onBack = onBack;
+    }
+
+
+
+    @FXML
+    private void onBackClicked() {
+
+        if (onBack != null) {
+
+            onBack.run();
+
+        } else {
+
+            NavigationManager.showConversationList();
+
+        }
+
+    }
 
     public void setConversationId(
             Long conversationId
@@ -77,6 +104,12 @@ public class ChatController {
             );
 
         }
+
+        avatarLabel.setText(
+                userNameLabel.getText() != null && !userNameLabel.getText().isBlank()
+                        ? userNameLabel.getText().substring(0, 1)
+                        : "👤"
+        );
 
         showMessages(conversation);
 

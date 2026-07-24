@@ -250,7 +250,8 @@
                                    styleClass="favorite-heart"/>
 
                             <Button fx:id="chatButton"
-                                    text="💬 Start Chat"/>
+                                    text="💬 Start Chat"
+                                    onAction="#onChatClicked"/>
 
                             <Button fx:id="rateSellerButton"
                                     text="⭐ Rate Seller"

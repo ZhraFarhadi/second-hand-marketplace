@@ -12,6 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import com.secondhand.frontend.util.RelativeTimeUtil;
 import com.secondhand.frontend.repository.FavoriteRepository;
+import com.secondhand.frontend.dto.conversation.response.ConversationDetailsResponse;
+import com.secondhand.frontend.repository.ConversationRepository;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 
 public class AdvertisementDetailsController {
 
@@ -55,6 +59,12 @@ public class AdvertisementDetailsController {
 
     private final FavoriteRepository favoriteRepository =
             new FavoriteRepository();
+
+    @FXML
+    private Button chatButton;
+
+    private final ConversationRepository conversationRepository =
+            new ConversationRepository();
 
     @FXML
     public void initialize() {
@@ -128,16 +138,15 @@ public class AdvertisementDetailsController {
         updateFavoriteIcon();
 
         if (advertisement.isOwner()) {
-
             favoriteButton.setVisible(false);
             favoriteButton.setManaged(false);
-
-        }
-        else {
-
+            chatButton.setVisible(false);
+            chatButton.setManaged(false);
+        } else {
             favoriteButton.setVisible(true);
             favoriteButton.setManaged(true);
-
+            chatButton.setVisible(true);
+            chatButton.setManaged(true);
         }
 
 
@@ -310,6 +319,44 @@ public class AdvertisementDetailsController {
         catch (Exception e) {
 
             e.printStackTrace();
+
+        }
+
+    }
+
+    @FXML
+    private void onChatClicked() {
+
+
+        if (!com.secondhand.frontend.util.AuthGuard.requireLogin())
+            return;
+
+        if (advertisementId == null)
+            return;
+
+        try {
+
+            ConversationDetailsResponse conversation =
+                    conversationRepository.startConversation(advertisementId);
+
+            NavigationManager.showConversation(
+                    conversation.getId(),
+                    () -> NavigationManager.showAdvertisementDetails(advertisementId)
+            );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            String message =
+                    (e.getCause() != null && e.getCause().getMessage() != null)
+                            ? e.getCause().getMessage()
+                            : e.getMessage();
+
+            new Alert(
+                    Alert.AlertType.ERROR,
+                    message != null ? message : "امکان شروع گفت‌وگو وجود ندارد."
+            ).showAndWait();
 
         }
 

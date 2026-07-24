@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
+<HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.secondhand.frontend.controller.conversation.ConversationItemController"
       fx:id="root"
-      spacing="5"
+      spacing="14"
+      alignment="CENTER_LEFT"
       styleClass="conversation-item">
 
-    <HBox spacing="8">
+    <padding>
+        <Insets top="14" right="16" bottom="14" left="16"/>
+    </padding>
 
-        <Label fx:id="userLabel"
-               styleClass="conversation-user"/>
+    <StackPane styleClass="conversation-avatar">
+        <Label fx:id="avatarLabel" text="👤" styleClass="conversation-avatar-label"/>
+    </StackPane>
 
-        <Region HBox.hgrow="ALWAYS"/>
+    <VBox spacing="4" HBox.hgrow="ALWAYS">
 
-        <Label fx:id="timeLabel"
-               styleClass="conversation-time"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
 
-    </HBox>
+            <Label fx:id="userLabel"
+                   styleClass="conversation-user"/>
 
-    <Label fx:id="titleLabel"
-           styleClass="conversation-ad"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-    <HBox spacing="8">
+            <Label fx:id="timeLabel"
+                   styleClass="conversation-time"/>
 
-        <Label fx:id="lastMessageLabel"
-               styleClass="conversation-message"/>
+        </HBox>
 
-        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="titleLabel"
+               styleClass="conversation-ad"/>
 
-        <Label fx:id="unreadLabel"
-               styleClass="conversation-unread"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
 
-    </HBox>
+            <Label fx:id="lastMessageLabel"
+                   styleClass="conversation-message"/>
 
-</VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="unreadLabel"
+                   styleClass="conversation-unread"/>
+
+        </HBox>
+
+    </VBox>
+
+</HBox>

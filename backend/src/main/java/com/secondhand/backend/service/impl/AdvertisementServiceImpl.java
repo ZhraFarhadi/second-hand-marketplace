@@ -71,6 +71,14 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
         User seller = currentUserService.getCurrentUser();
 
+        if (seller.getAccountStatus() != AccountStatus.ACTIVE) {
+
+            throw new BusinessException(
+                    ErrorCode.USER_BLOCKED
+            );
+
+        }
+
         Category category = getCategory(request.getCategoryId());
 
         City city = getCity(request.getCityId());

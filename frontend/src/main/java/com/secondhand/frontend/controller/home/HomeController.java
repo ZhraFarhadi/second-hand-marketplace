@@ -18,6 +18,7 @@ import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryRe
 import com.secondhand.frontend.repository.CategoryRepository;
 import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
 import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
+import com.secondhand.frontend.util.AuthGuard;
 
 public class HomeController {
 
@@ -92,11 +93,17 @@ public class HomeController {
 
         chatButton.setOnAction(event -> {
 
+            if (!AuthGuard.requireLogin())
+                return;
+
             NavigationManager.showConversationList();
 
         });
 
         myAdvertisementsButton.setOnAction(event -> {
+
+            if (!AuthGuard.requireLogin())
+                return;
 
             NavigationManager.showMyAdvertisements();
 

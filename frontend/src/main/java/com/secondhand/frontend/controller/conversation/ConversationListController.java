@@ -1,12 +1,12 @@
 package com.secondhand.frontend.controller.conversation;
 
-import com.secondhand.frontend.controller.components.HeaderController;
 import com.secondhand.frontend.dto.common.PageResponse;
 import com.secondhand.frontend.dto.conversation.response.ConversationSummaryResponse;
 import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.ConversationRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ConversationListController {
@@ -46,7 +46,7 @@ public class ConversationListController {
                                 )
                         );
 
-                VBox node =
+                HBox node =
                         loader.load();
 
                 ConversationItemController controller =
@@ -73,11 +73,9 @@ public class ConversationListController {
     }
 
     @FXML
-    private HeaderController headerController;
+    private void onBackClicked() {
 
-    public void setBackVisible(boolean visible) {
-
-        headerController.setBackVisible(visible);
+        NavigationManager.showHome();
 
     }
 
