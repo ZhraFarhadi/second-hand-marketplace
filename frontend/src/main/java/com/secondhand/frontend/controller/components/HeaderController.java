@@ -6,6 +6,8 @@ import com.secondhand.frontend.session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import com.secondhand.frontend.util.AuthGuard;
+
 
 public class HeaderController {
 
@@ -17,22 +19,10 @@ public class HeaderController {
     private MenuButton adminMenu;
 
 
-    @FXML
-    public void initialize() {
+    private Runnable onBackAction = NavigationManager::showHome;
 
-        if (SessionManager.getRole() == Role.ADMIN) {
 
-            adminMenu.setVisible(true);
-            adminMenu.setManaged(true);
 
-        } else {
-
-            adminMenu.setVisible(false);
-            adminMenu.setManaged(false);
-
-        }
-
-    }
 
 
 
@@ -40,12 +30,18 @@ public class HeaderController {
     @FXML
     private void showCreateAdvertisement() {
 
+        if (!AuthGuard.requireLogin())
+            return;
+
         NavigationManager.showCreateAdvertisement();
 
     }
 
     @FXML
     private void showProfile() {
+
+        if (!AuthGuard.requireLogin())
+            return;
 
         NavigationManager.showProfile();
 
@@ -59,14 +55,17 @@ public class HeaderController {
     @FXML
     private void goBack() {
 
-        NavigationManager.showHome();
+        onBackAction.run();
 
     }
 
-    @FXML
-    private void showAdminDashboard() {
+    public void setOnBack(Runnable onBackAction) {
 
-        NavigationManager.showAdminDashboard();
+        this.onBackAction = onBackAction != null
+                ? onBackAction
+                : NavigationManager::showHome;
 
     }
+
+
 }

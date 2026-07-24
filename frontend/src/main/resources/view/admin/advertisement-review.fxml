@@ -16,7 +16,8 @@
     <center>
 
         <ScrollPane fitToWidth="true"
-                    hbarPolicy="NEVER">
+                    hbarPolicy="NEVER"
+                    styleClass="content-scroll">
 
             <StackPane alignment="TOP_CENTER">
 
@@ -38,7 +39,7 @@
                           prefWidth="560"
                           alignment="TOP_CENTER">
 
-                        <StackPane>
+                        <StackPane styleClass="main-image-container">
 
                             <ImageView fx:id="mainImageView"
                                        fitWidth="560"
@@ -48,28 +49,44 @@
                         </StackPane>
 
                         <ScrollPane fitToHeight="true"
+                                    fitToWidth="false"
                                     hbarPolicy="AS_NEEDED"
-                                    vbarPolicy="NEVER">
+                                    vbarPolicy="NEVER"
+                                    pannable="true"
+                                    styleClass="gallery-scroll">
 
                             <HBox fx:id="thumbnailContainer"
-                                  spacing="10"/>
+                                  spacing="10"
+                                  alignment="CENTER_LEFT"/>
+
+                            <padding>
+                                <Insets top="5"
+                                        right="5"
+                                        bottom="5"
+                                        left="5"/>
+                            </padding>
 
                         </ScrollPane>
 
-                        <VBox spacing="18">
+                        <VBox spacing="18"
+                              prefWidth="560"
+                              styleClass="seller-card">
 
                             <padding>
-                                <Insets top="20"
-                                        right="20"
-                                        bottom="20"
-                                        left="20"/>
+                                <Insets top="22"
+                                        right="22"
+                                        bottom="22"
+                                        left="22"/>
                             </padding>
 
-                            <Label text="Seller"/>
+                            <Label text="Seller"
+                                   styleClass="seller-title"/>
 
-                            <Label fx:id="sellerNameLabel"/>
+                            <Label fx:id="sellerNameLabel"
+                                   styleClass="seller-name"/>
 
-                            <Label fx:id="sellerRateLabel"/>
+                            <Label fx:id="sellerRateLabel"
+                                   styleClass="seller-rate"/>
 
                         </VBox>
 
@@ -77,78 +94,113 @@
 
                     <!-- ================= RIGHT ================= -->
 
-                    <VBox spacing="20"
-                          prefWidth="650">
+                    <VBox spacing="24"
+                          prefWidth="650"
+                          alignment="TOP_LEFT">
 
-                        <HBox spacing="12">
+                        <HBox spacing="12"
+                              alignment="CENTER_LEFT">
 
                             <Button text="←"
-                                    onAction="#back"/>
+                                    onAction="#back"
+                                    styleClass="back-button"/>
 
                             <Label fx:id="titleLabel"
-                                   wrapText="true"/>
+                                   wrapText="true"
+                                   maxWidth="590"
+                                   styleClass="detail-title"/>
 
                         </HBox>
 
-                        <HBox spacing="10">
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="12">
 
-                            <Label text="Price :"/>
+                            <Label text="Price :"
+                                   styleClass="price-caption"/>
 
-                            <Label fx:id="priceLabel"/>
+                            <Label fx:id="priceLabel"
+                                   styleClass="detail-price"/>
 
                         </HBox>
 
-                        <HBox spacing="10">
+                        <HBox alignment="CENTER_LEFT"
+                              spacing="18">
 
-                            <Label fx:id="cityLabel"/>
+                            <Label fx:id="cityLabel"
+                                   styleClass="detail-info"/>
 
                             <Label text="•"/>
 
-                            <Label fx:id="timeLabel"/>
+                            <Label fx:id="timeLabel"
+                                   styleClass="detail-info"/>
 
                         </HBox>
 
                         <Separator/>
 
-                        <Label text="Specifications"/>
+                        <Label text="Specifications"
+                               styleClass="section-title"/>
 
                         <VBox fx:id="attributesContainer"
-                              spacing="10"/>
+                              spacing="12"/>
 
                         <Separator/>
 
-                        <Label text="Description"/>
+                        <Label text="Description"
+                               styleClass="section-title"/>
 
-                        <VBox>
+                        <VBox spacing="12"
+                              prefWidth="650"
+                              styleClass="description-card">
 
                             <padding>
-                                <Insets top="15"
-                                        right="20"
-                                        bottom="15"
-                                        left="20"/>
+                                <Insets top="22"
+                                        right="24"
+                                        bottom="22"
+                                        left="24"/>
                             </padding>
 
                             <Label fx:id="descriptionLabel"
-                                   wrapText="true"/>
+                                   wrapText="true"
+                                   maxWidth="600"
+                                   styleClass="description-text"/>
 
                         </VBox>
 
                         <Separator/>
 
-                        <Label text="Reject Reason"/>
+                        <VBox fx:id="reviewActionsBox" spacing="18">
 
-                        <TextArea fx:id="rejectReasonField"
-                                  promptText="Reason for rejection..."
-                                  prefRowCount="5"
-                                  wrapText="true"/>
+                            <Label text="Reject Reason"
+                                   styleClass="section-title"/>
 
-                        <HBox spacing="20">
+                            <TextArea fx:id="rejectReasonField"
+                                      promptText="Reason for rejection..."
+                                      prefRowCount="5"
+                                      wrapText="true"/>
 
-                            <Button text="Approve"
-                                    onAction="#approveAdvertisement"/>
+                            <HBox spacing="18"
+                                  alignment="CENTER_LEFT">
 
-                            <Button text="Reject"
-                                    onAction="#rejectAdvertisement"/>
+                                <Button text="Approve"
+                                        onAction="#approveAdvertisement"/>
+
+                                <Button text="Reject"
+                                        onAction="#rejectAdvertisement"/>
+
+                            </HBox>
+
+                        </VBox>
+
+                        <HBox fx:id="deleteActionsBox"
+                              spacing="18"
+                              alignment="CENTER_LEFT"
+                              visible="false"
+                              managed="false">
+
+                            <Button text="حذف آگهی"
+                                    onAction="#deleteAdvertisement"
+                                    style="-fx-text-fill: white; -fx-background-color: #d9534f;"/>
 
                         </HBox>
 

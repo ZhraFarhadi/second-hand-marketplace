@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 public class MessageService {
 
     private static final String BASE =
-            "/api/messages";
+            "/messages";
 
     public MessageResponse sendMessage(
             Long conversationId,

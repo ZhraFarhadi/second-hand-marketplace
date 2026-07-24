@@ -84,4 +84,13 @@ public class AdminRepository {
         );
 
     }
+
+
+    public List<AdminAdvertisementSummaryResponse> getAllAdvertisements(int page, int size) {
+        return service.getAllAdvertisements(page, size);
+    }
+
+    public void deleteAdvertisement(Long advertisementId) {
+        service.deleteAdvertisement(advertisementId);
+    }
 }

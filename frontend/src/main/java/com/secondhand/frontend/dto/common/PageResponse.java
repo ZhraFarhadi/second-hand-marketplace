@@ -5,23 +5,10 @@ import java.util.List;
 public class PageResponse<T> {
 
     private List<T> content;
-
-    private int number;
-
-    private int size;
-
-    private long totalElements;
-
     private int totalPages;
-
-    private boolean first;
-
-    private boolean last;
-
-    private boolean empty;
-
-    public PageResponse() {
-    }
+    private long totalElements;
+    private int size;
+    private int number;
 
     public List<T> getContent() {
         return content;
@@ -29,30 +16,6 @@ public class PageResponse<T> {
 
     public void setContent(List<T> content) {
         this.content = content;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public long getTotalElements() {
-        return totalElements;
-    }
-
-    public void setTotalElements(long totalElements) {
-        this.totalElements = totalElements;
     }
 
     public int getTotalPages() {
@@ -63,28 +26,27 @@ public class PageResponse<T> {
         this.totalPages = totalPages;
     }
 
-    public boolean isFirst() {
-        return first;
+    public long getTotalElements() {
+        return totalElements;
     }
 
-    public void setFirst(boolean first) {
-        this.first = first;
+    public void setTotalElements(long totalElements) {
+        this.totalElements = totalElements;
     }
 
-    public boolean isLast() {
-        return last;
+    public int getSize() {
+        return size;
     }
 
-    public void setLast(boolean last) {
-        this.last = last;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public boolean isEmpty() {
-        return empty;
+    public int getNumber() {
+        return number;
     }
 
-    public void setEmpty(boolean empty) {
-        this.empty = empty;
+    public void setNumber(int number) {
+        this.number = number;
     }
-
 }

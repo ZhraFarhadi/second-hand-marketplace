@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class AdvertisementsController {
+public class AllAdvertisementsController {
 
     @FXML
     private TableView<AdminAdvertisementSummaryResponse> advertisementsTable;
@@ -40,7 +40,6 @@ public class AdvertisementsController {
     private final AdminRepository repository =
             new AdminRepository();
 
-
     @FXML
     private TableColumn<AdminAdvertisementSummaryResponse, BigDecimal> priceColumn;
 
@@ -59,7 +58,6 @@ public class AdvertisementsController {
     }
 
     private void configureTable() {
-
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -96,17 +94,7 @@ public class AdvertisementsController {
         try {
 
             List<AdminAdvertisementSummaryResponse> ads =
-                    repository.getPendingAdvertisements(0, 100);
-
-            System.out.println("ADS SIZE = " + ads.size());
-
-            for (AdminAdvertisementSummaryResponse ad : ads) {
-
-                System.out.println(
-                        ad.getId() + "  " + ad.getTitle()
-                );
-
-            }
+                    repository.getAllAdvertisements(0, 100);
 
             advertisementsTable.setItems(
                     FXCollections.observableArrayList(ads)
@@ -124,14 +112,16 @@ public class AdvertisementsController {
 
     @FXML
     private void goDashboard() {
+
         NavigationManager.showHome();
+
     }
 
     private void configureActions() {
 
         actionColumn.setCellFactory(column -> new TableCell<>() {
 
-            private final Button button = new Button("Review");
+            private final Button button = new Button("Details");
 
             {
 
@@ -140,7 +130,7 @@ public class AdvertisementsController {
                     AdminAdvertisementSummaryResponse advertisement =
                             getTableView().getItems().get(getIndex());
 
-                    NavigationManager.showAdvertisementReview(
+                    NavigationManager.showAdvertisementDetailsForDelete(
                             advertisement.getId()
                     );
 

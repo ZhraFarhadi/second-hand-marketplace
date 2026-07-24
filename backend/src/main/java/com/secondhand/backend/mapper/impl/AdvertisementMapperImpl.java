@@ -14,8 +14,11 @@ import com.secondhand.backend.mapper.interfaces.CityMapper;
 import com.secondhand.backend.mapper.interfaces.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import java.util.List;
+import com.secondhand.backend.enums.ReviewStatus;
+import com.secondhand.backend.entity.AdminReview;
+import java.util.Comparator;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +27,53 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
     private final UserMapper userMapper;
     private final CategoryMapper categoryMapper;
     private final CityMapper cityMapper;
+
+
+
+    @Override
+    public AdminAdvertisementDetailsResponse toAdminDetailsResponse(
+            Advertisement advertisement
+    ) {
+
+        if (advertisement == null) {
+            return null;
+        }
+
+        return new AdminAdvertisementDetailsResponse(
+                advertisement.getId(),
+                advertisement.getTitle(),
+                advertisement.getDescription(),
+                advertisement.getPrice(),
+                advertisement.getStatus(),
+
+                advertisement.getSeller().getId(),
+                advertisement.getSeller().getUsername(),
+                advertisement.getSeller().getFullName(),
+
+                advertisement.getBuyer() == null ? null : advertisement.getBuyer().getId(),
+                advertisement.getBuyer() == null ? null : advertisement.getBuyer().getUsername(),
+
+                advertisement.getCategory().getId(),
+                advertisement.getCategory().getName(),
+
+                advertisement.getCity().getId(),
+                advertisement.getCity().getName(),
+
+                advertisement.getImages()
+                        .stream()
+                        .map(this::mapImage)
+                        .toList(),
+
+                advertisement.getAttributes()
+                        .stream()
+                        .map(this::mapAttribute)
+                        .toList(),
+
+                advertisement.getCreatedAt(),
+                advertisement.getUpdatedAt()
+        );
+    }
+
 
     @Override
     public AdvertisementDetailsResponse toDetailsResponse(
@@ -43,7 +93,6 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
         if (advertisement == null) {
             return null;
         }
-
         return new AdvertisementDetailsResponse(
                 advertisement.getId(),
                 advertisement.getTitle(),
@@ -51,6 +100,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                 advertisement.getPrice(),
                 advertisement.getStatus(),
                 userMapper.toSummaryResponse(advertisement.getSeller()),
+                userMapper.toSummaryResponse(advertisement.getBuyer()),
                 categoryMapper.toSummaryResponse(advertisement.getCategory()),
                 cityMapper.toSummaryResponse(advertisement.getCity()),
                 advertisement.getImages()
@@ -66,6 +116,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                 isFavorite,
                 isOwner
         );
+
     }
 
 
@@ -110,13 +161,21 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             return null;
         }
 
+        String rejectionReason =
+                advertisement.getReviews().stream()
+                        .filter(review -> review.getReviewStatus() == ReviewStatus.REJECTED)
+                        .max(Comparator.comparing(AdminReview::getReviewedAt))
+                        .map(AdminReview::getComment)
+                        .orElse(null);
+
         return new MyAdvertisementSummaryResponse(
                 advertisement.getId(),
                 advertisement.getTitle(),
                 advertisement.getPrice(),
                 advertisement.getStatus(),
                 getPrimaryImageUrl(advertisement.getImages()),
-                advertisement.getCreatedAt()
+                advertisement.getCreatedAt(),
+                rejectionReason
         );
     }
 

@@ -1,6 +1,7 @@
 package com.secondhand.backend.service.impl;
 
 import com.secondhand.backend.dto.admin.request.CreateAdminReviewRequest;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import com.secondhand.backend.dto.admin.response.AdminReviewResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.backend.entity.AdminReview;
@@ -21,7 +22,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
+import com.secondhand.backend.entity.Advertisement;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementSummaryResponse;
+import com.secondhand.backend.mapper.interfaces.AdminAdvertisementMapper;
 import java.time.LocalDateTime;
 
 @Service
@@ -40,9 +44,25 @@ public class AdminReviewServiceImpl
 
     private final CurrentUserService currentUserService;
 
+    private final AdminAdvertisementMapper adminAdvertisementMapper;
+
+
+    @Override
+    public AdminAdvertisementDetailsResponse getAdvertisementDetails(
+            Long advertisementId
+    ) {
+
+        Advertisement advertisement =
+                advertisementRepository.findById(advertisementId)
+                        .orElseThrow(() ->
+                                new RuntimeException("Advertisement not found"));
+
+        return advertisementMapper.toAdminDetailsResponse(advertisement);
+    }
+
     @Override
     @Transactional(readOnly = true)
-    public Page<AdvertisementSummaryResponse> getPendingAdvertisements(
+    public Page<AdminAdvertisementSummaryResponse> getPendingAdvertisements(
             Pageable pageable
     ) {
 
@@ -51,7 +71,7 @@ public class AdminReviewServiceImpl
                         AdvertisementStatus.PENDING,
                         pageable
                 )
-                .map(advertisementMapper::toSummaryResponse);
+                .map(adminAdvertisementMapper::toSummaryResponse);
 
     }
 
@@ -206,6 +226,30 @@ public class AdminReviewServiceImpl
         );
 
         return review;
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<AdminAdvertisementSummaryResponse> getAllAdvertisements(
+            Pageable pageable
+    ) {
+
+        return advertisementRepository
+                .findByDeletedAtIsNullOrderByCreatedAtDesc(pageable)
+                .map(adminAdvertisementMapper::toSummaryResponse);
+
+    }
+
+    @Override
+    public void deleteAdvertisement(Long advertisementId) {
+
+        Advertisement advertisement =
+                getAdvertisement(advertisementId);
+
+        advertisement.setDeletedAt(LocalDateTime.now());
+
+        advertisementRepository.save(advertisement);
 
     }
 

@@ -53,4 +53,8 @@ public interface ConversationRepository
             Advertisement advertisement
     );
 
+    List<Conversation> findByAdvertisement(
+            Advertisement advertisement
+    );
+
 }

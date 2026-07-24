@@ -1,65 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.image.ImageView?>
-<BorderPane
-        xmlns="http://javafx.com/javafx/21"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="com.secondhand.frontend.controller.conversation.ChatController">
-
-    <top>
-
-        <HBox spacing="15"
-              alignment="CENTER_LEFT">
-
-            <ImageView fx:id="userAvatarImage"
-                       fitWidth="55"
-                       fitHeight="55"/>
-
-            <VBox spacing="4">
-
-                <Label fx:id="userNameLabel"/>
-
-                <Label fx:id="advertisementTitleLabel"/>
-
-            </VBox>
-
-        </HBox>
-
-    </top>
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            nodeOrientation="RIGHT_TO_LEFT"
+            styleClass="chat-root"
+            fx:controller="com.secondhand.frontend.controller.conversation.ChatController">
 
     <center>
 
-        <ScrollPane
-                fx:id="scrollPane"
-                fitToWidth="true">
+        <StackPane styleClass="chat-page">
 
-            <VBox
-                    fx:id="messagesContainer"
-                    spacing="10"
-                    fillWidth="true"/>
+            <VBox alignment="TOP_CENTER"
+                  maxWidth="620"
+                  prefWidth="620"
+                  spacing="0"
+                  styleClass="chat-card">
 
-        </ScrollPane>
+                <!-- ===================== HEADER ===================== -->
+
+                <HBox alignment="CENTER_LEFT"
+                      spacing="14"
+                      styleClass="chat-header">
+
+                    <padding>
+                        <Insets top="16" right="20" bottom="16" left="20"/>
+                    </padding>
+
+                    <Button fx:id="backButton"
+                            text="←"
+                            onAction="#onBackClicked"
+                            styleClass="chat-back-button"/>
+
+                    <StackPane styleClass="chat-avatar">
+                        <Label fx:id="avatarLabel" text="👤" styleClass="chat-avatar-label"/>
+                    </StackPane>
+
+                    <VBox spacing="2"
+                          HBox.hgrow="ALWAYS"
+                          alignment="CENTER_RIGHT">
+
+                        <Label fx:id="userNameLabel"
+                               styleClass="chat-user-name"/>
+
+                        <Label fx:id="advertisementTitleLabel"
+                               onMouseClicked="#onAdvertisementTitleClicked"
+                               styleClass="chat-ad-title, clickable-link"/>
+
+                    </VBox>
+
+                </HBox>
+
+                <Separator/>
+
+                <!-- ===================== MESSAGES ===================== -->
+
+                <ScrollPane fx:id="scrollPane"
+                            fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            styleClass="chat-scroll"
+                            VBox.vgrow="ALWAYS">
+
+                    <VBox fx:id="messagesContainer"
+                          spacing="12"
+                          fillWidth="true"
+                          styleClass="chat-messages">
+
+                        <padding>
+                            <Insets top="20" right="18" bottom="20" left="18"/>
+                        </padding>
+
+                    </VBox>
+
+                </ScrollPane>
+
+                <Separator/>
+
+                <!-- ===================== INPUT BAR ===================== -->
+
+                <HBox alignment="CENTER"
+                      spacing="10"
+                      styleClass="chat-input-bar">
+
+                    <padding>
+                        <Insets top="14" right="16" bottom="14" left="16"/>
+                    </padding>
+
+                    <TextField fx:id="messageField"
+                               promptText="پیام خود را بنویسید..."
+                               onAction="#sendMessage"
+                               HBox.hgrow="ALWAYS"
+                               styleClass="chat-input-field"/>
+
+                    <Button fx:id="sendButton"
+                            text="ارسال"
+                            onAction="#sendMessage"
+                            styleClass="chat-send-button"/>
+
+                </HBox>
+
+            </VBox>
+
+        </StackPane>
 
     </center>
-
-    <bottom>
-
-        <HBox spacing="10">
-
-            <TextField
-                    fx:id="messageField"
-                    HBox.hgrow="ALWAYS"/>
-
-            <Button
-                    fx:id="sendButton"
-                    text="Send"
-                    onAction="#sendMessage"/>
-
-        </HBox>
-
-    </bottom>
 
 </BorderPane>

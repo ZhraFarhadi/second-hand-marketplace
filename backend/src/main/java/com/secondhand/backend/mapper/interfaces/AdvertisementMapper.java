@@ -4,6 +4,7 @@ import com.secondhand.backend.dto.advertisement.response.AdvertisementDetailsRes
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.backend.dto.advertisement.response.MyAdvertisementSummaryResponse;
 import com.secondhand.backend.entity.Advertisement;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 
 public interface AdvertisementMapper {
 
@@ -29,6 +30,9 @@ public interface AdvertisementMapper {
             Advertisement advertisement,
             boolean isFavorite,
             boolean isOwner
+    );
+    AdminAdvertisementDetailsResponse toAdminDetailsResponse(
+            Advertisement advertisement
     );
 
 

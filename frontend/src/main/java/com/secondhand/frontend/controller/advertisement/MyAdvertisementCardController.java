@@ -13,7 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import com.secondhand.frontend.repository.AdvertisementRepository;
-
+import com.secondhand.frontend.dto.auth.response.UserSummaryResponse;
+import javafx.scene.control.ChoiceDialog;
+import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 public class MyAdvertisementCardController {
@@ -52,6 +54,9 @@ public class MyAdvertisementCardController {
     private ImageView advertisementImageView;
 
     @FXML
+    private Button reasonButton;
+
+    @FXML
     private Label cityLabel;
 
     @FXML
@@ -74,8 +79,29 @@ public class MyAdvertisementCardController {
             event.consume();
 
             NavigationManager.showEditAdvertisement(
-                    advertisement.getId()
+                    advertisement.getId(),
+                    NavigationManager::showMyAdvertisements
             );
+
+        });
+
+        reasonButton.setOnAction(event -> {
+
+            event.consume();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("دلیل رد آگهی");
+
+            alert.setHeaderText(null);
+
+            alert.setContentText(
+                    advertisement.getRejectionReason() != null
+                            ? advertisement.getRejectionReason()
+                            : "دلیلی ثبت نشده است."
+            );
+
+            alert.show();
 
         });
 
@@ -86,40 +112,59 @@ public class MyAdvertisementCardController {
             if (advertisement.getStatus() == AdvertisementStatus.SOLD) {
 
                 Alert info = new Alert(Alert.AlertType.INFORMATION);
-
                 info.setTitle("Advertisement");
-
                 info.setHeaderText(null);
-
                 info.setContentText("This advertisement is already marked as sold.");
-
                 info.show();
 
                 return;
 
             }
 
-            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            try {
 
-            confirm.setTitle("Mark As Sold");
+                AdvertisementRepository repository =
+                        AdvertisementRepository.getInstance();
 
-            confirm.setHeaderText(null);
+                List<UserSummaryResponse> participants =
+                        repository.getChatParticipants(
+                                advertisement.getId()
+                        );
 
-            confirm.setContentText(
-                    "Do you want to mark this advertisement as sold?"
-            );
+                if (participants.isEmpty()) {
 
-            confirm.showAndWait().ifPresent(result -> {
+                    Alert noBuyers = new Alert(Alert.AlertType.INFORMATION);
+                    noBuyers.setTitle("Mark As Sold");
+                    noBuyers.setHeaderText(null);
+                    noBuyers.setContentText(
+                            "No one has chatted with you about this advertisement yet. " +
+                                    "A buyer must contact you before you can mark it as sold."
+                    );
+                    noBuyers.show();
 
-                if (result == ButtonType.OK) {
+                    return;
+
+                }
+
+                ChoiceDialog<UserSummaryResponse> dialog =
+                        new ChoiceDialog<>(
+                                participants.get(0),
+                                participants
+                        );
+
+                dialog.setTitle("Mark As Sold");
+                dialog.setHeaderText("Select the buyer");
+                dialog.setContentText("Buyer:");
+
+                dialog.getItems().setAll(participants);
+
+                dialog.showAndWait().ifPresent(selectedBuyer -> {
 
                     try {
 
-                        AdvertisementRepository repository =
-                                AdvertisementRepository.getInstance();
-
                         repository.markAsSold(
-                                advertisement.getId()
+                                advertisement.getId(),
+                                selectedBuyer.getId()
                         );
 
                         NavigationManager.showMyAdvertisements();
@@ -129,24 +174,34 @@ public class MyAdvertisementCardController {
                     catch (Exception e) {
 
                         Alert error = new Alert(Alert.AlertType.ERROR);
-
                         error.setTitle("Error");
-
                         error.setHeaderText(null);
-
                         error.setContentText(
                                 "Failed to mark advertisement as sold."
                         );
-
                         error.show();
 
                         e.printStackTrace();
 
                     }
 
-                }
+                });
 
-            });
+            }
+
+            catch (Exception e) {
+
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText(null);
+                error.setContentText(
+                        "Failed to load buyers for this advertisement."
+                );
+                error.show();
+
+                e.printStackTrace();
+
+            }
 
         });
 
@@ -235,12 +290,13 @@ public class MyAdvertisementCardController {
         statusLabel.setText(
                 advertisement.getStatus().name()
         );
-
         if (advertisement.getStatus() == AdvertisementStatus.SOLD) {
 
             soldButton.setDisable(true);
 
             soldButton.setText("Sold");
+
+            editButton.setDisable(true);
 
         }
         else {
@@ -248,6 +304,27 @@ public class MyAdvertisementCardController {
             soldButton.setDisable(false);
 
             soldButton.setText("Mark Sold");
+
+            editButton.setDisable(false);
+
+        }
+
+        if (advertisement.getStatus() == AdvertisementStatus.REJECTED) {
+
+            soldButton.setVisible(false);
+            soldButton.setManaged(false);
+
+            reasonButton.setVisible(true);
+            reasonButton.setManaged(true);
+
+        }
+        else {
+
+            soldButton.setVisible(true);
+            soldButton.setManaged(true);
+
+            reasonButton.setVisible(false);
+            reasonButton.setManaged(false);
 
         }
 

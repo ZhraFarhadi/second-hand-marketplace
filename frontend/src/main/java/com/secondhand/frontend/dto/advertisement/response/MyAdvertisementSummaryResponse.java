@@ -19,6 +19,7 @@ public class MyAdvertisementSummaryResponse {
 
     private LocalDateTime createdAt;
 
+    private String rejectionReason;
     public MyAdvertisementSummaryResponse() {
     }
 
@@ -68,5 +69,14 @@ public class MyAdvertisementSummaryResponse {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
     }
 }

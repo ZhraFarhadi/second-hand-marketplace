@@ -87,11 +87,7 @@ public class NavigationManager {
 
             }
 
-            if (controller instanceof com.secondhand.frontend.controller.conversation.ConversationListController conversationList) {
 
-                conversationList.setBackVisible(true);
-
-            }
 
             primaryStage.setScene(scene);
 
@@ -294,6 +290,16 @@ public class NavigationManager {
     public static void showConversation(
             Long conversationId
     ){
+        showConversation(
+                conversationId,
+                NavigationManager::showConversationList
+        );
+    }
+
+    public static void showConversation(
+            Long conversationId,
+            Runnable onBack
+    ){
 
         FXMLLoader loader =
                 loadFXML(
@@ -307,10 +313,27 @@ public class NavigationManager {
                 conversationId
         );
 
+        controller.setOnBack(
+                onBack
+        );
+
         Scene scene =
                 new Scene(
                         loader.getRoot()
                 );
+
+        var cssUrl =
+                NavigationManager.class.getResource(
+                        "/css/chat.css"
+                );
+
+        if (cssUrl != null) {
+
+            scene.getStylesheets().add(
+                    cssUrl.toExternalForm()
+            );
+
+        }
 
         primaryStage.setScene(scene);
 
@@ -336,8 +359,19 @@ public class NavigationManager {
     }
 
 
+
+
     public static void showEditAdvertisement(
             Long advertisementId
+    ) {
+
+        showEditAdvertisement(advertisementId, NavigationManager::showHome);
+
+    }
+
+    public static void showEditAdvertisement(
+            Long advertisementId,
+            Runnable onBack
     ) {
 
         try {
@@ -379,6 +413,8 @@ public class NavigationManager {
             controller.loadAdvertisementForEdit(
                     advertisementId
             );
+
+            controller.setOnBack(onBack);
 
             primaryStage.setScene(scene);
 
@@ -443,7 +479,7 @@ public class NavigationManager {
     public static void showAdminDashboard(){
 
         loadScene(
-                "/view/admin/admin-dashboard.fxml",
+                "/view/admin/dashboard.fxml",
                 "/css/header.css",
                 "/css/admin.css"
         );
@@ -463,7 +499,7 @@ public class NavigationManager {
     public static void showPendingAdvertisements(){
 
         loadScene(
-                "/view/admin/admin-pending-ads.fxml",
+                "/view/admin/advertisement-review.fxml",
                 "/css/header.css",
                 "/css/admin.css"
         );
@@ -537,6 +573,12 @@ public class NavigationManager {
             scene.getStylesheets().add(
                     NavigationManager.class
                             .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/advertisementdetail.css")
                             .toExternalForm()
             );
 
@@ -626,20 +668,70 @@ public class NavigationManager {
 
         );
 
+
+
     }
 
-  /*  public static void showCategoryDetails(Long categoryId){
+    public static void showAdvertisementDetailsForDelete(
+            Long advertisementId
+    ) {
 
-        loadScene(  "/view/admin/category-details.fxml",
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            NavigationManager.class.getResource(
+                                    "/view/admin/advertisement-review.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(loader.load());
+
+            AdvertisementReviewController controller =
+                    loader.getController();
+
+            controller.setAdvertisementIdForDelete(
+                    advertisementId
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/header.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/advertisementdetail.css")
+                            .toExternalForm()
+            );
+
+            scene.getStylesheets().add(
+                    NavigationManager.class
+                            .getResource("/css/admin.css")
+                            .toExternalForm()
+            );
+
+            primaryStage.setScene(scene);
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void showAllAdvertisements() {
+
+        loadScene(
+                "/view/admin/all-advertisements.fxml",
                 "/css/header.css",
-                "/css/admin.css");
-
-
-        CategoryDetailsController controller =
-                loader.getController();
-
-        controller.loadCategory(categoryId);
+                "/css/admin.css"
+        );
 
     }
-*/
 }

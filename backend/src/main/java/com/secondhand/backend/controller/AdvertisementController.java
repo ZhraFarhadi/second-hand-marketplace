@@ -4,7 +4,10 @@ import com.secondhand.backend.dto.advertisement.request.*;
 
 import com.secondhand.backend.dto.advertisement.response.*;
 
+import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
 import com.secondhand.backend.service.interfaces.AdvertisementService;
+
+import java.util.List;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -81,12 +84,14 @@ public class AdvertisementController {
 
     @GetMapping
     public Page<AdvertisementSummaryResponse> getAdvertisements(
+            @RequestParam(required = false) Long categoryId,
             Pageable pageable
     ) {
 
-        return advertisementService.getAdvertisements(pageable);
+        return advertisementService.getAdvertisements(categoryId, pageable);
 
     }
+
 
 
     @GetMapping("/my")
@@ -97,6 +102,19 @@ public class AdvertisementController {
         return advertisementService.getMyAdvertisements(pageable);
 
     }
+
+    @GetMapping("/{advertisementId}/chat-participants")
+    public List<UserSummaryResponse> getChatParticipants(
+            @PathVariable Long advertisementId
+    ) {
+
+        return advertisementService.getChatParticipants(
+                advertisementId
+        );
+
+    }
 }
+
+
 
 

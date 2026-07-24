@@ -46,7 +46,7 @@ public class UserController {
         userService.changePassword(request);
     }
 
-    @GetMapping("/{sellerId}")
+    @GetMapping("/{sellerId}/profile")
     public SellerProfileResponse getSellerProfile(
             @PathVariable Long sellerId
     ) {

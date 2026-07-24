@@ -47,21 +47,6 @@
     <Button text="+ New Advertisement"
             onAction="#showCreateAdvertisement"/>
 
-    <MenuButton
-            fx:id="adminMenu"
-            text="Administration"
-            visible="false"
-            managed="false">
-
-        <items>
-
-            <MenuItem
-                    text="Dashboard"
-                    onAction="#showAdminDashboard"/>
-
-        </items>
-
-    </MenuButton>
 
     <Button
             text="Profile"

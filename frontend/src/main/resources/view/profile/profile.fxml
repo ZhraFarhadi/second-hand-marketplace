@@ -83,6 +83,11 @@
                                 text="Save Changes"
                                 onAction="#saveProfile"/>
 
+                        <Label fx:id="profileMessageLabel"
+                               wrapText="true"
+                               visible="false"
+                               managed="false"/>
+
                         <Separator/>
 
                         <Label text="Current Password"/>
@@ -100,6 +105,11 @@
                         <Button fx:id="changePasswordButton"
                                 text="Change Password"
                                 onAction="#changePassword"/>
+
+                        <Label fx:id="passwordMessageLabel"
+                               wrapText="true"
+                               visible="false"
+                               managed="false"/>
 
                         <Separator/>
 

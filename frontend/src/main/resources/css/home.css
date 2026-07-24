@@ -139,3 +139,11 @@
     -fx-pref-width: 260;
 
 }
+
+.subcategory-button-selected{
+
+    -fx-background-color:#dce8f5;
+
+    -fx-font-weight:bold;
+
+}

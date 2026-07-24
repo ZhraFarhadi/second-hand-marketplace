@@ -1,10 +1,14 @@
 package com.secondhand.frontend.dto.city.response;
 
+import com.secondhand.frontend.dto.province.response.ProvinceResponse;
+
 public class CityDetailsResponse {
 
     private Long id;
 
     private String name;
+
+    private ProvinceResponse province;
 
     public CityDetailsResponse() {
     }
@@ -23,5 +27,13 @@ public class CityDetailsResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ProvinceResponse getProvince() {
+        return province;
+    }
+
+    public void setProvince(ProvinceResponse province) {
+        this.province = province;
     }
 }

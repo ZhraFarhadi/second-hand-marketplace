@@ -31,13 +31,44 @@ public class ChatController {
     @FXML
     private Label advertisementTitleLabel;
 
+    private Long conversationId;
+
+    private Long advertisementId;
+
     private final ConversationRepository conversationRepository =
             new ConversationRepository();
 
     private final MessageRepository messageRepository =
             new MessageRepository();
 
-    private Long conversationId;
+    @FXML
+    private Label avatarLabel;
+
+
+
+
+    private Runnable onBack;
+
+    public void setOnBack(Runnable onBack) {
+        this.onBack = onBack;
+    }
+
+
+
+    @FXML
+    private void onBackClicked() {
+
+        if (onBack != null) {
+
+            onBack.run();
+
+        } else {
+
+            NavigationManager.showConversationList();
+
+        }
+
+    }
 
     public void setConversationId(
             Long conversationId
@@ -64,6 +95,7 @@ public class ChatController {
                         .getTitle()
         );
 
+        advertisementId = conversation.getAdvertisement().getId();
         if (conversation.getBuyer().getId().equals(SessionManager.getUserId())) {
 
             userNameLabel.setText(
@@ -77,6 +109,12 @@ public class ChatController {
             );
 
         }
+
+        avatarLabel.setText(
+                userNameLabel.getText() != null && !userNameLabel.getText().isBlank()
+                        ? userNameLabel.getText().substring(0, 1)
+                        : "👤"
+        );
 
         showMessages(conversation);
 
@@ -151,6 +189,16 @@ public class ChatController {
         scrollPane.layout();
 
         scrollPane.setVvalue(1.0);
+
+    }
+
+    @FXML
+    private void onAdvertisementTitleClicked() {
+
+        if (advertisementId == null)
+            return;
+
+        NavigationManager.showAdvertisementDetails(advertisementId);
 
     }
 

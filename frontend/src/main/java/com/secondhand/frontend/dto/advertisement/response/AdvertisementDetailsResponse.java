@@ -22,6 +22,8 @@ public class AdvertisementDetailsResponse {
 
     private UserSummaryResponse seller;
 
+    private UserSummaryResponse buyer;
+
     private CategorySummaryResponse category;
 
     private CitySummaryResponse city;
@@ -151,5 +153,13 @@ public class AdvertisementDetailsResponse {
 
     public void setOwner(boolean owner) {
         this.owner = owner;
+    }
+
+    public UserSummaryResponse getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(UserSummaryResponse buyer) {
+        this.buyer = buyer;
     }
 }

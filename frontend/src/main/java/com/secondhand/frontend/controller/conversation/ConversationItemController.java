@@ -5,12 +5,13 @@ import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.util.RelativeTimeUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ConversationItemController {
 
     @FXML
-    private VBox root;
+    private HBox root;
 
     @FXML
     private Label userLabel;
@@ -24,6 +25,9 @@ public class ConversationItemController {
     @FXML
     private Label timeLabel;
 
+
+    @FXML
+    private Label avatarLabel;
     @FXML
     private Label unreadLabel;
 
@@ -54,6 +58,14 @@ public class ConversationItemController {
 
         userLabel.setText(
                 conversation.getOtherUser().getFullName()
+        );
+
+        String name = conversation.getOtherUser().getFullName();
+
+        avatarLabel.setText(
+                name != null && !name.isBlank()
+                        ? name.substring(0, 1)
+                        : "👤"
         );
 
         titleLabel.setText(

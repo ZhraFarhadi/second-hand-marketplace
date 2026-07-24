@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.secondhand.frontend.client.ApiClient;
 import com.secondhand.frontend.dto.city.response.CitySummaryResponse;
 import com.secondhand.frontend.util.JsonUtil;
-
+import com.secondhand.frontend.dto.city.response.CityDetailsResponse;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -34,5 +34,14 @@ public class CityService {
                 new TypeToken<List<CitySummaryResponse>>() {}.getType();
 
         return gson.fromJson(response, type);
+    }
+
+    public CityDetailsResponse getCityDetails(Long cityId)
+            throws Exception {
+
+        String response =
+                ApiClient.get("/cities/" + cityId);
+
+        return gson.fromJson(response, CityDetailsResponse.class);
     }
 }

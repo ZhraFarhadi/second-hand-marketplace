@@ -44,23 +44,99 @@
 
                 <Separator/>
 
-                <Label text="Quick Access"
-                       styleClass="section-title"/>
+                <VBox fx:id="quickAccessSection" spacing="15">
 
-                <Button fx:id="favoritesButton"
-                        text="❤ Favorites"
-                        maxWidth="Infinity"
-                        styleClass="category-button"/>
+                    <Label text="Quick Access"
+                           styleClass="section-title"/>
 
-                <Button fx:id="myAdvertisementsButton"
-                        text="📦 My Advertisements"
-                        maxWidth="Infinity"
-                        styleClass="category-button"/>
+                    <Button fx:id="favoritesButton"
+                            text="❤ Favorites"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
 
-                <Button fx:id="chatButton"
-                        text="💬 Chats"
-                        maxWidth="Infinity"
-                        styleClass="category-button"/>
+                    <Button fx:id="myAdvertisementsButton"
+                            text="📦 My Advertisements"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                    <Button fx:id="chatButton"
+                            text="💬 Chats"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                </VBox>
+
+                <VBox fx:id="adminSection"
+                      spacing="10"
+                      visible="false"
+                      managed="false">
+
+                    <Label text="مدیریت ادمین"
+                           styleClass="section-title"/>
+
+                    <Button fx:id="reviewAdvertisementsButton"
+                            text="🔍 بررسی آگهی‌ها"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                    <Button fx:id="allAdvertisementsButton"
+                            text="📋 لیست کل آگهی‌ها"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                    <Button fx:id="usersButton"
+                            text="👤 یوزرها"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                    <Button fx:id="categoriesButton"
+                            text="🗂 کتگوری و اتریبیوت‌ها"
+                            maxWidth="Infinity"
+                            styleClass="category-button"/>
+
+                    <Separator/>
+
+                    <Label text="آمار کلی سیستم"
+                           styleClass="section-title"/>
+
+                    <GridPane hgap="10" vgap="8">
+
+                        <Label text="کاربران:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalUsersLabel" text="-" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="کاربران مسدود:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsBlockedUsersLabel" text="-" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="کل آگهی‌ها:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalAdsLabel" text="-" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="در انتظار بررسی:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsPendingAdsLabel" text="-" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Label text="آگهی‌های فعال:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsActiveAdsLabel" text="-" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                        <Label text="آگهی‌های فروخته‌شده:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsSoldAdsLabel" text="-" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                        <Label text="دسته‌بندی‌ها:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalCategoriesLabel" text="-" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                        <Label text="شهرها:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalCitiesLabel" text="-" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+                        <Label text="استان‌ها:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalProvincesLabel" text="-" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+                        <Label text="امتیازها:" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalRatingsLabel" text="-" GridPane.rowIndex="9" GridPane.columnIndex="1"/>
+
+                        <Label text="گفتگوها:" GridPane.rowIndex="10" GridPane.columnIndex="0"/>
+                        <Label fx:id="statsTotalConversationsLabel" text="-" GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+
+                    </GridPane>
+
+                </VBox>
 
             </VBox>
 

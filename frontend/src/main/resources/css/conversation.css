@@ -1,73 +1,128 @@
-.page-title{
+.conversation-root {
 
-    -fx-font-size:22;
-
-    -fx-font-weight:bold;
-
-    -fx-padding:15;
+    -fx-background-color: #f5f6fa;
 
 }
 
-.conversation-item{
+.conversation-scroll {
 
-    -fx-padding:15;
+    -fx-background-color: transparent;
 
-    -fx-background-color:white;
-
-    -fx-background-radius:10;
-
-    -fx-border-radius:10;
-
-    -fx-border-color:#dddddd;
+    -fx-background: transparent;
 
 }
 
-.conversation-item:hover{
+.page-title {
 
-    -fx-background-color:#f4f4f4;
+    -fx-font-size: 24px;
 
-    -fx-cursor:hand;
+    -fx-font-weight: bold;
 
-}
-
-.conversation-user{
-
-    -fx-font-size:16;
-
-    -fx-font-weight:bold;
+    -fx-text-fill: #2c3e50;
 
 }
 
-.conversation-ad{
+/* ===========================
+        Conversation Item
+   =========================== */
 
-    -fx-font-size:14;
+.conversation-item {
 
-    -fx-text-fill:#777777;
+    -fx-background-color: white;
 
-}
+    -fx-background-radius: 14;
 
-.conversation-message{
+    -fx-border-radius: 14;
 
-    -fx-font-size:13;
+    -fx-border-color: #dcdde1;
 
-}
+    -fx-border-width: 1;
 
-.conversation-time{
-
-    -fx-font-size:12;
-
-    -fx-text-fill:#999999;
+    -fx-cursor: hand;
 
 }
 
-.conversation-unread{
+.conversation-item:hover {
 
-    -fx-background-color:#2196f3;
+    -fx-background-color: #f0f6ff;
 
-    -fx-text-fill:white;
+    -fx-border-color: #2d89ef;
 
-    -fx-padding:3 7 3 7;
+}
 
-    -fx-background-radius:20;
+.conversation-avatar {
+
+    -fx-background-color: #2d89ef;
+
+    -fx-background-radius: 50%;
+
+    -fx-min-width: 48;
+    -fx-min-height: 48;
+    -fx-max-width: 48;
+    -fx-max-height: 48;
+
+}
+
+.conversation-avatar-label {
+
+    -fx-font-size: 19px;
+
+    -fx-text-fill: white;
+
+}
+
+.conversation-user {
+
+    -fx-font-size: 15.5px;
+
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #2c3e50;
+
+}
+
+.conversation-ad {
+
+    -fx-font-size: 12.5px;
+
+    -fx-text-fill: #2d89ef;
+
+}
+
+.conversation-message {
+
+    -fx-font-size: 13px;
+
+    -fx-text-fill: #666666;
+
+}
+
+.conversation-time {
+
+    -fx-font-size: 11.5px;
+
+    -fx-text-fill: #999999;
+
+}
+
+.conversation-unread {
+
+    -fx-background-color: #2d89ef;
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 11px;
+
+    -fx-font-weight: bold;
+
+    -fx-padding: 3 8 3 8;
+
+    -fx-background-radius: 20;
+
+}
+
+.conversation-topbar {
+
+    -fx-background-color: white;
 
 }

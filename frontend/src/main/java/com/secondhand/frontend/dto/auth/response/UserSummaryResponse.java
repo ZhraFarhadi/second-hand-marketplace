@@ -45,4 +45,9 @@ public class UserSummaryResponse {
         this.username = username;
     }
 
+    @Override
+    public String toString() {
+        return fullName + " (@" + username + ")";
+    }
+
 }

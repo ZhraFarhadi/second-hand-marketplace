@@ -125,9 +125,7 @@ public class UsersController {
 
     @FXML
     private void goDashboard() {
-
-        NavigationManager.showDashboard();
-
+        NavigationManager.showHome();
     }
 
 

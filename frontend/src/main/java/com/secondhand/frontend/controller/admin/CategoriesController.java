@@ -108,9 +108,7 @@ public class CategoriesController {
 
     @FXML
     private void goDashboard() {
-
-        NavigationManager.showDashboard();
-
+        NavigationManager.showHome();
     }
 
 }

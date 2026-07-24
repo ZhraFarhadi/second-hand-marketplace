@@ -3,6 +3,7 @@ package com.secondhand.frontend.service;
 import com.google.gson.reflect.TypeToken;
 import com.secondhand.frontend.client.ApiClient;
 import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryResponse;
+import com.secondhand.frontend.dto.common.PageResponse;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -21,12 +22,15 @@ public class FavoriteService {
     public List<AdvertisementSummaryResponse> getFavorites() throws Exception {
 
         Type type =
-                new TypeToken<List<AdvertisementSummaryResponse>>() {}.getType();
+                new TypeToken<PageResponse<AdvertisementSummaryResponse>>() {}.getType();
 
-        return ApiClient.get(
-                "/favorites",
-                type
-        );
+        PageResponse<AdvertisementSummaryResponse> page =
+                ApiClient.get(
+                        "/favorites",
+                        type
+                );
+
+        return page.getContent();
 
     }
 

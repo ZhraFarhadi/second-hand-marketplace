@@ -5,16 +5,16 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.secondhand.frontend.controller.admin.AdvertisementsController">
+            fx:controller="com.secondhand.frontend.controller.admin.AllAdvertisementsController">
 
     <top>
 
         <ToolBar>
 
-            <Button text="← Dashboard"
+            <Button text="← Home"
                     onAction="#goDashboard"/>
 
-            <Label text="Pending Advertisements"/>
+            <Label text="All Advertisements"/>
 
         </ToolBar>
 
@@ -25,7 +25,6 @@
         <TableView fx:id="advertisementsTable">
 
             <columns>
-
 
                 <TableColumn fx:id="titleColumn"
                              text="Title"

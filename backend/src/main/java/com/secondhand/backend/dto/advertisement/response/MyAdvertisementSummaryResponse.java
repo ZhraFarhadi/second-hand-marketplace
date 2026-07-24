@@ -24,4 +24,7 @@ public class MyAdvertisementSummaryResponse {
 
     private LocalDateTime createdAt;
 
+
+    private String rejectionReason;
+
 }

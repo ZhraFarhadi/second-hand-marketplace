@@ -2,6 +2,7 @@ package com.secondhand.frontend.controller.home;
 
 
 import com.secondhand.frontend.controller.components.HeaderController;
+import com.secondhand.frontend.dto.admin.response.AdminDashboardResponse;
 import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.AdvertisementRepository;
 import com.secondhand.frontend.session.SessionManager;
@@ -18,6 +19,10 @@ import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryRe
 import com.secondhand.frontend.repository.CategoryRepository;
 import com.secondhand.frontend.dto.category.response.CategoryDetailsResponse;
 import com.secondhand.frontend.dto.category.response.CategorySummaryResponse;
+import com.secondhand.frontend.util.AuthGuard;
+import com.secondhand.frontend.model.Role;
+import com.secondhand.frontend.repository.AdminRepository;
+import javafx.scene.control.Label;
 
 public class HomeController {
 
@@ -37,6 +42,39 @@ public class HomeController {
     @FXML
     private Button myAdvertisementsButton;
 
+    @FXML
+    private VBox quickAccessSection;
+
+    @FXML
+    private Label statsTotalUsersLabel;
+
+    @FXML
+    private Label statsBlockedUsersLabel;
+
+    @FXML
+    private Label statsTotalAdsLabel;
+
+    @FXML
+    private Label statsPendingAdsLabel;
+
+    @FXML
+    private Label statsActiveAdsLabel;
+
+    @FXML
+    private Label statsSoldAdsLabel;
+
+    @FXML
+    private Label statsTotalCategoriesLabel;
+
+    @FXML
+    private Label statsTotalCitiesLabel;
+
+    @FXML
+    private Label statsTotalProvincesLabel;
+
+    @FXML
+    private Label statsTotalConversationsLabel;
+
     private final AdvertisementRepository advertisementRepository =
             AdvertisementRepository.getInstance();
 
@@ -48,7 +86,27 @@ public class HomeController {
     @FXML
     private HeaderController headerController;
 
+    private Long selectedCategoryId = null;
 
+    private Button selectedSubcategoryButton = null;
+
+    @FXML
+    private VBox adminSection;
+
+    @FXML
+    private Button reviewAdvertisementsButton;
+
+    @FXML
+    private Button allAdvertisementsButton;
+
+    @FXML
+    private Button usersButton;
+
+    @FXML
+    private Button categoriesButton;
+
+    private final AdminRepository adminRepository =
+            new AdminRepository();
 
     @FXML
     public void initialize() {
@@ -74,7 +132,7 @@ public class HomeController {
                 CategoryItemController controller =
                         loader.getController();
 
-                controller.setCategory(category);
+                controller.setCategory(category, this::onSubcategorySelected);
 
                 categoryContainer.getChildren().add(item);
 
@@ -90,11 +148,17 @@ public class HomeController {
 
         chatButton.setOnAction(event -> {
 
+            if (!AuthGuard.requireLogin())
+                return;
+
             NavigationManager.showConversationList();
 
         });
 
         myAdvertisementsButton.setOnAction(event -> {
+
+            if (!AuthGuard.requireLogin())
+                return;
 
             NavigationManager.showMyAdvertisements();
 
@@ -106,7 +170,39 @@ public class HomeController {
 
         });
 
+        setupAdminSection();
+
         loadAdvertisements();
+
+    }
+
+    private void onSubcategorySelected(Long categoryId, Button button) {
+
+        if (selectedSubcategoryButton != null) {
+            selectedSubcategoryButton.getStyleClass()
+                    .remove("subcategory-button-selected");
+        }
+
+        boolean isSameCategoryClickedAgain =
+                categoryId.equals(selectedCategoryId);
+
+        if (isSameCategoryClickedAgain) {
+
+            selectedCategoryId = null;
+            selectedSubcategoryButton = null;
+
+            loadAdvertisements();
+
+        } else {
+
+            selectedCategoryId = categoryId;
+            selectedSubcategoryButton = button;
+
+            button.getStyleClass().add("subcategory-button-selected");
+
+            loadAdvertisements();
+
+        }
 
     }
 
@@ -117,7 +213,11 @@ public class HomeController {
         try {
 
             var advertisements =
-                    advertisementRepository.getAdvertisements(0,20);
+                    (selectedCategoryId == null)
+                            ? advertisementRepository.getAdvertisements(0, 20)
+                            : advertisementRepository.getAdvertisementsByCategory(
+                            selectedCategoryId, 0, 20
+                    );
 
             for (AdvertisementSummaryResponse advertisement : advertisements) {
 
@@ -152,6 +252,99 @@ public class HomeController {
     public void setBackVisible(boolean visible){
 
         headerController.setBackVisible(visible);
+
+    }
+
+    private void setupAdminSection() {
+
+        boolean isAdmin =
+                SessionManager.getRole() == Role.ADMIN;
+
+        adminSection.setVisible(isAdmin);
+        adminSection.setManaged(isAdmin);
+
+        quickAccessSection.setVisible(!isAdmin);
+        quickAccessSection.setManaged(!isAdmin);
+
+        if (!isAdmin) {
+            return;
+        }
+
+        reviewAdvertisementsButton.setOnAction(event ->
+                NavigationManager.showAdvertisements()
+        );
+
+        allAdvertisementsButton.setOnAction(event ->
+                NavigationManager.showAllAdvertisements()
+        );
+
+        usersButton.setOnAction(event ->
+                NavigationManager.showUsers()
+        );
+
+        categoriesButton.setOnAction(event ->
+                NavigationManager.showCategories()
+        );
+
+        loadAdminStats();
+
+    }
+
+    private void loadAdminStats() {
+
+        try {
+
+            AdminDashboardResponse dashboard =
+                    adminRepository.getDashboard();
+
+            statsTotalUsersLabel.setText(
+                    dashboard.getTotalUsers().toString()
+            );
+
+            statsBlockedUsersLabel.setText(
+                    dashboard.getBlockedUsers().toString()
+            );
+
+            statsTotalAdsLabel.setText(
+                    dashboard.getTotalAdvertisements().toString()
+            );
+
+            statsPendingAdsLabel.setText(
+                    dashboard.getPendingAdvertisements().toString()
+            );
+
+            statsActiveAdsLabel.setText(
+                    dashboard.getActiveAdvertisements().toString()
+            );
+
+            statsSoldAdsLabel.setText(
+                    dashboard.getSoldAdvertisements().toString()
+            );
+
+            statsTotalCategoriesLabel.setText(
+                    dashboard.getTotalCategories().toString()
+            );
+
+            statsTotalCitiesLabel.setText(
+                    dashboard.getTotalCities().toString()
+            );
+
+            statsTotalProvincesLabel.setText(
+                    dashboard.getTotalProvinces().toString()
+            );
+
+
+            statsTotalConversationsLabel.setText(
+                    dashboard.getTotalConversations().toString()
+            );
+
+        }
+
+        catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 }

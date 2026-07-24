@@ -26,6 +26,22 @@
 
 }
 
+.message-success {
+
+    -fx-text-fill: #2e7d32;
+
+    -fx-font-size: 12.5px;
+
+}
+
+.message-error {
+
+    -fx-text-fill: #d32f2f;
+
+    -fx-font-size: 12.5px;
+
+}
+
 .button{
 
     -fx-pref-height:42;
