@@ -1,6 +1,7 @@
 package com.secondhand.backend.service.impl;
 
 import com.secondhand.backend.dto.admin.request.CreateAdminReviewRequest;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import com.secondhand.backend.dto.admin.response.AdminReviewResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.backend.entity.AdminReview;
@@ -21,7 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
+import com.secondhand.backend.entity.Advertisement;
 import java.time.LocalDateTime;
 
 @Service
@@ -39,6 +41,20 @@ public class AdminReviewServiceImpl
     private final AdminReviewMapper adminReviewMapper;
 
     private final CurrentUserService currentUserService;
+
+
+    @Override
+    public AdminAdvertisementDetailsResponse getAdvertisementDetails(
+            Long advertisementId
+    ) {
+
+        Advertisement advertisement =
+                advertisementRepository.findById(advertisementId)
+                        .orElseThrow(() ->
+                                new RuntimeException("Advertisement not found"));
+
+        return advertisementMapper.toAdminDetailsResponse(advertisement);
+    }
 
     @Override
     @Transactional(readOnly = true)

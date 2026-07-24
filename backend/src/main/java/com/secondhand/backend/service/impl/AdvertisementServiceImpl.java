@@ -9,7 +9,9 @@ import com.secondhand.backend.entity.*;
 import com.secondhand.backend.enums.AdvertisementStatus;
 import com.secondhand.backend.exception.*;
 
+import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
 import com.secondhand.backend.mapper.interfaces.AdvertisementMapper;
+import com.secondhand.backend.mapper.interfaces.UserMapper;
 import com.secondhand.backend.repository.*;
 import com.secondhand.backend.service.interfaces.AdvertisementService;
 import jakarta.transaction.Transactional;
@@ -44,6 +46,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
     private final FavoriteRepository favoriteRepository;
+    private final UserMapper userMapper;
 
 
     @PersistenceContext
@@ -229,6 +232,31 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     @Transactional
+    public List<UserSummaryResponse> getChatParticipants(Long advertisementId) {
+
+        User currentUser = currentUserService.getCurrentUser();
+
+        Advertisement advertisement =
+                getExistingAdvertisement(advertisementId);
+
+        validateAdvertisementOwner(
+                advertisement,
+                currentUser
+        );
+
+        List<Conversation> conversations =
+                conversationRepository.findByAdvertisement(advertisement);
+
+        return conversations.stream()
+                .map(Conversation::getBuyer)
+                .distinct()
+                .map(userMapper::toSummaryResponse)
+                .toList();
+
+    }
+
+    @Override
+    @Transactional
     public AdvertisementDetailsResponse getAdvertisementDetails(Long advertisementId) {
 
         Advertisement advertisement = getExistingAdvertisement(advertisementId);
@@ -281,12 +309,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     @Transactional
     public Page<AdvertisementSummaryResponse> getAdvertisements(Pageable pageable) {
+        return getAdvertisements(null, pageable);
+    }
+
+    @Override
+    @Transactional
+    public Page<AdvertisementSummaryResponse> getAdvertisements(
+            Long categoryId,
+            Pageable pageable
+    ) {
 
         Page<Advertisement> advertisements =
-                advertisementRepository.findByStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
-                        AdvertisementStatus.ACTIVE,
-                        pageable
-                );
+                categoryId != null
+                        ? advertisementRepository
+                        .findByCategoryIdAndStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
+                                categoryId,
+                                AdvertisementStatus.ACTIVE,
+                                pageable
+                        )
+                        : advertisementRepository
+                        .findByStatusAndDeletedAtIsNullOrderByCreatedAtDesc(
+                                AdvertisementStatus.ACTIVE,
+                                pageable
+                        );
 
         User currentUser = currentUserService.getCurrentUserOrNull();
 
@@ -343,9 +388,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
         return cityRepository.findById(cityId)
                 .orElseThrow(() ->
-                             new BusinessException(
-                                    ErrorCode.CITY_NOT_FOUND
-                            ));
+                        new BusinessException(
+                                ErrorCode.CITY_NOT_FOUND
+                        ));
     }
 
     private User getBuyer(Long buyerId) {

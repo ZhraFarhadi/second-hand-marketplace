@@ -55,6 +55,36 @@ public class AdvertisementService {
 
     }
 
+
+    /*
+     * ===========================
+     * Get Advertisements By Category
+     * ===========================
+     */
+
+    public PageResponse<AdvertisementSummaryResponse> getAdvertisementsByCategory(
+            Long categoryId,
+            int page,
+            int size
+    ) throws Exception {
+
+        String response =
+                ApiClient.get(
+                        "/advertisements?categoryId="
+                                + categoryId
+                                + "&page="
+                                + page
+                                + "&size="
+                                + size
+                );
+
+        Type type =
+                new TypeToken<PageResponse<AdvertisementSummaryResponse>>() {
+                }.getType();
+
+        return gson.fromJson(response, type);
+
+    }
     /*
      * ===========================
      * Get My Advertisements
@@ -186,6 +216,38 @@ public class AdvertisementService {
                 response,
                 AdvertisementDetailsResponse.class
         );
+
+    }
+
+    public AdvertisementDetailsResponse markAsSold(
+            Long id,
+            Long buyerId
+    ) throws Exception {
+
+        ApiClient.patch(
+                "/advertisements/" + id + "/sold",
+                new com.secondhand.frontend.dto.advertisement.request.MarkAsSoldRequest(buyerId)
+        );
+
+        return getAdvertisementDetails(id);
+
+    }
+
+
+    public java.util.List<com.secondhand.frontend.dto.auth.response.UserSummaryResponse> getChatParticipants(
+            Long advertisementId
+    ) throws Exception {
+
+        String response =
+                ApiClient.get(
+                        "/advertisements/" + advertisementId + "/chat-participants"
+                );
+
+        Type type =
+                new TypeToken<java.util.List<com.secondhand.frontend.dto.auth.response.UserSummaryResponse>>() {
+                }.getType();
+
+        return gson.fromJson(response, type);
 
     }
 

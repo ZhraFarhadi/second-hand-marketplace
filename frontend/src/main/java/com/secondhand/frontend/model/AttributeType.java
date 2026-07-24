@@ -4,6 +4,9 @@ public enum AttributeType {
 
     TEXT,
     NUMBER,
+    DROPDOWN,
+    BOOLEAN,
+    DATE,
     SELECT
 
 }

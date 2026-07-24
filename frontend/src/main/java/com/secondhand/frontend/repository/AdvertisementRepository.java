@@ -5,6 +5,7 @@ import com.secondhand.frontend.dto.advertisement.request.UpdateAdvertisementRequ
 import com.secondhand.frontend.dto.advertisement.response.AdvertisementDetailsResponse;
 import com.secondhand.frontend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.frontend.dto.advertisement.response.MyAdvertisementSummaryResponse;
+import com.secondhand.frontend.dto.auth.response.UserSummaryResponse;
 import com.secondhand.frontend.dto.common.PageResponse;
 import com.secondhand.frontend.service.AdvertisementService;
 
@@ -43,6 +44,26 @@ public class AdvertisementRepository {
 
     }
 
+
+
+    /*
+     * ===========================
+     * Advertisements By Category
+     * ===========================
+     */
+
+    public List<AdvertisementSummaryResponse> getAdvertisementsByCategory(
+            Long categoryId,
+            int page,
+            int size
+    ) throws Exception {
+
+        PageResponse<AdvertisementSummaryResponse> response =
+                advertisementService.getAdvertisementsByCategory(categoryId, page, size);
+
+        return response.getContent();
+
+    }
     /*
      * ===========================
      * My Advertisements
@@ -116,6 +137,23 @@ public class AdvertisementRepository {
 
     }
 
+
+    public AdvertisementDetailsResponse markAsSold(
+            Long id,
+            Long buyerId
+    ) throws Exception {
+
+        return advertisementService.markAsSold(id, buyerId);
+
+    }
+
+    public List<UserSummaryResponse> getChatParticipants(
+            Long advertisementId
+    ) throws Exception {
+
+        return advertisementService.getChatParticipants(advertisementId);
+
+    }
     /*
      * ===========================
      * Delete

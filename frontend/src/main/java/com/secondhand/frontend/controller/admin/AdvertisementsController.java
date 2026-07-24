@@ -5,10 +5,13 @@ import com.secondhand.frontend.navigation.NavigationManager;
 import com.secondhand.frontend.repository.AdminRepository;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.scene.control.Button;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class AdvertisementsController {
@@ -37,10 +40,19 @@ public class AdvertisementsController {
     private final AdminRepository repository =
             new AdminRepository();
 
+
+    @FXML
+    private TableColumn<AdminAdvertisementSummaryResponse, BigDecimal> priceColumn;
+
+    @FXML
+    private TableColumn<AdminAdvertisementSummaryResponse, Void> actionColumn;
+
     @FXML
     public void initialize() {
 
         configureTable();
+
+        configureActions();
 
         loadAdvertisements();
 
@@ -48,7 +60,6 @@ public class AdvertisementsController {
 
     private void configureTable() {
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
@@ -60,6 +71,24 @@ public class AdvertisementsController {
 
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
+        priceColumn.setCellValueFactory(
+                new PropertyValueFactory<>("price")
+        );
+
+        titleColumn.setPrefWidth(280);
+
+        sellerColumn.setPrefWidth(170);
+
+        categoryColumn.setPrefWidth(150);
+
+        cityColumn.setPrefWidth(140);
+
+        priceColumn.setPrefWidth(130);
+
+        statusColumn.setPrefWidth(120);
+
+        actionColumn.setPrefWidth(120);
+
     }
 
     private void loadAdvertisements() {
@@ -67,7 +96,17 @@ public class AdvertisementsController {
         try {
 
             List<AdminAdvertisementSummaryResponse> ads =
-                    repository.getPendingAdvertisements(0,100);
+                    repository.getPendingAdvertisements(0, 100);
+
+            System.out.println("ADS SIZE = " + ads.size());
+
+            for (AdminAdvertisementSummaryResponse ad : ads) {
+
+                System.out.println(
+                        ad.getId() + "  " + ad.getTitle()
+                );
+
+            }
 
             advertisementsTable.setItems(
                     FXCollections.observableArrayList(ads)
@@ -90,4 +129,47 @@ public class AdvertisementsController {
 
     }
 
+    private void configureActions() {
+
+        actionColumn.setCellFactory(column -> new TableCell<>() {
+
+            private final Button button = new Button("Review");
+
+            {
+
+                button.setOnAction(event -> {
+
+                    AdminAdvertisementSummaryResponse advertisement =
+                            getTableView().getItems().get(getIndex());
+
+                    NavigationManager.showAdvertisementReview(
+                            advertisement.getId()
+                    );
+
+                });
+
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+
+                super.updateItem(item, empty);
+
+                if (empty) {
+
+                    setGraphic(null);
+
+                }
+
+                else {
+
+                    setGraphic(button);
+
+                }
+
+            }
+
+        });
+
+    }
 }

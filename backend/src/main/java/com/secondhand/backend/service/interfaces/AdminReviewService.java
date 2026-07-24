@@ -1,6 +1,7 @@
 package com.secondhand.backend.service.interfaces;
 
 import com.secondhand.backend.dto.admin.request.CreateAdminReviewRequest;
+import com.secondhand.backend.dto.admin.response.AdminAdvertisementDetailsResponse;
 import com.secondhand.backend.dto.admin.response.AdminReviewResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import org.springframework.data.domain.Page;
@@ -26,4 +27,7 @@ public interface AdminReviewService {
             Pageable pageable
     );
 
+
+
+    AdminAdvertisementDetailsResponse getAdvertisementDetails(Long advertisementId);
 }

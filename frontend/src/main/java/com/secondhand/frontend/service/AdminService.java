@@ -6,7 +6,7 @@ import com.secondhand.frontend.dto.admin.request.CreateAdminReviewRequest;
 import com.secondhand.frontend.dto.admin.request.CreateCategoryRequest;
 import com.secondhand.frontend.dto.admin.response.*;
 import com.secondhand.frontend.model.ReviewStatus;
-
+import com.secondhand.frontend.dto.common.PageResponse;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -31,30 +31,7 @@ public class AdminService {
 
     }
 
-    public List<AdminUserSummaryResponse> getUsers(
-            int page,
-            int size
-    ) {
 
-        try {
-
-            Type type =
-                    new TypeToken<List<AdminUserSummaryResponse>>() {}.getType();
-
-            return ApiClient.get(
-                    "/admin/users?page=" + page + "&size=" + size,
-                    type
-            );
-
-        }
-
-        catch (Exception e) {
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
 
     public List<AdminAdvertisementSummaryResponse> getPendingAdvertisements(
             int page,
@@ -64,12 +41,16 @@ public class AdminService {
         try {
 
             Type type =
-                    new TypeToken<List<AdminAdvertisementSummaryResponse>>() {}.getType();
+                    new TypeToken<PageResponse<AdminAdvertisementSummaryResponse>>() {
+                    }.getType();
 
-            return ApiClient.get(
-                    "/admin/reviews/pending?page=" + page + "&size=" + size,
-                    type
-            );
+            PageResponse<AdminAdvertisementSummaryResponse> response =
+                    ApiClient.get(
+                            "/admin/reviews/pending?page=" + page + "&size=" + size,
+                            type
+                    );
+
+            return response.getContent();
 
         }
 
@@ -117,8 +98,8 @@ public class AdminService {
 
             request.setComment("");
 
-            ApiClient.put(
-                    "/admin/reviews/" + advertisementId,
+            ApiClient.post(
+                    "/admin/advertisements/" + advertisementId + "/review",
                     request,
                     Object.class
             );
@@ -149,8 +130,8 @@ public class AdminService {
 
             request.setComment(reason);
 
-            ApiClient.put(
-                    "/admin/reviews/" + advertisementId,
+            ApiClient.post(
+                    "/admin/advertisements/" + advertisementId + "/review",
                     request,
                     Object.class
             );
@@ -202,36 +183,28 @@ public class AdminService {
     }
 
 
-    public AdminUserDetailsResponse getUser(Long id){
+    public List<AdminUserSummaryResponse> getUsers(
+            int page,
+            int size
+    ) {
 
-        try{
+        try {
 
-            return ApiClient.get(
-                    "/admin/users/" + id,
-                    AdminUserDetailsResponse.class
-            );
+            Type type =
+                    new TypeToken<PageResponse<AdminUserSummaryResponse>>() {
+                    }.getType();
+
+            PageResponse<AdminUserSummaryResponse> response =
+                    ApiClient.get(
+                            "/admin/users?page=" + page + "&size=" + size,
+                            type
+                    );
+
+            return response.getContent();
 
         }
 
-        catch(Exception e){
-
-            throw new RuntimeException(e);
-
-        }
-
-    }
-    public AdminUserDetailsResponse getUserDetails(
-            Long userId
-    ){
-
-        try{
-
-            return ApiClient.get(
-                    "/admin/users/" + userId,
-                    AdminUserDetailsResponse.class
-            );
-
-        }catch(Exception e){
+        catch (Exception e) {
 
             throw new RuntimeException(e);
 
@@ -313,5 +286,21 @@ public class AdminService {
 
         }
 
+    }
+
+    public AdminUserDetailsResponse getUser(Long userId) {
+
+        try {
+
+            return ApiClient.get(
+                    "/admin/users/" + userId,
+                    AdminUserDetailsResponse.class
+            );
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(e);
+
+        }
     }
 }

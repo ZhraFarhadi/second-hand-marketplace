@@ -370,15 +370,23 @@ public class CreateAdvertisementController {
 
                     }
 
-                    case SELECT -> {
+                    case BOOLEAN -> {
 
-                        ComboBox<String> comboBox = new ComboBox<>();
+                        TextField tf = new TextField();
 
-                        if (attribute.getOptions() != null) {
-                            comboBox.getItems().addAll(attribute.getOptions());
-                        }
+                        tf.setPromptText(attribute.getName() + " (true/false)");
 
-                        input = comboBox;
+                        input = tf;
+
+                    }
+
+                    case DATE -> {
+
+                        TextField tf = new TextField();
+
+                        tf.setPromptText(attribute.getName() + " (YYYY-MM-DD)");
+
+                        input = tf;
 
                     }
 
@@ -537,6 +545,78 @@ public class CreateAdvertisementController {
             errorLabel.setText(
                     "Please complete all required fields."
             );
+
+        }
+
+        for (int i = 0; i < currentAttributes.size(); i++) {
+
+            CategoryAttributeResponse attribute = currentAttributes.get(i);
+
+            Control control = specificationInputs.get(i);
+
+            switch (AttributeType.valueOf(attribute.getDataType())) {
+
+                case NUMBER -> {
+
+                    String value = ((TextField) control).getText().trim();
+
+                    if (attribute.isRequired() && value.isEmpty()) {
+
+                        errorLabel.setVisible(true);
+                        errorLabel.setText(attribute.getName() + " is required.");
+
+                        return false;
+                    }
+
+                    if (!value.isEmpty()) {
+
+                        try {
+
+                            Double.parseDouble(value);
+
+                        }
+
+                        catch (NumberFormatException ex) {
+
+                            errorLabel.setVisible(true);
+                            errorLabel.setText(attribute.getName() + " must be a number.");
+
+                            return false;
+                        }
+
+                    }
+
+                }
+
+                case TEXT -> {
+
+                    String value = ((TextField) control).getText().trim();
+
+                    if (attribute.isRequired() && value.isEmpty()) {
+
+                        errorLabel.setVisible(true);
+                        errorLabel.setText(attribute.getName() + " is required.");
+
+                        return false;
+                    }
+
+                }
+
+                case SELECT -> {
+
+                    String value = ((ComboBox<String>) control).getValue();
+
+                    if (attribute.isRequired() && value == null) {
+
+                        errorLabel.setVisible(true);
+                        errorLabel.setText(attribute.getName() + " is required.");
+
+                        return false;
+                    }
+
+                }
+
+            }
 
         }
 
@@ -785,7 +865,6 @@ public class CreateAdvertisementController {
         catch (ApiException e) {
 
             errorLabel.setVisible(true);
-
             errorLabel.setText(e.getMessage());
 
         }
@@ -795,7 +874,6 @@ public class CreateAdvertisementController {
             e.printStackTrace();
 
             errorLabel.setVisible(true);
-
             errorLabel.setText("Unexpected error.");
 
         }
@@ -923,9 +1001,27 @@ public class CreateAdvertisementController {
             Control control =
                     specificationInputs.get(i);
 
-            if (control instanceof TextField tf) {
+            for (int j = 0;
+                 j < advertisement.getAttributes().size();
+                 j++) {
 
-                tf.setText(attribute.getValue());
+
+
+                if (control instanceof TextField tf) {
+
+                    tf.setText(attribute.getValue());
+
+                }
+
+                else if (control instanceof ComboBox<?> cb) {
+
+                    @SuppressWarnings("unchecked")
+                    ComboBox<String> combo =
+                            (ComboBox<String>) cb;
+
+                    combo.setValue(attribute.getValue());
+
+                }
 
             }
 
@@ -981,10 +1077,20 @@ public class CreateAdvertisementController {
             Control control =
                     specificationInputs.get(i);
 
+
             if (control instanceof TextField tf) {
 
+                attribute.setValue(tf.getText());
+
+            }
+            else if (control instanceof ComboBox<?> cb) {
+
+                Object value = cb.getValue();
+
                 attribute.setValue(
-                        tf.getText()
+                        value == null
+                                ? null
+                                : value.toString()
                 );
 
             }

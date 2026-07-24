@@ -48,7 +48,9 @@ public class HomeController {
     @FXML
     private HeaderController headerController;
 
+    private Long selectedCategoryId = null;
 
+    private Button selectedSubcategoryButton = null;
 
     @FXML
     public void initialize() {
@@ -74,7 +76,7 @@ public class HomeController {
                 CategoryItemController controller =
                         loader.getController();
 
-                controller.setCategory(category);
+                controller.setCategory(category, this::onSubcategorySelected);
 
                 categoryContainer.getChildren().add(item);
 
@@ -110,6 +112,36 @@ public class HomeController {
 
     }
 
+    private void onSubcategorySelected(Long categoryId, Button button) {
+
+        if (selectedSubcategoryButton != null) {
+            selectedSubcategoryButton.getStyleClass()
+                    .remove("subcategory-button-selected");
+        }
+
+        boolean isSameCategoryClickedAgain =
+                categoryId.equals(selectedCategoryId);
+
+        if (isSameCategoryClickedAgain) {
+
+            selectedCategoryId = null;
+            selectedSubcategoryButton = null;
+
+            loadAdvertisements();
+
+        } else {
+
+            selectedCategoryId = categoryId;
+            selectedSubcategoryButton = button;
+
+            button.getStyleClass().add("subcategory-button-selected");
+
+            loadAdvertisements();
+
+        }
+
+    }
+
     private void loadAdvertisements() {
 
         advertisementContainer.getChildren().clear();
@@ -117,7 +149,11 @@ public class HomeController {
         try {
 
             var advertisements =
-                    advertisementRepository.getAdvertisements(0,20);
+                    (selectedCategoryId == null)
+                            ? advertisementRepository.getAdvertisements(0, 20)
+                            : advertisementRepository.getAdvertisementsByCategory(
+                            selectedCategoryId, 0, 20
+                    );
 
             for (AdvertisementSummaryResponse advertisement : advertisements) {
 

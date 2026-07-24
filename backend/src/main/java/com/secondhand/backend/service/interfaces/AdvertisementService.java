@@ -6,8 +6,11 @@ import com.secondhand.backend.dto.advertisement.request.UpdateAdvertisementReque
 import com.secondhand.backend.dto.advertisement.response.AdvertisementDetailsResponse;
 import com.secondhand.backend.dto.advertisement.response.AdvertisementSummaryResponse;
 import com.secondhand.backend.dto.advertisement.response.MyAdvertisementSummaryResponse;
+import com.secondhand.backend.dto.auth.response.UserSummaryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface AdvertisementService {
 
@@ -30,5 +33,8 @@ public interface AdvertisementService {
     Page<AdvertisementSummaryResponse> getAdvertisements(Pageable pageable);
 
     Page<MyAdvertisementSummaryResponse> getMyAdvertisements(Pageable pageable);
+
+    List<UserSummaryResponse> getChatParticipants(Long advertisementId);
+    Page<AdvertisementSummaryResponse> getAdvertisements(Long categoryId, Pageable pageable);
 
 }

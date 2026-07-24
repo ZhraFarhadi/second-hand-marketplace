@@ -28,6 +28,8 @@ public class AdvertisementDetailsResponse {
 
     private UserSummaryResponse seller;
 
+    private UserSummaryResponse buyer;
+
     private CategorySummaryResponse category;
 
     private CitySummaryResponse city;

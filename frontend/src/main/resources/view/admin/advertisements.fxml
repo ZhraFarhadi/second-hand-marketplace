@@ -26,23 +26,34 @@
 
             <columns>
 
-                <TableColumn fx:id="idColumn"
-                             text="ID"/>
 
                 <TableColumn fx:id="titleColumn"
-                             text="Title"/>
+                             text="Title"
+                             prefWidth="280"/>
 
                 <TableColumn fx:id="sellerColumn"
-                             text="Seller"/>
+                             text="Seller"
+                             prefWidth="170"/>
 
                 <TableColumn fx:id="categoryColumn"
-                             text="Category"/>
+                             text="Category"
+                             prefWidth="150"/>
 
                 <TableColumn fx:id="cityColumn"
-                             text="City"/>
+                             text="City"
+                             prefWidth="140"/>
+
+                <TableColumn fx:id="priceColumn"
+                             text="Price"
+                             prefWidth="130"/>
 
                 <TableColumn fx:id="statusColumn"
-                             text="Status"/>
+                             text="Status"
+                             prefWidth="120"/>
+
+                <TableColumn fx:id="actionColumn"
+                             text="Action"
+                             prefWidth="120"/>
 
             </columns>
 

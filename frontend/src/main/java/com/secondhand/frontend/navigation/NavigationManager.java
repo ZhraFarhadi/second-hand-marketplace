@@ -443,7 +443,7 @@ public class NavigationManager {
     public static void showAdminDashboard(){
 
         loadScene(
-                "/view/admin/admin-dashboard.fxml",
+                "/view/admin/dashboard.fxml",
                 "/css/header.css",
                 "/css/admin.css"
         );
@@ -463,7 +463,7 @@ public class NavigationManager {
     public static void showPendingAdvertisements(){
 
         loadScene(
-                "/view/admin/admin-pending-ads.fxml",
+                "/view/admin/advertisement-review.fxml",
                 "/css/header.css",
                 "/css/admin.css"
         );

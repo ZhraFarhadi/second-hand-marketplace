@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+import java.util.function.BiConsumer;
+
 public class CategoryItemController {
 
     @FXML
@@ -16,6 +18,8 @@ public class CategoryItemController {
     private VBox subcategoryContainer;
 
     private boolean expanded = false;
+
+    private BiConsumer<Long, Button> onSubcategorySelected;
 
     @FXML
     private void toggleCategory() {
@@ -50,6 +54,10 @@ public class CategoryItemController {
 
                 button.setUserData(child.getId());
 
+                button.setOnAction(event ->
+                        onSubcategorySelected.accept(child.getId(), button)
+                );
+
                 subcategoryContainer.getChildren().add(button);
 
             }
@@ -64,8 +72,12 @@ public class CategoryItemController {
 
     }
 
-    public void setCategory(CategorySummaryResponse category) {
+    public void setCategory(
+            CategorySummaryResponse category,
+            BiConsumer<Long, Button> onSubcategorySelected
+    ) {
 
+        this.onSubcategorySelected = onSubcategorySelected;
 
         categoryButton.setText(category.getName() + " ▼");
 

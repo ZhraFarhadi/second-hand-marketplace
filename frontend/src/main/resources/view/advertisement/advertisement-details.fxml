@@ -252,6 +252,11 @@
                             <Button fx:id="chatButton"
                                     text="💬 Start Chat"/>
 
+                            <Button fx:id="rateSellerButton"
+                                    text="⭐ Rate Seller"
+                                    visible="false"
+                                    managed="false"/>
+
                         </HBox>
 
                     </VBox>
